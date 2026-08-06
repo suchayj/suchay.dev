@@ -1,0 +1,2 @@
+import type { MetadataRoute } from "next";
+export default function manifest(): MetadataRoute.Manifest { return { name: "Suchay Janbandhu — Senior Full Stack Engineer", short_name: "Suchay.", description: "Personal engineering website of Suchay Janbandhu.", start_url: "/", display: "standalone", background_color: "#f3f1eb", theme_color: "#171816", icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml" }] }; }
