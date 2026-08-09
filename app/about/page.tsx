@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { capabilityNarratives, journey, systems } from "./about-data";
 import { PhotoFrame } from "./photo-frame";
+import { SiteHeader } from "../site-header";
 import "./about.css";
 
 export const metadata: Metadata = {
@@ -17,12 +18,7 @@ const Arrow = () => <span aria-hidden="true">↗</span>;
 export default function AboutPage() {
   return (
     <main className="about-page">
-      <header className="about-nav">
-        <Link className="about-wordmark" href="/" aria-label="Suchay Janbandhu, home">Suchay<span>.</span></Link>
-        <nav aria-label="About page navigation">
-          <Link href="/#work">Work</Link><Link href="/#capabilities">Capabilities</Link><Link aria-current="page" href="/about">About</Link><a className="about-nav-contact" href="#about-contact">Contact <Arrow /></a>
-        </nav>
-      </header>
+      <SiteHeader current="/about" dark />
 
       <section className="about-hero about-shell">
         <div className="about-hero-copy">
@@ -84,7 +80,7 @@ export default function AboutPage() {
       <section className="about-closing about-shell" id="about-contact">
         <p className="about-kicker"><span /> Start a conversation</p>
         <h2>I’m interested in difficult systems, meaningful products and teams that care about how software <em>behaves in the real world.</em></h2>
-        <div className="closing-actions"><a className="closing-email" href="mailto:suchayj@gmail.com">suchayj@gmail.com <Arrow /></a><Link href="/#work">View selected work <span aria-hidden="true">→</span></Link></div>
+        <div className="closing-actions"><a className="closing-email" href="mailto:suchayj@gmail.com">suchayj@gmail.com <Arrow /></a><Link href="/work">View selected work <span aria-hidden="true">→</span></Link></div>
         <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Availability</small><span>Within 15 days</span></div><div><small>Phone</small><a href="tel:+918007778797">+91 80077 78797</a></div><div><small>Elsewhere</small><span><a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a></span></div></div>
       </section>
       <footer className="about-footer"><span>© {new Date().getFullYear()} Suchay Janbandhu</span><Link href="/">suchay.dev</Link><div><a href="https://github.com/suchayj">GitHub</a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/">LinkedIn</a></div></footer>

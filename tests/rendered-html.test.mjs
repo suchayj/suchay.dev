@@ -19,6 +19,10 @@ test("renders the production portfolio", async () => {
   assert.match(html, /Streamora/);
   assert.match(html, /Available within 15 days/);
   assert.match(html, /mailto:suchayj@gmail\.com/);
+  assert.match(html, /href="\/work"/);
+  assert.match(html, /href="\/capabilities"/);
+  assert.match(html, /href="\/contact"/);
+  assert.doesNotMatch(html, /href="[^"]*#/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
 
@@ -37,4 +41,15 @@ test("renders the About page biography and image slots", async () => {
   assert.match(html, /beach-goggle\.jpg/);
   assert.match(html, /Authentic image/);
   assert.doesNotMatch(html, /salary|testimonial|years of experience/i);
+  assert.doesNotMatch(html, /href="[^"]*#/);
+});
+
+test("renders clean navigation routes and case-study placeholders", async () => {
+  for (const path of ["/work", "/capabilities", "/contact", "/work/edvora", "/work/rentora", "/work/streamora", "/work/loom"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    assert.doesNotMatch(html, /href="[^"]*#/);
+    assert.doesNotMatch(html, /href="[^"]*\?/);
+  }
 });

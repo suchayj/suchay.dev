@@ -1,23 +1,27 @@
 export const projects = [
   {
+    slug: "edvora",
     name: "Edvora",
     proposition: "School operations, brought into one coherent system.",
     description: "A comprehensive school operating platform spanning academic workflows, students, staff, attendance, timetables, examinations, fees, communication and operational readiness.",
     tags: ["Product Architecture", "Multi-tenant SaaS", "Workflow Systems", "Full Stack"],
   },
   {
+    slug: "rentora",
     name: "Rentora",
     proposition: "From human language to executable event operations.",
     description: "An AI-first rental and event-operations platform that converts natural-language requirements into structured material, inventory, crew, logistics and readiness plans.",
     tags: ["GenAI", "Planning Engines", "Inventory", "Operational Workflows"],
   },
   {
+    slug: "streamora",
     name: "Streamora",
     proposition: "Private media infrastructure built for real production use.",
     description: "A secure media platform covering uploads, private storage, processing workers, metadata, playlists, signed access and deployment operations.",
     tags: ["Media Systems", "Background Workers", "Secure Storage", "Next.js"],
   },
   {
+    slug: "loom",
     name: "Loom",
     proposition: "A controlled path from source code to production.",
     description: "A deployment and production-operations platform designed around immutable releases, health verification, environment governance and repeatable delivery.",

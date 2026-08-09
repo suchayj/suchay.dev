@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { capabilities, projects } from "./site-data";
+import { SiteHeader } from "./site-header";
 
 export const metadata: Metadata = {
   title: "Suchay Janbandhu — Senior Full Stack Engineer",
@@ -36,17 +38,7 @@ function SystemVisual({ index }: { index: number }) {
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Suchay Janbandhu, home">
-          Suchay<span>.</span>
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#work">Work</a>
-          <a href="#capabilities">Capabilities</a>
-          <a href="/about">About</a>
-          <a className="nav-contact" href="#contact">Contact <Arrow /></a>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <section className="hero section" id="top">
         <div className="hero-copy">
@@ -54,7 +46,7 @@ export default function Home() {
           <h1>I build software that moves from complex ideas to <em>reliable production systems.</em></h1>
           <p className="hero-intro">Senior Full Stack Engineer working across enterprise platforms, modern web applications, cloud-native delivery and AI-enabled products.</p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#work">View selected work <span aria-hidden="true">↓</span></a>
+            <Link className="button button-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link>
             <a className="button button-secondary" href="mailto:suchayj@gmail.com">Contact me <Arrow /></a>
           </div>
           <div className="hero-meta" aria-label="Profile links and availability">
@@ -94,7 +86,7 @@ export default function Home() {
                 <ul className="tags" aria-label={`${project.name} capabilities`}>
                   {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
                 </ul>
-                <span className="coming-soon">Case study coming soon <span aria-hidden="true">→</span></span>
+                <Link className="coming-soon" href={`/work/${project.slug}`}>Read case study <span aria-hidden="true">→</span></Link>
               </div>
             </article>
           ))}
