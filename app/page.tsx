@@ -37,7 +37,7 @@ function SystemVisual({ index }: { index: number }) {
 
 export default function Home() {
   return (
-    <main>
+    <main id="main-content">
       <SiteHeader />
 
       <section className="hero section" id="top">
@@ -46,8 +46,8 @@ export default function Home() {
           <h1>I build software that moves from complex ideas to <em>reliable production systems.</em></h1>
           <p className="hero-intro">Senior Full Stack Engineer working across enterprise platforms, modern web applications, cloud-native delivery and AI-enabled products.</p>
           <div className="hero-actions">
-            <Link className="button button-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link>
-            <a className="button button-secondary" href="mailto:suchayj@gmail.com">Contact me <Arrow /></a>
+            <Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link>
+            <a className="btn btn-secondary" href="mailto:suchayj@gmail.com">Contact me <Arrow /></a>
           </div>
           <div className="hero-meta" aria-label="Profile links and availability">
             <span className="availability"><i /> Available within 15 days</span>
@@ -56,7 +56,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="system-map" aria-label="A system map showing product ideas moving through architecture, engineering and AI into production">
+        <div className="system-map" role="img" aria-label="A system map showing product ideas moving through architecture, engineering and AI into production">
           <div className="map-label map-label-top">System / 01</div>
           <div className="map-node map-product"><span>01</span><strong>Product</strong><small>Ambiguity → clarity</small></div>
           <div className="map-node map-architecture"><span>02</span><strong>Architecture</strong><small>Boundaries + state</small></div>

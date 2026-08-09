@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark";
 
+const subscribe = (callback: () => void) => {
+  window.addEventListener("suchay-theme-change", callback);
+  return () => window.removeEventListener("suchay-theme-change", callback);
+};
+
+const getTheme = (): Theme => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+const getServerTheme = (): Theme => "dark";
+
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(() => typeof document !== "undefined" && document.documentElement.dataset.theme === "light" ? "light" : "dark");
+  const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
 
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     document.documentElement.style.colorScheme = next;
     localStorage.setItem("suchay-theme", next);
-    setTheme(next);
+    window.dispatchEvent(new Event("suchay-theme-change"));
   }
 
   return (

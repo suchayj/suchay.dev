@@ -17,7 +17,7 @@ const Arrow = () => <span aria-hidden="true">↗</span>;
 
 export default function AboutPage() {
   return (
-    <main className="about-page">
+    <main className="about-page" id="main-content">
       <SiteHeader current="/about" dark />
 
       <section className="about-hero about-shell">
@@ -27,7 +27,7 @@ export default function AboutPage() {
           <p className="about-intro">I’m a full-stack engineer based in Pune, working across enterprise platforms, product architecture, modern web applications, cloud-native delivery and AI-enabled workflows.</p>
           <p className="about-availability"><i /> Available to join within 15 days</p>
         </div>
-        <div className="hero-architecture" aria-label="A system diagram connecting product architecture, engineering, AI workflows and production">
+        <div className="hero-architecture" role="img" aria-label="A system diagram connecting product architecture, engineering, AI workflows and production">
           <span className="architecture-label">System perspective / 01</span>
           <div className="architecture-node node-product"><small>01</small><strong>Product</strong><span>Operation → model</span></div>
           <div className="architecture-node node-system"><small>02</small><strong>Architecture</strong><span>Boundaries + state</span></div>
@@ -54,7 +54,7 @@ export default function AboutPage() {
           {journey.map((stage, index) => (
             <article className={`journey-stage stage-${index + 1}`} key={stage.title}>
               <div className="journey-copy"><div className="stage-meta"><span>{stage.index}</span><span>{stage.period}</span></div><h3>{stage.title}</h3><p className="stage-lead">{stage.body}</p><p>{stage.detail}</p></div>
-              {"image" in stage ? <PhotoFrame src={stage.image} alt={stage.alt} label={`${stage.period} / ${stage.index}`} sizes="(max-width: 760px) 100vw, 44vw" objectPosition={stage.position} /> : <div className="current-system-visual" aria-label="Product architecture flowing through engineering and AI into production"><div><span>Product</span><i /></div><div><span>Architecture</span><i /></div><div><span>Engineering</span><i /></div><div><span>AI workflow</span><i /></div><div><span>Production</span></div></div>}
+              {"image" in stage ? <PhotoFrame src={stage.image} alt={stage.alt} label={`${stage.period} / ${stage.index}`} sizes="(max-width: 760px) 100vw, 44vw" objectPosition={stage.position} /> : <div className="current-system-visual" role="img" aria-label="Product architecture flowing through engineering and AI into production"><div><span>Product</span><i /></div><div><span>Architecture</span><i /></div><div><span>Engineering</span><i /></div><div><span>AI workflow</span><i /></div><div><span>Production</span></div></div>}
             </article>
           ))}
         </div>
@@ -80,7 +80,7 @@ export default function AboutPage() {
       <section className="about-closing about-shell" id="about-contact">
         <p className="about-kicker"><span /> Start a conversation</p>
         <h2>I’m interested in difficult systems, meaningful products and teams that care about how software <em>behaves in the real world.</em></h2>
-        <div className="closing-actions"><a className="closing-email" href="mailto:suchayj@gmail.com">suchayj@gmail.com <Arrow /></a><Link href="/work">View selected work <span aria-hidden="true">→</span></Link></div>
+        <div className="closing-actions"><a className="closing-email" href="mailto:suchayj@gmail.com">suchayj@gmail.com <Arrow /></a><Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link></div>
         <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Availability</small><span>Within 15 days</span></div><div><small>Phone</small><a href="tel:+918007778797">+91 80077 78797</a></div><div><small>Elsewhere</small><span><a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a></span></div></div>
       </section>
       <footer className="about-footer"><span>© {new Date().getFullYear()} Suchay Janbandhu</span><Link href="/">suchay.dev</Link><div><a href="https://github.com/suchayj">GitHub</a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/">LinkedIn</a></div></footer>
