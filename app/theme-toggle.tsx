@@ -18,7 +18,6 @@ export function ThemeToggle() {
   return (
     <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Use ${theme === "dark" ? "light" : "dark"} mode`} suppressHydrationWarning>
       <span aria-hidden="true">{theme === "dark" ? "☼" : "◐"}</span>
-      <span className="theme-toggle-label">{theme === "dark" ? "Light" : "Dark"}</span>
     </button>
   );
 }
