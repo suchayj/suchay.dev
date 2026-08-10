@@ -10,7 +10,7 @@ Suchay Janbandhu's personal engineering site, built with the official Next.js Ap
 ## Local development
 
 ```bash
-npm install
+npm install --include=dev
 npm run dev
 ```
 
