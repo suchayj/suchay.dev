@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { SiteNavLink } from "../site-nav-link";
 import { SiteHeader } from "../site-header";
 import "./timeline.css";
 
@@ -90,7 +90,7 @@ export default function TimelinePage() {
           <p className="timeline-kicker"><span /> Now · Engineering journey</p>
           <h1>Building at the edge of <em>AI‑native product engineering.</em></h1>
           <p className="timeline-deck">The newest work comes first. Enterprise experience and earlier foundations provide the context beneath it.</p>
-          <div className="timeline-actions"><Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link><Link className="btn btn-secondary" href="/contact">Start a conversation <span aria-hidden="true">↗</span></Link></div>
+          <div className="timeline-actions"><SiteNavLink className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></SiteNavLink><SiteNavLink className="btn btn-secondary" href="/contact">Start a conversation <span aria-hidden="true">↗</span></SiteNavLink></div>
         </div>
         <div className="now-signal" aria-label="Current engineering focus"><span>NOW</span><strong>Product architecture</strong><i/><strong>Agentic workflows</strong><i/><strong>Production systems</strong><small>March 2026 — Present</small></div>
       </section>
@@ -103,10 +103,10 @@ export default function TimelinePage() {
         </header>
         <div className="current-systems">
           {currentProjects.map((project, index) => (
-            <Link className={project.flagship ? "flagship" : ""} href={project.href} key={project.name}>
+            <SiteNavLink className={project.flagship ? "flagship" : ""} href={project.href} key={project.name}>
               <span>01.{index + 1}</span><div><small>{project.badge}</small><h3>{project.name}</h3><p>{project.description}</p></div><b aria-hidden="true">↗</b>
               {project.flagship && <div className="flagship-flow" aria-hidden="true"><i>Intent</i><span/><i>Plan</i><span/><i>Operate</i></div>}
-            </Link>
+            </SiteNavLink>
           ))}
         </div>
       </section>
@@ -141,7 +141,7 @@ export default function TimelinePage() {
       </section>
 
       <section className="timeline-closing timeline-shell">
-        <p className="timeline-kicker">The work continues</p><h2>Strong fundamentals.<br/><em>AI-native workflows.</em></h2><p>Looking for opportunities to build modern software products with teams that care about how systems behave in the real world.</p><p className="next-availability"><i /> Available within 15 days</p><div className="timeline-actions"><Link className="btn btn-primary" href="/about">View profile <span aria-hidden="true">↗</span></Link><Link className="btn btn-secondary" href="/work">View projects <span aria-hidden="true">→</span></Link></div>
+        <p className="timeline-kicker">The work continues</p><h2>Strong fundamentals.<br/><em>AI-native workflows.</em></h2><p>Looking for opportunities to build modern software products with teams that care about how systems behave in the real world.</p><p className="next-availability"><i /> Available within 15 days</p><div className="timeline-actions"><SiteNavLink className="btn btn-primary" href="/about">View profile <span aria-hidden="true">↗</span></SiteNavLink><SiteNavLink className="btn btn-secondary" href="/work">View projects <span aria-hidden="true">→</span></SiteNavLink></div>
       </section>
     </main>
   );
