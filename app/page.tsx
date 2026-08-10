@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SiteNavLink } from "./site-nav-link";
+import Link from "next/link";
 import { capabilities, projects } from "./site-data";
 import { SiteHeader } from "./site-header";
 
@@ -46,7 +46,7 @@ export default function Home() {
           <h1>I build software that moves from complex ideas to <em>reliable production systems.</em></h1>
           <p className="hero-intro">Senior Full Stack Engineer working across enterprise platforms, modern web applications, cloud-native delivery and AI-enabled products.</p>
           <div className="hero-actions">
-            <SiteNavLink className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></SiteNavLink>
+            <Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link>
             <a className="btn btn-secondary" href="mailto:suchayj@gmail.com">Contact me <Arrow /></a>
           </div>
           <div className="hero-meta" aria-label="Profile links and availability">
@@ -86,7 +86,7 @@ export default function Home() {
                 <ul className="tags" aria-label={`${project.name} capabilities`}>
                   {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
                 </ul>
-                <SiteNavLink className="coming-soon" href={`/work/${project.slug}`}>Read case study <span aria-hidden="true">→</span></SiteNavLink>
+                <Link className="coming-soon" href={`/work/${project.slug}`}>Read case study <span aria-hidden="true">→</span></Link>
               </div>
             </article>
           ))}
