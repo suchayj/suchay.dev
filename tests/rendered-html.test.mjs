@@ -57,6 +57,7 @@ test("renders the production portfolio", async () => {
   assert.match(html, /href="\/timeline"/);
   assert.match(html, /href="\/capabilities"/);
   assert.match(html, /href="\/contact"/);
+  assert.match(html, /href="\/resume"/);
   assert.doesNotMatch(html, /href="[^"]*\?/);
 });
 
@@ -87,6 +88,8 @@ test("serves every primary and case-study route", async () => {
     "/timeline",
     "/capabilities",
     "/contact",
+    "/resume",
+    "/resume/print",
     "/work/edvora",
     "/work/rentora",
     "/work/streamora",
@@ -96,6 +99,23 @@ test("serves every primary and case-study route", async () => {
     const response = await render(path);
     assert.equal(response.status, 200, path);
     const html = await response.text();
+    assert.doesNotMatch(html, /href="[^"]*\?/);
+  }
+});
+
+test("renders a semantic, canonical two-page resume and print surface", async () => {
+  for (const path of ["/resume", "/resume/print"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    assert.match(html, /Senior Full Stack Engineer/);
+    assert.match(html, /10\+ years/);
+    assert.match(html, /Mastercard Vocalink/);
+    assert.match(html, /Barclays Identification &amp; Verification \(BIDV\)/);
+    assert.match(html, /Amazon Connect — Voice Systems/);
+    assert.match(html, /Priyadarshini Institute of Engineering and Technology/);
+    assert.equal((html.match(/data-resume-page=/g) ?? []).length, 2);
+    assert.doesNotMatch(html, /<img/i);
     assert.doesNotMatch(html, /href="[^"]*\?/);
   }
 });

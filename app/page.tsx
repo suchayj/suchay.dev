@@ -44,7 +44,7 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow"><span /> Suchay Janbandhu · Pune</p>
           <h1>I build software that moves from complex ideas to <em>reliable production systems.</em></h1>
-          <p className="hero-intro">Senior Full Stack Engineer working across enterprise platforms, modern web applications, cloud-native delivery and AI-enabled products.</p>
+          <p className="hero-intro">Senior Full Stack Engineer with 10+ years across Barclays enterprise systems, modern web products, production delivery and AI-enabled software.</p>
           <div className="hero-actions">
             <Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link>
             <a className="btn btn-secondary" href="mailto:suchayj@gmail.com">Contact me <Arrow /></a>
@@ -53,6 +53,7 @@ export default function Home() {
             <span className="availability"><i /> Available within 15 days</span>
             <a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
             <a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a>
+            <Link href="/resume">Résumé <Arrow /></Link>
           </div>
         </div>
 

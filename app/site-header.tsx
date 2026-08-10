@@ -6,6 +6,7 @@ const links = [
   ["Timeline", "/timeline"],
   ["Capabilities", "/capabilities"],
   ["About", "/about"],
+  ["Résumé", "/resume"],
 ] as const;
 
 export function SiteHeader({ current, dark = false }: { current?: string; dark?: boolean }) {
