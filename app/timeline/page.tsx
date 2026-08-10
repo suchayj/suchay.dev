@@ -1,166 +1,75 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { careerProjects, getCompany, getProjectsForCompany, type CareerProject } from "../career-data";
 import { SiteHeader } from "../site-header";
 import "./timeline.css";
 
 export const metadata: Metadata = {
   title: "Engineering Journey — Suchay Janbandhu",
-  description: "Suchay Janbandhu's engineering journey from AI-first product engineering through enterprise systems and foundational practice.",
+  description: "Suchay Janbandhu's engineering journey from software foundations to enterprise systems and AI-first product engineering.",
   alternates: { canonical: "/timeline" },
-  openGraph: { title: "Engineering Journey — Suchay Janbandhu", description: "From AI-first products to enterprise engineering foundations.", url: "https://suchay.dev/timeline", images: ["/og.png"] },
+  openGraph: { title: "Engineering Journey — Suchay Janbandhu", description: "From software foundations to enterprise engineering and AI-first products.", url: "https://suchay.dev/timeline", images: ["/og.png"] },
 };
 
-type ProjectRecord = {
-  name: string;
-  label: string;
-  problem: string;
-  architecture: string;
-  technologies: readonly string[];
-  engineering: string;
-  lessons: string;
-  interviewTopics: readonly string[];
-  future: string;
-  status?: string;
-};
-
-const enterpriseProjects: readonly ProjectRecord[] = [
-  {
-    name: "Mastercard Vocalink",
-    label: "Event processing / Fraud workflows",
-    problem: "Fraud-detection events need dependable processing even when downstream work fails or must be retried.",
-    architecture: "Event-driven integration using Apache Kafka, explicit retry handling and Dead Letter Queue paths.",
-    technologies: ["Java", "Spring Boot", "Kafka", "Event Driven Architecture", "Dead Letter Queue"],
-    engineering: "Worked extensively on resilient event processing, retry mechanisms and failure isolation within Mastercard Vocalink integrations.",
-    lessons: "Failure paths, replay behaviour and operational visibility are part of the workflow—not secondary infrastructure concerns.",
-    interviewTopics: ["Kafka delivery semantics", "Idempotency", "Retry strategy", "DLQ operations", "Failure recovery"],
-    future: "Verified sequence diagrams and deeper implementation context will be added as documentation is completed.",
-  },
-  {
-    name: "Identification & Verification",
-    label: "Identity / Multi-channel journeys",
-    problem: "Authentication and verification journeys must remain coherent across multiple enterprise channels.",
-    architecture: "Enterprise identity and verification capabilities exposed through secured service and API boundaries.",
-    technologies: ["Identity", "Authentication", "Enterprise APIs", "Security"],
-    engineering: "Worked on systems supporting authentication and login journeys across multiple channels.",
-    lessons: "Identity workflows require explicit trust boundaries, predictable responses and careful treatment of failure states.",
-    interviewTopics: ["Authentication flows", "API security", "Channel consistency", "Trust boundaries"],
-    future: "Channel-specific flows and verified architecture detail will be added when documentation is ready.",
-  },
-  {
-    name: "Amazon Connect",
-    label: "Voice systems / AI",
-    status: "Exact service implementation name pending confirmation.",
-    problem: "Customer interaction through voice systems requires reliable routing and recognition within a controlled service journey.",
-    architecture: "An Amazon Connect based customer-interaction and voice-recognition system.",
-    technologies: ["Amazon Connect", "Voice Systems", "AI"],
-    engineering: "Worked on the system while the exact internal service terminology remains pending confirmation.",
-    lessons: "Voice interfaces need observable transitions and clear fallback behaviour because the interface itself is transient.",
-    interviewTopics: ["Voice workflows", "Interaction routing", "Recognition boundaries", "Fallback design"],
-    future: "Project terminology will be expanded as documentation is completed.",
-  },
-  {
-    name: "BIDV",
-    label: "Platform record / Documentation in progress",
-    problem: "Verified problem context is still being documented.",
-    architecture: "Architecture detail is intentionally withheld until it can be documented accurately.",
-    technologies: [],
-    engineering: "Documentation in progress.",
-    lessons: "No claims are published before the supporting project context is verified.",
-    interviewTopics: ["To be documented"],
-    future: "This record is structured for future problem, architecture and engineering detail.",
-  },
-];
-
-const currentProjects = [
-  { name: "Rentora", badge: "Flagship · AI-first Operations OS", description: "Natural-language requirements become structured inventory, crew, logistics and operational plans.", href: "/work/rentora", flagship: true },
-  { name: "Edvora", badge: "School Operating System", description: "Academic and administrative workflows brought into one coherent school operations platform.", href: "/work/edvora", flagship: false },
-  { name: "Streamora", badge: "Private Media Platform", description: "Secure uploads, processing, metadata and signed access designed as production infrastructure.", href: "/work/streamora", flagship: false },
-  { name: "Loom", badge: "Deployment Platform", description: "Immutable releases, health verification and environment governance in one delivery path.", href: "/work/loom", flagship: false },
-] as const;
-
-const research = ["Agentic AI", "LLMs", "MCP", "Workflow Automation", "AI-assisted Product Development", "System Architecture", "Production Engineering", "Knowledge Systems"];
+const currentCompany = getCompany("independent")!;
+const barclays = getCompany("barclays")!;
+const sysnik = getCompany("sysnik")!;
+const rebelute = getCompany("rebelute")!;
+const cygnet = getCompany("cygnet")!;
 
 export default function TimelinePage() {
-  return (
-    <main className="timeline-page" id="main-content">
-      <SiteHeader current="/timeline" />
+  const tweebr = careerProjects.find((project) => project.id === "tweebr")!;
+  const fastrax = careerProjects.find((project) => project.id === "fastraxpos")!;
+  return <main className="timeline-page" id="main-content">
+    <SiteHeader current="/timeline" />
+    <section className="timeline-hero timeline-shell">
+      <div><p className="timeline-kicker"><span /> Now · Engineering journey</p><h1>Building production software across <em>Full Stack, Platform and GenAI.</em></h1><p className="timeline-deck">Enterprise foundations became banking platforms, then large-scale financial systems. Today, that experience shapes dependable AI-first products.</p><div className="timeline-actions"><Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link><Link className="btn btn-secondary" href="/contact">Start a conversation <span aria-hidden="true">↗</span></Link></div></div>
+      <div className="now-signal" aria-label="Current engineering focus"><span>NOW</span><strong>Independent products</strong><i/><strong>AI-native workflows</strong><i/><strong>Production systems</strong><small>{currentCompany.period}</small></div>
+    </section>
 
-      <section className="timeline-hero timeline-shell">
-        <div>
-          <p className="timeline-kicker"><span /> Now · Engineering journey</p>
-          <h1>Building at the edge of <em>AI‑native product engineering.</em></h1>
-          <p className="timeline-deck">The newest work comes first. Enterprise experience and earlier foundations provide the context beneath it.</p>
-          <div className="timeline-actions"><Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link><Link className="btn btn-secondary" href="/contact">Start a conversation <span aria-hidden="true">↗</span></Link></div>
-        </div>
-        <div className="now-signal" aria-label="Current engineering focus"><span>NOW</span><strong>Product architecture</strong><i/><strong>Agentic workflows</strong><i/><strong>Production systems</strong><small>March 2026 — Present</small></div>
-      </section>
+    <section className="timeline-chapter current timeline-shell" aria-labelledby="current-title">
+      <ChapterMark year="2026" period={currentCompany.period} label="Current" />
+      <header className="chapter-heading"><div><p className="timeline-kicker">{currentCompany.name}</p><h2 id="current-title">Dependable systems, with intelligence in the <em>right places.</em></h2></div><p>AI-first and agentic product engineering built end to end—from domain model and product interface to deployment, evaluation and human decision boundaries.</p></header>
+      <div className="current-systems">{getProjectsForCompany("independent").map((project, index) => <CurrentProject project={project} index={index} key={project.id} />)}</div>
+    </section>
 
-      <section className="timeline-chapter current timeline-shell" aria-labelledby="current-title">
-        <ChapterMark number="01" period="March 2026 — Present" label="Current" />
-        <header className="chapter-heading">
-          <div><p className="timeline-kicker">Independent Product Engineering</p><h2 id="current-title">Products are where the ideas become <em>real systems.</em></h2></div>
-          <div className="chapter-narrative"><p>The focus shifted towards understanding how modern AI systems can become useful, deployable software products.</p><p>Product architecture, LLMs, agentic workflows, orchestration and production engineering now move as one discipline.</p></div>
-        </header>
-        <div className="current-systems">
-          {currentProjects.map((project, index) => (
-            <Link className={project.flagship ? "flagship" : ""} href={project.href} key={project.name}>
-              <span>01.{index + 1}</span><div><small>{project.badge}</small><h3>{project.name}</h3><p>{project.description}</p></div><b aria-hidden="true">↗</b>
-              {project.flagship && <div className="flagship-flow" aria-hidden="true"><i>Intent</i><span/><i>Plan</i><span/><i>Operate</i></div>}
-            </Link>
-          ))}
-        </div>
-      </section>
+    <section className="timeline-chapter enterprise timeline-shell" aria-labelledby="enterprise-title">
+      <ChapterMark year="2021" period={barclays.period} label="Enterprise" />
+      <header className="enterprise-heading"><div><p className="timeline-kicker">{barclays.role}</p><h2 id="enterprise-title">{barclays.name}</h2></div><p>Nearly four and a half years building within enterprise financial systems across event processing, identity, integrations and production delivery.</p></header>
+      <div className="enterprise-records">{getProjectsForCompany("barclays").map((project, index) => <ProjectDisclosure project={project} index={index} key={project.id} />)}</div>
+    </section>
 
-      <section className="timeline-chapter research timeline-shell" aria-labelledby="research-title">
-        <ChapterMark number="02" period="Active exploration" label="AI-native systems" />
-        <header className="chapter-heading"><div><p className="timeline-kicker">Research in practice</p><h2 id="research-title">A connected field of <em>engineering questions.</em></h2></div><p>The work connects intelligence, orchestration and production discipline—not as trends, but as parts of one product system.</p></header>
-        <div className="research-map" role="img" aria-label="Interconnected map of current engineering research">
-          <div className="research-core"><small>Active focus</small><strong>AI-native<br/>systems</strong></div>
-          {research.map((topic, index) => <div className={`research-node research-node-${index + 1}`} key={topic}><span>R{String(index + 1).padStart(2, "0")}</span><strong>{topic}</strong></div>)}
-          <i className="research-path path-a"/><i className="research-path path-b"/><i className="research-path path-c"/><i className="research-path path-d"/>
-        </div>
-      </section>
+    <section className="timeline-chapter sysnik timeline-shell" aria-labelledby="sysnik-title">
+      <ChapterMark year="2018" period={sysnik.period} label="Banking systems" />
+      <div className="mid-chapter"><header><p className="timeline-kicker">{sysnik.role} · {sysnik.location}</p><h2 id="sysnik-title">{sysnik.name}</h2><p>Banking-domain product engineering across core systems, reporting, data management and full-stack tools.</p></header><div className="project-ledger">{getProjectsForCompany("sysnik").map((project, index) => <CompactProject project={project} index={index} key={project.id} />)}</div></div>
+    </section>
 
-      <section className="timeline-chapter enterprise timeline-shell" aria-labelledby="enterprise-title">
-        <ChapterMark number="03" period="October 2021 — March 2026" label="Enterprise" />
-        <details className="barclays-chapter" open>
-          <summary><div><p className="timeline-kicker">Enterprise Engineering</p><h2 id="enterprise-title">Barclays</h2></div><span><b>Explore chapter</b><i aria-hidden="true" /></span></summary>
-          <div className="barclays-intro"><p>Large-scale systems shaped by resilient integration, identity journeys, event-driven processing and customer interaction platforms.</p><small>Select a project to inspect the engineering record.</small></div>
-          <div className="enterprise-records">
-            {enterpriseProjects.map((project, index) => <ProjectDisclosure project={project} index={index} key={project.name} />)}
-          </div>
-        </details>
-      </section>
+    <section className="timeline-chapter earlier timeline-shell" aria-labelledby="earlier-title">
+      <ChapterMark year="2017" period={rebelute.period} label="Product engineering" />
+      <div className="earlier-row"><div><p className="timeline-kicker">{rebelute.role} · {rebelute.location}</p><h2 id="earlier-title">{rebelute.name}</h2></div><div><strong>{tweebr.name}</strong><p>{tweebr.summary}</p><TagList items={tweebr.technologies} /></div></div>
+    </section>
 
-      <section className="timeline-chapter foundations timeline-shell" aria-labelledby="foundations-title">
-        <ChapterMark number="04" period="Before October 2021" label="Earlier context" />
-        <div className="foundation-layout">
-          <div className="chapter-copy"><p className="timeline-kicker">Foundations</p><h2 id="foundations-title">Learning how production software <em>holds together.</em></h2><p>The focus was on software engineering fundamentals, backend development, Java, enterprise development practices and understanding production software.</p></div>
-          <SystemStrip labels={["Java", "Backend", "Enterprise practice", "Production"]} />
-        </div>
-      </section>
+    <section className="timeline-chapter foundation timeline-shell" aria-labelledby="foundation-title">
+      <ChapterMark year="2015" period={cygnet.period} label="Foundation" />
+      <div className="foundation-row"><div><p className="timeline-kicker">{cygnet.role} · {cygnet.location}</p><h2 id="foundation-title">{cygnet.name}</h2></div><div><strong>{fastrax.name}</strong><p>{fastrax.summary}</p><TagList items={fastrax.technologies} /></div></div>
+      <div className="progression" aria-label="Engineering progression"><span>Software engineering</span><i/><span>Full stack products</span><i/><span>Banking systems</span><i/><span>Enterprise engineering</span><i/><span>AI-first products</span></div>
+    </section>
 
-      <section className="timeline-closing timeline-shell">
-        <p className="timeline-kicker">The work continues</p><h2>Strong fundamentals.<br/><em>AI-native workflows.</em></h2><p>Looking for opportunities to build modern software products with teams that care about how systems behave in the real world.</p><p className="next-availability"><i /> Available within 15 days</p><div className="timeline-actions"><Link className="btn btn-primary" href="/about">View profile <span aria-hidden="true">↗</span></Link><Link className="btn btn-secondary" href="/work">View projects <span aria-hidden="true">→</span></Link></div>
-      </section>
-    </main>
-  );
+    <section className="timeline-closing timeline-shell"><p className="timeline-kicker">Now</p><h2>Enterprise depth.<br/><em>Product ownership.</em></h2><p>Building modern software products with teams that care about how systems behave beyond the happy path.</p><p className="next-availability"><i /> Available within 15 days</p><div className="timeline-actions"><Link className="btn btn-primary" href="/about">View profile <span aria-hidden="true">↗</span></Link><Link className="btn btn-secondary" href="/work">View projects <span aria-hidden="true">→</span></Link></div></section>
+  </main>;
 }
 
-function ProjectDisclosure({ project, index }: { project: ProjectRecord; index: number }) {
-  const sections = [
-    ["Problem", project.problem], ["Architecture", project.architecture], ["Interesting engineering", project.engineering], ["Lessons", project.lessons], ["Future documentation", project.future],
-  ] as const;
-  return <details className="enterprise-record" open={index === 0}>
-    <summary><span className="record-number">03.{index + 1}</span><span><strong>{project.name}</strong><small>{project.label}</small></span><span className="disclosure-action"><b>Project detail</b><i aria-hidden="true" /></span></summary>
-    <div className="record-body">
-      {project.status && <p className="record-status">Status / {project.status}</p>}
-      <div className="record-sections">{sections.map(([title, body]) => <section key={title}><h3>{title}</h3><p>{body}</p></section>)}</div>
-      <section className="record-list"><h3>Technologies</h3>{project.technologies.length ? <ul>{project.technologies.map(item => <li key={item}>{item}</li>)}</ul> : <p>Documentation in progress.</p>}</section>
-      <section className="record-list"><h3>Interview topics</h3><ul>{project.interviewTopics.map(item => <li key={item}>{item}</li>)}</ul></section>
-    </div>
-  </details>;
+function CurrentProject({ project, index }: { project: CareerProject; index: number }) {
+  const flagship = project.id === "rentora";
+  return <Link className={flagship ? "flagship" : ""} href={project.href!}><span>01.{index + 1}</span><div><small>{project.shortLabel}</small><h3>{project.name}</h3><p>{project.summary}</p></div><b aria-hidden="true">↗</b>{flagship && <div className="flagship-detail"><div className="flagship-flow" aria-hidden="true"><i>Interpret</i><span/><i>Validate</i><span/><i>Plan</i><span/><i>Ready</i></div><p>Deterministic interpretation · LLM fallback · preservation-first validation · evaluation and regression</p></div>}</Link>;
 }
 
-function ChapterMark({ number, period, label }: { number: string; period: string; label: string }) { return <div className="chapter-mark"><span>{number} / {label}</span><small>{period}</small></div>; }
-function SystemStrip({ labels }: { labels: readonly string[] }) { return <div className="system-strip" role="img" aria-label={labels.join(" to ")}>{labels.map((label, index) => <div key={label}><span>{label}</span>{index < labels.length - 1 && <i aria-hidden="true" />}</div>)}</div>; }
+function ProjectDisclosure({ project, index }: { project: CareerProject; index: number }) {
+  if (!project.detail) return <article className="enterprise-record brief-record"><span className="record-number">02.{index + 1}</span><div><strong>{project.name}</strong><small>{project.shortLabel}</small></div><p>{project.summary}</p></article>;
+  const sections = [["Problem", project.detail.problem], ["Architecture", project.detail.architecture], ["Interesting engineering", project.detail.engineering], ["Lessons", project.detail.lessons], ["Future documentation", project.detail.future]] as const;
+  return <details className="enterprise-record" open={index === 0}><summary><span className="record-number">02.{index + 1}</span><span><strong>{project.name}</strong><small>{project.shortLabel}</small></span><span className="disclosure-action"><b>Project detail</b><i aria-hidden="true" /></span></summary><div className="record-body"><div className="record-sections">{sections.map(([title, body]) => <section key={title}><h3>{title}</h3><p>{body}</p></section>)}</div><section className="record-list"><h3>Technologies</h3><TagList items={project.technologies} /></section><section className="record-list"><h3>Interview topics</h3><TagList items={project.detail.interviewTopics} /></section>{project.id === "mastercard-vocalink" && <div className="retry-flow" aria-label="Event retry and recovery path"><span>Retry</span><i/><span>Retry exhausted</span><i/><span>DLQ</span><i/><span>Investigation / reprocessing</span></div>}</div></details>;
+}
+
+function CompactProject({ project, index }: { project: CareerProject; index: number }) { return <article><span>03.{index + 1}</span><div><small>{project.shortLabel}</small><h3>{project.name}</h3><p>{project.summary}</p><TagList items={project.technologies} /></div></article>; }
+function TagList({ items }: { items: readonly string[] }) { return <ul className="timeline-tags">{items.map((item) => <li key={item}>{item}</li>)}</ul>; }
+function ChapterMark({ year, period, label }: { year: string; period: string; label: string }) { return <div className="chapter-mark"><span><b>{year}</b> / {label}</span><small>{period}</small></div>; }
