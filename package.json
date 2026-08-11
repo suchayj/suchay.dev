@@ -9,7 +9,7 @@
     "dev": "NODE_ENV=development next dev --webpack -p 3010",
     "build": "next build --webpack",
     "start": "next start -H 127.0.0.1 -p 3006",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit --incremental false"
   },

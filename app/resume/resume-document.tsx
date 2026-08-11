@@ -36,7 +36,7 @@ export function ResumeDocument() {
 
         <article className="resume-role resume-role-barclays">
           <RoleHeader company={facts.barclays.name} title="Software Engineering — Barclays" period={facts.barclays.period} />
-          <Project name={facts.vocalink.name}><ul><li>Contributed to resilient fraud-event processing using Java, Spring Boot and Apache Kafka, with bounded retries, Dead Letter Queue handling and operational recovery paths.</li><li>Worked on failure isolation and replay-aware workflows; scope was the integration, not ownership of the wider Mastercard platform.</li></ul></Project>
+          <Project name={facts.vocalink.name}><ul><li>Worked with Kafka-based event processing and resilient Vocalink feedback delivery using Java, Spring Boot, bounded API retries, exponential backoff and a dedicated retry/recovery topic.</li><li>Worked on failure isolation and recovery workflows; scope was the integration, not ownership of the wider Mastercard platform.</li></ul></Project>
           <Project name={facts.bidv.name}><ul><li>Built backend and full-stack integrations for identity, authentication and verification across multi-channel login journeys.</li><li>Worked across enterprise APIs and secure banking-system boundaries, keeping trust, responses and failure handling explicit.</li></ul></Project>
           <Project name={facts.amazonConnect.name}><p>Contributed to voice recognition and suspicious-interaction workflows in an Amazon Connect-related system; exact AWS service terminology remains pending verification.</p></Project>
         </article>
@@ -63,7 +63,7 @@ export function ResumeDocument() {
         <dl>
           <div><dt>Backend &amp; APIs</dt><dd>Java, Spring Boot, REST APIs, enterprise integrations, microservices</dd></div>
           <div><dt>Frontend &amp; Product</dt><dd>React, Next.js, TypeScript, Angular, Vue, JavaScript</dd></div>
-          <div><dt>Events &amp; Data</dt><dd>Apache Kafka, retry strategies, Dead Letter Queues, PostgreSQL, Redis, SQL Server, data modelling</dd></div>
+          <div><dt>Events &amp; Data</dt><dd>Apache Kafka, Resilience4j, retry strategies, recovery topics, PostgreSQL, Redis, SQL Server, data modelling</dd></div>
           <div><dt>Cloud &amp; Production</dt><dd>AWS EC2, AWS SQS, Docker, Kubernetes, OpenShift, CI/CD, Node.js, PM2, Nginx</dd></div>
           <div><dt>AI Product Engineering</dt><dd>LLM integrations, deterministic language systems, structured validation, evaluation and regression, human decision boundaries</dd></div>
           <div><dt>System Design</dt><dd>Domain modelling, distributed systems, API design, workflow and state modelling, production operations</dd></div>

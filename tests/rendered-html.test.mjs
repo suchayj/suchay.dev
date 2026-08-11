@@ -115,9 +115,21 @@ test("renders a semantic, canonical two-page resume and print surface", async ()
     assert.match(html, /Amazon Connect — Voice Systems/);
     assert.match(html, /Priyadarshini Institute of Engineering and Technology/);
     assert.equal((html.match(/data-resume-page=/g) ?? []).length, 2);
+    assert.match(html, /Resilience4j/);
+    assert.match(html, /dedicated retry\/recovery topic/);
+    assert.doesNotMatch(html, /Dead Letter Queue|\bDL[QT]\b/i);
     assert.doesNotMatch(html, /<img/i);
     assert.doesNotMatch(html, /href="[^"]*\?/);
   }
+});
+
+test("renders the historical retry topic without presenting it as a DLT", async () => {
+  const response = await render("/timeline");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /feedback-retry/);
+  assert.match(html, /Resilience4j/);
+  assert.doesNotMatch(html, /Dead Letter Queue|\bDL[QT]\b/i);
 });
 
 test("serves metadata routes from the Next.js runtime", async () => {
