@@ -24,6 +24,18 @@ up a fresh checkout. The example connection uses the local `careeros`
 PostgreSQL 16 container on port `5436`; do not reuse its development password
 for a hosted environment.
 
+The local seed creates the single CareerOS owner account:
+`suchayj@gmail.com` / `Suchay@123`. Change this development default from the
+Profile page when appropriate.
+
+Public portfolio routes record privacy-conscious first-party page visits in
+PostgreSQL. Anonymous visitor and 30-minute session keys are random HTTP-only
+cookies; raw IP addresses and browser fingerprints are not stored. Geographic
+fields remain empty locally. Set `TRUST_ANALYTICS_PROXY=true` only when Nginx
+is configured to replace client-supplied `x-geo-country`, `x-geo-region`, and
+`x-geo-city` headers with trusted values. CareerOS, login, API, asset, and
+authenticated-owner traffic are excluded.
+
 ## Validation
 
 ```bash

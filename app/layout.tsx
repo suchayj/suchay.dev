@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./career-os.css";
+import { VisitorTracker } from "@/components/analytics/visitor-tracker";
 
 const title = "Suchay Janbandhu — Senior Full Stack Engineer";
 const description = "Senior Full Stack Engineer based in Pune, building enterprise platforms, modern web products, cloud-native systems and AI-enabled software.";
@@ -21,5 +22,5 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const themeScript = `try{var t=localStorage.getItem('suchay-theme')||'dark';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='dark'}`;
-  return <html lang="en" data-theme="dark" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head><body>{children}</body></html>;
+  return <html lang="en" data-theme="dark" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head><body>{children}<VisitorTracker /></body></html>;
 }

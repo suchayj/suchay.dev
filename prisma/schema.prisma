@@ -27,6 +27,21 @@ enum JobSource {
   MANUAL
 }
 
+enum CompanyTargetStatus {
+  TARGET
+  WATCH
+  EXCLUDED
+}
+
+enum CompanyCategory {
+  PRODUCT_TECH
+  FINTECH_PAYMENTS
+  BANKING_TECH
+  ENTERPRISE_PLATFORM
+  ENGINEERING_SERVICES
+  CONSULTING
+}
+
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
@@ -49,17 +64,58 @@ model Session {
 }
 
 model Job {
-  id        String      @id @default(cuid())
-  company   String
-  title     String
-  location  String
-  source    JobSource
-  status    JobStatus   @default(NEW)
-  priority  JobPriority @default(MEDIUM)
-  fitScore  Int?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id         String      @id @default(cuid())
+  company    String
+  title      String
+  location   String
+  source     JobSource
+  status     JobStatus   @default(NEW)
+  priority   JobPriority @default(MEDIUM)
+  fitScore   Int?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  companyId  String?
+  companyRef Company?    @relation(fields: [companyId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([priority])
+  @@index([companyId])
+}
+
+model Company {
+  id             String              @id @default(cuid())
+  name           String
+  slug           String              @unique
+  aliases        String[]
+  targetStatus   CompanyTargetStatus @default(TARGET)
+  categories     CompanyCategory[]
+  careerUrl      String?
+  knownLocations String[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  jobs           Job[]
+
+  @@index([name])
+  @@index([targetStatus])
+}
+
+model PageVisit {
+  id          String   @id @default(cuid())
+  path        String
+  visitedAt   DateTime @default(now())
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  country     String?
+  region      String?
+  city        String?
+  userAgent   String?
+  visitorKey  String
+  sessionKey  String
+
+  @@index([visitedAt])
+  @@index([path])
+  @@index([visitorKey])
+  @@index([sessionKey])
 }

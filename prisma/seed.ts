@@ -1,8 +1,10 @@
 import { PrismaClient, JobPriority, JobSource, JobStatus } from "@prisma/client";
 import { hashPassword } from "../lib/auth/password";
+import { companies } from "./seed-data/companies";
 
 const prisma = new PrismaClient();
-const initialEmail = "suchayj@mail.com";
+const ownerEmail = "suchayj@gmail.com";
+const legacyOwnerEmail = "suchayj@mail.com";
 
 const jobs = [
   { id: "seed-full-stack-pune", company: "Product engineering team", title: "Senior Full Stack Engineer — Java / Spring / React", location: "Pune · Hybrid", status: JobStatus.NEW, priority: JobPriority.HIGH, fitScore: 91 },
@@ -12,9 +14,28 @@ const jobs = [
 ];
 
 export async function seedDatabase() {
-  const existingUser = await prisma.user.findUnique({ where: { email: initialEmail } });
-  if (!existingUser) {
-    await prisma.user.create({ data: { email: initialEmail, passwordHash: await hashPassword("suchay@123") } });
+  const [owner, legacyOwner] = await Promise.all([
+    prisma.user.findUnique({ where: { email: ownerEmail } }),
+    prisma.user.findUnique({ where: { email: legacyOwnerEmail } }),
+  ]);
+  if (legacyOwner && !owner) {
+    await prisma.user.update({
+      where: { id: legacyOwner.id },
+      data: { email: ownerEmail, passwordHash: await hashPassword("Suchay@123") },
+    });
+  } else if (!owner && !legacyOwner) {
+    await prisma.user.create({
+      data: { email: ownerEmail, passwordHash: await hashPassword("Suchay@123") },
+    });
+  } else if (legacyOwner) {
+    await prisma.user.delete({ where: { id: legacyOwner.id } });
+  }
+  for (const item of companies) {
+    await prisma.company.upsert({
+      where: { slug: item.slug },
+      update: item,
+      create: item,
+    });
   }
   for (const job of jobs) {
     await prisma.job.upsert({
