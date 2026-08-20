@@ -11,10 +11,18 @@ Suchay Janbandhu's personal engineering site, built with the official Next.js Ap
 
 ```bash
 npm install --include=dev
+docker compose up -d postgres
+npm run db:migrate
+npm run db:seed
 npm run dev
 ```
 
 The development server runs at `http://localhost:3010`.
+
+CareerOS is available at `/login`. Copy `.env.example` to `.env` when setting
+up a fresh checkout. The example connection uses the local `careeros`
+PostgreSQL 16 container on port `5436`; do not reuse its development password
+for a hosted environment.
 
 ## Validation
 

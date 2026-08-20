@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./career-os.css";
 
 const title = "Suchay Janbandhu — Senior Full Stack Engineer";
 const description = "Senior Full Stack Engineer based in Pune, building enterprise platforms, modern web products, cloud-native systems and AI-enabled software.";
