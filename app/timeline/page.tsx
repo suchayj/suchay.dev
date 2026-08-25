@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { careerProjects, getCompany, getProjectsForCompany, type CareerProject } from "../career-data";
 import { SiteHeader } from "../site-header";
+import { HomeFooter } from "../home/home-footer";
 import "./timeline.css";
 
 export const metadata: Metadata = {
@@ -56,6 +57,7 @@ export default function TimelinePage() {
     </section>
 
     <section className="timeline-closing timeline-shell"><p className="timeline-kicker">Now</p><h2>Enterprise depth.<br/><em>Product ownership.</em></h2><p>Building modern software products with teams that care about how systems behave beyond the happy path.</p><p className="next-availability"><i /> Available within 15 days</p><div className="timeline-actions"><Link className="btn btn-primary" href="/about">View profile <span aria-hidden="true">↗</span></Link><Link className="btn btn-secondary" href="/work">View projects <span aria-hidden="true">→</span></Link></div></section>
+    <HomeFooter />
   </main>;
 }
 

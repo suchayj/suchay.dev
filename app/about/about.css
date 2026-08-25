@@ -41,3 +41,23 @@
 @media (max-width:380px){.about-hero h1{font-size:2.9rem}.hero-photo,.journey-stage .about-photo,.journey-stage.stage-2 .about-photo,.journey-stage.stage-3 .about-photo,.beyond .about-photo{min-height:450px}.statement blockquote{font-size:2.25rem}.journey-heading h2,.systems-intro h2,.context-heading h2,.beyond h2,.about-closing h2{font-size:2.65rem}.closing-meta{grid-template-columns:1fr}.closing-email{font-size:1.3rem}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition-duration:.01ms!important}}
 .architecture-label,.architecture-node span,.hero-architecture>p,.stage-meta,.current-system-visual::before{color:#aaaca5}.architecture-node{box-shadow:none}
+
+/* Concise, human public profile */
+.about-nav{padding-left:max(1.25rem,calc((100vw - 1180px)/2));padding-right:max(1.25rem,calc((100vw - 1180px)/2))}
+.about-shell{width:min(calc(100% - 2.5rem),1080px);margin-inline:auto;padding-left:0;padding-right:0}
+.about-hero{min-height:0;display:block;padding-top:6rem;padding-bottom:5rem}
+.about-hero-copy{max-width:930px}.about-hero h1{max-width:900px;font-size:clamp(3.2rem,5.3vw,5.5rem)}
+.about-intro{max-width:680px;margin-top:1.5rem;font-size:1rem;line-height:1.7}
+.statement{padding-top:6rem;padding-bottom:6rem;grid-template-columns:1.05fr .75fr;gap:7vw}
+.statement blockquote{font-size:clamp(2.2rem,3.4vw,3.8rem)}
+.beyond{padding-top:6rem;padding-bottom:6rem;grid-template-columns:.8fr 1fr;gap:7vw}.beyond .about-photo{min-height:480px;max-height:590px}.beyond h2,.about-closing h2{font-size:clamp(2.8rem,4vw,4.5rem)}
+.beyond>div>p:not(.about-kicker){margin:1.5rem 0;font-size:.96rem}.beyond ul{padding-top:.85rem}
+.about-closing{padding-top:6rem;padding-bottom:4rem}.about-closing h2{max-width:980px}.closing-actions{margin-top:3rem}.closing-meta{margin-top:4rem}
+.about-page>.home-footer{border-color:var(--about-line);color:var(--about-ink)}
+
+@media(max-width:760px){
+  .about-shell{width:calc(100% - 2rem)}.about-hero{padding-top:4.5rem;padding-bottom:4rem}.about-hero h1{font-size:clamp(2.85rem,13vw,3.9rem)}
+  .statement{padding-top:4.5rem;padding-bottom:4.5rem;gap:2.5rem}.statement blockquote{font-size:2.35rem}
+  .beyond{padding-top:4.5rem;padding-bottom:4.5rem;gap:2.5rem}.beyond .about-photo{min-height:380px;height:52svh}.beyond h2,.about-closing h2{font-size:2.8rem}
+  .about-closing{padding-top:4.5rem;padding-bottom:3rem}.closing-actions{margin-top:2.5rem}.closing-meta{margin-top:3rem}
+}

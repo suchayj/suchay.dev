@@ -4,6 +4,10 @@ export const projects = [
     name: "Edvora",
     proposition: "School operations, brought into one coherent system.",
     description: "A comprehensive school operating platform spanning academic workflows, students, staff, attendance, timetables, examinations, fees, communication and operational readiness.",
+    problem: "School operations fragment across roles, records and time-sensitive workflows.",
+    built: "A multi-tenant operating system connecting academic and administrative work.",
+    decision: "Model the shared operational domain first, then let each workflow expose only the state its users need.",
+    context: "Next.js · Multi-tenant SaaS · Workflow systems",
     tags: ["Product Architecture", "Multi-tenant SaaS", "Workflow Systems", "Full Stack"],
   },
   {
@@ -11,6 +15,10 @@ export const projects = [
     name: "Rentora",
     proposition: "From human language to executable event operations.",
     description: "An AI-first rental and event-operations platform that converts natural-language requirements into structured material, inventory, crew, logistics and readiness plans.",
+    problem: "Real rental requests arrive as messy language, while operations require exact, reviewable plans.",
+    built: "A language-to-operations system for material, inventory, crew, logistics and readiness.",
+    decision: "Use deterministic interpretation first, with an LLM fallback and human confirmation where consequences matter.",
+    context: "GenAI · Planning engines · Structured validation",
     tags: ["GenAI", "Planning Engines", "Inventory", "Operational Workflows"],
   },
   {
@@ -18,6 +26,10 @@ export const projects = [
     name: "Streamora",
     proposition: "Private media infrastructure built for real production use.",
     description: "A secure media platform covering uploads, private storage, processing workers, metadata, playlists, signed access and deployment operations.",
+    problem: "Media must move through upload and processing without making private assets public by default.",
+    built: "A private media pipeline from direct upload through processing to controlled access.",
+    decision: "Keep storage private and make access an explicit, signed boundary rather than a public URL convention.",
+    context: "Next.js · Private storage · Background workers",
     tags: ["Media Systems", "Background Workers", "Secure Storage", "Next.js"],
   },
   {
@@ -25,6 +37,10 @@ export const projects = [
     name: "Loom",
     proposition: "A controlled path from source code to production.",
     description: "A deployment and production-operations platform designed around immutable releases, health verification, environment governance and repeatable delivery.",
+    problem: "A successful build is not enough evidence that a release is safe to activate.",
+    built: "An immutable release flow covering activation, runtime health, rollback and retention.",
+    decision: "Separate build, readiness and activation so an unhealthy release never silently replaces the known-good runtime.",
+    context: "Node.js · PM2 · Nginx · Release engineering",
     tags: ["Deployment Platform", "Release Engineering", "Production Operations", "Infrastructure"],
   },
 ] as const;

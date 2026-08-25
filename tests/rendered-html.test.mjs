@@ -52,6 +52,15 @@ test("renders the production portfolio", async () => {
   assert.match(html, /Rentora/);
   assert.match(html, /Streamora/);
   assert.match(html, /Available within 15 days/);
+  assert.match(html, /suchay-color-cutout-original\.png/);
+  assert.doesNotMatch(html, /suchay-bw-original\.png/);
+  assert.match(html, /Full-stack engineer building AI-native products/);
+  assert.doesNotMatch(html, /Key engineering decision/);
+  assert.doesNotMatch(html, /deterministic interpretation first/);
+  assert.match(html, /Engineering technologies and domains/);
+  assert.match(html, />SUCHAY\.</);
+  assert.match(html, /href="\/login"/);
+  assert.doesNotMatch(html, /Portrait \/ Pune/);
   assert.match(html, /mailto:suchayj@gmail\.com/);
   assert.match(html, /href="\/work"/);
   assert.match(html, /href="\/timeline"/);
@@ -67,10 +76,8 @@ test("renders the biography and an optimized authentic image", async () => {
   const html = await response.text();
   assert.match(html, /<title>About Suchay Janbandhu — Engineer, Product Builder<\/title>/i);
   assert.match(html, /turning ambiguous, operational problems/);
-  assert.match(html, /Enterprise foundations/);
-  assert.match(html, /Product systems and AI/);
-  assert.match(html, /gym-potrait\.jpg/);
-  assert.match(html, /black-thsirt-walking\.jpg/);
+  assert.match(html, /A working philosophy/);
+  assert.match(html, /Beyond the code/);
   assert.match(html, /beach-goggle\.jpg/);
   assert.doesNotMatch(html, /silver-dress\.jpg/);
 
