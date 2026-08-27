@@ -11,7 +11,7 @@ I came across your website and wanted to get in touch.
 
 Regards,
 [Your name]`;
-const emailHref = `mailto:suchayj@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+const emailHref = `mailto:suchayjanbandhu@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
 type ContactContextValue = { openContact: (trigger: HTMLElement) => void };
 const ContactContext = createContext<ContactContextValue | null>(null);

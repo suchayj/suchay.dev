@@ -14,11 +14,11 @@ test("hashes passwords and accepts only the matching value", async () => {
 });
 
 test("seeded CareerOS account has a valid hash and rejects an invalid login", async () => {
-  const user = await prisma.user.findUnique({ where: { email: "suchayj@gmail.com" } });
+  const user = await prisma.user.findUnique({ where: { email: "suchayjanbandhu@gmail.com" } });
   assert.ok(user, "Expected the seeded CareerOS account");
   assert.notEqual(user.passwordHash, "Suchay@123");
   assert.equal(await verifyPassword("Suchay@123", user.passwordHash), true);
   assert.equal(await verifyPassword("definitely-wrong", user.passwordHash), false);
   assert.equal(await prisma.user.count(), 1);
-  assert.equal(await prisma.user.count({ where: { email: "suchayj@mail.com" } }), 0);
+  assert.equal(await prisma.user.count({ where: { email: "suchayj@gmail.com" } }), 0);
 });

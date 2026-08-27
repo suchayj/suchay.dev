@@ -57,6 +57,9 @@ test("renders the production portfolio", async () => {
   assert.match(html, /href="https:\/\/loom\.suchay\.dev"/);
   assert.match(html, /href="https:\/\/rentora\.suchay\.dev" target="_blank" rel="noopener noreferrer"/);
   assert.match(html, /href="\/work\/rentora"/);
+  assert.match(html, /brands\/rentora\/rentora-mark\.png/);
+  assert.match(html, /brands\/edvora\/edvora-mark-(?:white|blue)\.svg/);
+  assert.match(html, /brands\/loom\/loom-logo(?:-dark)?\.png/);
   assert.match(html, /suchay-color-cutout-original\.png/);
   assert.doesNotMatch(html, /suchay-bw-original\.png/);
   assert.match(html, /Full-stack engineer building AI-native products/);
@@ -70,7 +73,7 @@ test("renders the production portfolio", async () => {
   assert.match(html, />SUCHAY\.</);
   assert.match(html, /href="\/login"/);
   assert.doesNotMatch(html, /Portrait \/ Pune/);
-  assert.equal((html.match(/mailto:suchayj@gmail\.com/g) ?? []).length, 1);
+  assert.equal((html.match(/mailto:suchayjanbandhu@gmail\.com/g) ?? []).length, 1);
   assert.match(html, /Contact Suchay/);
   assert.match(html, /Hello%20Suchay%20%E2%80%94%20reaching%20out%20from%20suchay\.dev/);
   assert.match(html, /href="\/timeline"[^>]*>Work Timeline<\/a>/);
@@ -206,4 +209,17 @@ test("renders canonical social metadata and truthful structured data", async () 
   assert.match(caseStudy, /property="og:type" content="article"/);
   assert.match(caseStudy, /"@type":"CreativeWork"/);
   assert.match(caseStudy, /"name":"Rentora case study"/);
+});
+
+test("renders authentic product marks beside visible case-study names", async () => {
+  const expectations = [
+    ["rentora", /brands\/rentora\/rentora-mark\.png/],
+    ["edvora", /brands\/edvora\/edvora-mark-white\.svg/],
+    ["loom", /brands\/loom\/loom-logo\.png/],
+  ];
+  for (const [slug, asset] of expectations) {
+    const html = await (await render(`/work/${slug}`)).text();
+    assert.match(html, asset);
+    assert.match(html, new RegExp(`<h1[^>]*>[\\s\\S]*${slug}`, "i"));
+  }
 });

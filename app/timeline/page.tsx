@@ -4,6 +4,7 @@ import { careerProjects, getCompany, getProjectsForCompany, type CareerProject }
 import { SiteHeader } from "../site-header";
 import { HomeFooter } from "../home/home-footer";
 import { VocalinkBrand } from "../vocalink-brand";
+import { ProductName } from "../product-brand";
 import "./timeline.css";
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default function TimelinePage() {
 
     <section className="timeline-chapter enterprise timeline-shell" aria-labelledby="enterprise-title">
       <ChapterMark year="2021" period={barclays.period} label="Enterprise" />
-      <header className="enterprise-heading"><div><p className="timeline-kicker">{barclays.role}</p><h2 id="enterprise-title">{barclays.name}</h2></div><p>Nearly four and a half years building within enterprise financial systems across event processing, identity, integrations and production delivery.</p></header>
+      <header className="enterprise-heading"><div><p className="timeline-kicker">{barclays.role}</p><h2 id="enterprise-title">{barclays.name}</h2></div><p>More than four and a half years building within enterprise financial systems across event processing, identity, integrations and production delivery.</p></header>
       <div className="enterprise-records">{getProjectsForCompany("barclays").map((project, index) => <ProjectDisclosure project={project} index={index} key={project.id} />)}</div>
     </section>
 
@@ -65,7 +66,7 @@ export default function TimelinePage() {
 
 function CurrentProject({ project, index }: { project: CareerProject; index: number }) {
   const flagship = project.id === "rentora";
-  return <Link className={flagship ? "flagship" : ""} href={project.href!}><span>01.{index + 1}</span><div><small>{project.shortLabel}</small><h3>{project.name}</h3><p>{project.summary}</p></div><b aria-hidden="true">↗</b>{flagship && <div className="flagship-detail"><div className="flagship-flow" aria-hidden="true"><i>Interpret</i><span/><i>Validate</i><span/><i>Plan</i><span/><i>Ready</i></div><p>Structured interpretation · domain models · deterministic reasoning · validation and regression</p></div>}</Link>;
+  return <Link className={flagship ? "flagship" : ""} href={project.href!}><span>01.{index + 1}</span><div><small>{project.shortLabel}</small><ProductName as="h3" slug={project.id as "rentora" | "edvora" | "loom"} name={project.name} /><p>{project.summary}</p></div><b aria-hidden="true">↗</b>{flagship && <div className="flagship-detail"><div className="flagship-flow" aria-hidden="true"><i>Interpret</i><span/><i>Validate</i><span/><i>Plan</i><span/><i>Ready</i></div><p>Structured interpretation · domain models · deterministic reasoning · validation and regression</p></div>}</Link>;
 }
 
 function ProjectDisclosure({ project, index }: { project: CareerProject; index: number }) {

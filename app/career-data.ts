@@ -17,7 +17,7 @@ export type CareerCompany = {
 
 export const companies: readonly CareerCompany[] = [
   { id: "independent", name: "Independent Product Engineering & AI", role: "Senior Full Stack / Product Engineer", period: "March 2026 — Present", relationship: "independent", public: true, projectIds: ["rentora", "edvora", "loom"] },
-  { id: "barclays", name: "Barclays", role: "Enterprise Engineering", period: "October 2021 — March 2026", relationship: "employment", public: true, projectIds: ["mastercard-vocalink", "barclays-identification-verification", "amazon-connect-voice"] },
+  { id: "barclays", name: "Barclays", role: "Enterprise Engineering", period: "25 October 2021 — 01 May 2026", relationship: "employment", public: true, projectIds: ["mastercard-vocalink", "barclays-identification-verification", "amazon-connect-voice"] },
   { id: "sysnik", name: "Sysnik IT Solutions Pvt. Ltd.", role: "Senior Software Engineer", period: "December 2018 — October 2021", location: "Pune, India", relationship: "employment", public: true, projectIds: ["master-table-management", "syscore-cbs", "reporting-framework", "ui-builder"] },
   { id: "rebelute", name: "Rebelute Digital Solutions", role: "Full Stack Developer", period: "January 2017 — December 2017", location: "Pune, India", relationship: "employment", public: true, projectIds: ["tweebr"] },
   { id: "proaxive", name: "Proaxive", role: "Founder", period: "Historical record", relationship: "founder", public: false, projectIds: [] },

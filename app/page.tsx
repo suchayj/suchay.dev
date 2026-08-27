@@ -58,7 +58,7 @@ export default function Home() {
       <section className="contact section" id="contact">
         <p className="eyebrow light"><span /> Start a conversation</p>
         <h2>Building something difficult?</h2>
-        <ContactTrigger className="contact-email">suchayj@gmail.com <Arrow /></ContactTrigger>
+        <ContactTrigger className="contact-email">suchayjanbandhu@gmail.com <Arrow /></ContactTrigger>
       </section>
 
       <HomeFooter />

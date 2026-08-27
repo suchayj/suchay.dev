@@ -47,7 +47,7 @@ if (companies.filter((company) => company.id === "barclays").length !== 1) {
 
 export const contact = {
   location: "Pune, India",
-  email: "suchayj@gmail.com",
+  email: "suchayjanbandhu@gmail.com",
   phoneLabel: "+91 80077 78797",
   phoneHref: "+918007778797",
   website: "suchay.dev",

@@ -46,7 +46,7 @@ export default function AboutPage() {
       <section className="about-closing about-shell" id="about-contact">
         <p className="about-kicker"><span /> Start a conversation</p>
         <h2>I’m interested in difficult systems, meaningful products and teams that care about how software <em>behaves in the real world.</em></h2>
-        <div className="closing-actions"><ContactTrigger className="closing-email">suchayj@gmail.com <Arrow /></ContactTrigger><Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link></div>
+        <div className="closing-actions"><ContactTrigger className="closing-email">suchayjanbandhu@gmail.com <Arrow /></ContactTrigger><Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link></div>
         <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Phone</small><a href="tel:+918007778797">+91 80077 78797</a></div><div><small>Elsewhere</small><span><a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a></span></div></div>
       </section>
       <HomeFooter />

@@ -12,7 +12,7 @@ a, button { -webkit-tap-highlight-color:transparent; }
 em { color:var(--violet); font-family:Georgia, "Times New Roman", serif; font-weight:400; }
 .section, footer { padding-left:max(5vw, 1.25rem); padding-right:max(5vw, 1.25rem); }
 .site-header { position:sticky; top:0; z-index:20; height:72px; padding:0 max(5vw, 1.25rem); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(23,24,22,.15); background:rgba(243,241,235,.88); backdrop-filter:blur(14px); }
-.wordmark { font-weight:750; font-size:1.32rem; letter-spacing:-.04em; }
+.wordmark { color:var(--ink); font-weight:750; font-size:1.32rem; letter-spacing:-.04em; }
 .wordmark span { color:var(--violet); }
 nav { display:flex; align-items:center; gap:clamp(1.2rem,2.7vw,3rem); font-size:.76rem; font-weight:650; letter-spacing:.08em; text-transform:uppercase; }
 nav a:not(.nav-contact) { color:#555750; }
@@ -195,7 +195,8 @@ footer>span:nth-child(2){text-align:center} footer div{display:flex;justify-cont
 }
 
 .vocalink-brand{display:inline-flex;align-items:baseline;gap:.38em}.vocalink-brand small{color:var(--muted);font-size:.52em;font-weight:600;letter-spacing:.02em}.timeline-page .vocalink-brand small{color:var(--tl-muted)}.resume-document .vocalink-brand small{color:#62645f;font-size:.72em}
-.vocalink-brand-mark{position:relative;display:inline-flex;width:150px;height:42px;align-items:center}.vocalink-brand-mark .vocalink-brand-text{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.vocalink-logo{display:block;width:150px;height:auto;object-fit:contain}.vocalink-logo-positive{display:none}[data-theme="light"] .vocalink-logo-positive{display:block}[data-theme="light"] .vocalink-logo-reverse{display:none}
+.vocalink-brand-mark{position:relative;display:inline-flex;width:124px;height:35px;align-items:center;opacity:.66;transition:opacity 180ms ease}.vocalink-brand-mark .vocalink-brand-text{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.vocalink-logo{display:block;width:124px;height:auto;object-fit:contain}.vocalink-logo-positive{display:none}[data-theme="light"] .vocalink-logo-positive{display:block}[data-theme="light"] .vocalink-logo-reverse{display:none}
+.product-name{display:inline-flex;align-items:center;gap:.5rem}.product-name .product-mark,.product-mark-pair{display:block;width:1em;height:1em;flex:0 0 auto;opacity:.62;transition:opacity 180ms ease}.product-mark{object-fit:contain}.product-mark-pair{position:relative}.product-mark-pair .product-mark{position:absolute;inset:0;width:100%;height:100%;opacity:1}.product-mark-light-theme{display:none}[data-theme="light"] .product-mark-dark-theme{display:none}[data-theme="light"] .product-mark-light-theme{display:block}.case-hero h1.product-name{display:flex}.case-hero h1.product-name .product-mark,.case-hero h1.product-name .product-mark-pair{width:.58em;height:.58em}@media(hover:hover){a:hover .product-name>.product-mark,a:hover .product-mark-pair,.enterprise-record summary:hover .vocalink-brand-mark{opacity:.82}}
 
 /* Shared public contact interaction */
 .contact-trigger:not(.btn){appearance:none;border:0;background:none;color:inherit;font:inherit;text-align:inherit;cursor:pointer}

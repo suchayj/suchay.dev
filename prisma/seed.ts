@@ -3,8 +3,8 @@ import { hashPassword } from "../lib/auth/password";
 import { companies } from "./seed-data/companies";
 
 const prisma = new PrismaClient();
-const ownerEmail = "suchayj@gmail.com";
-const legacyOwnerEmail = "suchayj@mail.com";
+const ownerEmail = "suchayjanbandhu@gmail.com";
+const legacyOwnerEmail = "suchayj@gmail.com";
 
 const jobs = [
   { id: "seed-full-stack-pune", company: "Product engineering team", title: "Senior Full Stack Engineer — Java / Spring / React", location: "Pune · Hybrid", status: JobStatus.NEW, priority: JobPriority.HIGH, fitScore: 91 },

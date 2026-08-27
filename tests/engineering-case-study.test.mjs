@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { bidvVocalinkResilienceCaseStudy as caseStudy, getEngineeringClaimPolicy } from "../app/engineering-case-studies.ts";
-import { getCareerProject } from "../app/career-data.ts";
+import { companies, getCareerProject } from "../app/career-data.ts";
 
 test("keeps the Barclays case study linked to canonical projects", () => {
+  const barclays = companies.find((company) => company.id === "barclays");
+  assert.equal(barclays?.name, "Barclays");
+  assert.equal(barclays?.period, "25 October 2021 — 01 May 2026");
   assert.deepEqual(caseStudy.projectIds, ["barclays-identification-verification", "mastercard-vocalink"]);
   assert.equal(getCareerProject("BIDV")?.id, "barclays-identification-verification");
   assert.equal(getCareerProject("Identification & Verification")?.id, "barclays-identification-verification");

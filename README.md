@@ -25,7 +25,7 @@ PostgreSQL 16 container on port `5436`; do not reuse its development password
 for a hosted environment.
 
 The local seed creates the single CareerOS owner account:
-`suchayj@gmail.com` / `Suchay@123`. Change this development default from the
+`suchayjanbandhu@gmail.com` / `Suchay@123`. Change this development default from the
 Profile page when appropriate.
 
 Public portfolio routes record privacy-conscious first-party page visits in
