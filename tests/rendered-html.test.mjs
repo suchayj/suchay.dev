@@ -166,6 +166,12 @@ test("renders the historical retry topic without presenting it as a DLT", async 
   assert.doesNotMatch(html, /<strong>Mastercard Vocalink<\/strong>/);
   assert.match(html, /feedback-retry/);
   assert.match(html, /Resilience4j/);
+  assert.match(html, /25 October 2021 — 01 May 2026/);
+  assert.match(html, />Barclays</);
+  assert.match(html, /4 years 6 months(?:<!-- -->)? building within enterprise financial systems/);
+  assert.doesNotMatch(html, /More than four and a half years/);
+  assert.match(html, /May 2026 — Present/);
+  assert.doesNotMatch(html, /March 2026 — Present/);
   assert.doesNotMatch(html, /Dead Letter Queue|\bDL[QT]\b/i);
 });
 

@@ -20,7 +20,7 @@ export function ResumeDocument() {
         </address>
       </header>
 
-      <section className="resume-section resume-summary"><h2>Profile</h2><p>Senior Full Stack Engineer with 10+ years of non-overlapping professional experience across enterprise banking systems, product engineering and production delivery. Builds Java and Spring services, modern web applications, event-driven integrations and operational software with explicit boundaries and dependable failure paths. Since March 2026, independently engineering intelligent products where deterministic control, validation and human decision boundaries matter.</p></section>
+      <section className="resume-section resume-summary"><h2>Profile</h2><p>Senior Full Stack Engineer with 10+ years of non-overlapping professional experience across enterprise banking systems, product engineering and production delivery. Builds Java and Spring services, modern web applications, event-driven integrations and operational software with explicit boundaries and dependable failure paths. Since May 2026, independently engineering intelligent products where deterministic control, validation and human decision boundaries matter.</p></section>
 
       <section className="resume-section"><h2>Experience</h2>
         <article className="resume-role">

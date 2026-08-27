@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { careerProjects, getCompany, getProjectsForCompany, type CareerProject } from "../career-data";
+import { careerProjects, formatCareerDuration, getCareerDuration, getCompany, getProjectsForCompany, type CareerProject } from "../career-data";
 import { SiteHeader } from "../site-header";
 import { HomeFooter } from "../home/home-footer";
 import { VocalinkBrand } from "../vocalink-brand";
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 
 const currentCompany = getCompany("independent")!;
 const barclays = getCompany("barclays")!;
+const barclaysDuration = formatCareerDuration(getCareerDuration(barclays)!);
 const sysnik = getCompany("sysnik")!;
 const rebelute = getCompany("rebelute")!;
 const cygnet = getCompany("cygnet")!;
@@ -39,7 +40,7 @@ export default function TimelinePage() {
 
     <section className="timeline-chapter enterprise timeline-shell" aria-labelledby="enterprise-title">
       <ChapterMark year="2021" period={barclays.period} label="Enterprise" />
-      <header className="enterprise-heading"><div><p className="timeline-kicker">{barclays.role}</p><h2 id="enterprise-title">{barclays.name}</h2></div><p>More than four and a half years building within enterprise financial systems across event processing, identity, integrations and production delivery.</p></header>
+      <header className="enterprise-heading"><div><p className="timeline-kicker">{barclays.role}</p><h2 id="enterprise-title">{barclays.name}</h2></div><p>{barclaysDuration} building within enterprise financial systems across event processing, identity, integrations and production delivery.</p></header>
       <div className="enterprise-records">{getProjectsForCompany("barclays").map((project, index) => <ProjectDisclosure project={project} index={index} key={project.id} />)}</div>
     </section>
 

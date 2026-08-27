@@ -1,18 +1,28 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { bidvVocalinkResilienceCaseStudy as caseStudy, getEngineeringClaimPolicy } from "../app/engineering-case-studies.ts";
-import { companies, getCareerProject } from "../app/career-data.ts";
+import { companies, formatCareerDuration, getCareerDuration, getCareerProject } from "../app/career-data.ts";
 
 test("keeps the Barclays case study linked to canonical projects", () => {
   const barclays = companies.find((company) => company.id === "barclays");
   assert.equal(barclays?.name, "Barclays");
   assert.equal(barclays?.period, "25 October 2021 — 01 May 2026");
+  assert.deepEqual(getCareerDuration(barclays), { years: 4, months: 6, days: 6 });
+  assert.equal(formatCareerDuration(getCareerDuration(barclays)), "4 years 6 months");
   assert.deepEqual(caseStudy.projectIds, ["barclays-identification-verification", "mastercard-vocalink"]);
   assert.equal(getCareerProject("BIDV")?.id, "barclays-identification-verification");
   assert.equal(getCareerProject("Identification & Verification")?.id, "barclays-identification-verification");
   const vocalink = getCareerProject("mastercard-vocalink");
   assert.ok(vocalink?.technologies.includes("Resilience4j"));
   assert.doesNotMatch([...(vocalink?.technologies ?? []), ...(vocalink?.engineeringAreas ?? [])].join(" "), /\bDL[QT]\b|dead.?letter/i);
+});
+
+test("calculates career durations from canonical date precision", () => {
+  const durationFor = (id) => getCareerDuration(companies.find((company) => company.id === id));
+  assert.deepEqual(durationFor("sysnik"), { years: 2, months: 10 });
+  assert.deepEqual(durationFor("rebelute"), { years: 0, months: 11 });
+  assert.deepEqual(durationFor("cygnet"), { years: 1, months: 6 });
+  assert.deepEqual(getCareerDuration(companies.find((company) => company.id === "independent"), new Date(Date.UTC(2026, 7, 27))), { years: 0, months: 3 });
 });
 
 test("separates historical evidence, limitations and retrospective redesigns", () => {

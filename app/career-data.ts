@@ -1,5 +1,7 @@
 export type FactConfidence = "VERIFIED" | "USER_RECALLED" | "PENDING_DETAIL";
 export type RelationshipKind = "employment" | "independent" | "founder";
+export type CareerDate = { year: number; month: number; day?: number };
+export type CareerDuration = { years: number; months: number; days?: number };
 
 export type CareerProject = {
   id: string; name: string; shortLabel: string; companyId: string; period: string;
@@ -12,16 +14,17 @@ export type CareerProject = {
 
 export type CareerCompany = {
   id: string; name: string; role: string; period: string; location?: string;
+  dates?: { start: CareerDate; end?: CareerDate };
   relationship: RelationshipKind; public: boolean; projectIds: readonly string[];
 };
 
 export const companies: readonly CareerCompany[] = [
-  { id: "independent", name: "Independent Product Engineering & AI", role: "Senior Full Stack / Product Engineer", period: "March 2026 — Present", relationship: "independent", public: true, projectIds: ["rentora", "edvora", "loom"] },
-  { id: "barclays", name: "Barclays", role: "Enterprise Engineering", period: "25 October 2021 — 01 May 2026", relationship: "employment", public: true, projectIds: ["mastercard-vocalink", "barclays-identification-verification", "amazon-connect-voice"] },
-  { id: "sysnik", name: "Sysnik IT Solutions Pvt. Ltd.", role: "Senior Software Engineer", period: "December 2018 — October 2021", location: "Pune, India", relationship: "employment", public: true, projectIds: ["master-table-management", "syscore-cbs", "reporting-framework", "ui-builder"] },
-  { id: "rebelute", name: "Rebelute Digital Solutions", role: "Full Stack Developer", period: "January 2017 — December 2017", location: "Pune, India", relationship: "employment", public: true, projectIds: ["tweebr"] },
+  { id: "independent", name: "Independent Product Engineering & AI", role: "Senior Full Stack / Product Engineer", period: "May 2026 — Present", dates: { start: { year: 2026, month: 5 } }, relationship: "independent", public: true, projectIds: ["rentora", "edvora", "loom"] },
+  { id: "barclays", name: "Barclays", role: "Enterprise Engineering", period: "25 October 2021 — 01 May 2026", dates: { start: { year: 2021, month: 10, day: 25 }, end: { year: 2026, month: 5, day: 1 } }, relationship: "employment", public: true, projectIds: ["mastercard-vocalink", "barclays-identification-verification", "amazon-connect-voice"] },
+  { id: "sysnik", name: "Sysnik IT Solutions Pvt. Ltd.", role: "Senior Software Engineer", period: "December 2018 — October 2021", dates: { start: { year: 2018, month: 12 }, end: { year: 2021, month: 10 } }, location: "Pune, India", relationship: "employment", public: true, projectIds: ["master-table-management", "syscore-cbs", "reporting-framework", "ui-builder"] },
+  { id: "rebelute", name: "Rebelute Digital Solutions", role: "Full Stack Developer", period: "January 2017 — December 2017", dates: { start: { year: 2017, month: 1 }, end: { year: 2017, month: 12 } }, location: "Pune, India", relationship: "employment", public: true, projectIds: ["tweebr"] },
   { id: "proaxive", name: "Proaxive", role: "Founder", period: "Historical record", relationship: "founder", public: false, projectIds: [] },
-  { id: "cygnet", name: "Cygnet Infotech Pvt. Ltd.", role: "Software Engineer", period: "June 2015 — December 2016", location: "Pune, India", relationship: "employment", public: true, projectIds: ["fastraxpos"] },
+  { id: "cygnet", name: "Cygnet Infotech Pvt. Ltd.", role: "Software Engineer", period: "June 2015 — December 2016", dates: { start: { year: 2015, month: 6 }, end: { year: 2016, month: 12 } }, location: "Pune, India", relationship: "employment", public: true, projectIds: ["fastraxpos"] },
   { id: "signet", name: "Signet Technologies Pvt. Ltd.", role: "Technical Support Engineer / Intern", period: "2009 — 2013", relationship: "employment", public: false, projectIds: [] },
 ] as const;
 
@@ -45,6 +48,29 @@ export const education = [{ qualification: "Bachelor of Engineering", discipline
 export const capabilityEvidence = { "Apache Kafka": ["mastercard-vocalink"], "Resilience4j": ["mastercard-vocalink"], "Retry Mechanisms": ["mastercard-vocalink"], "Spring Boot": ["mastercard-vocalink", "barclays-identification-verification", "master-table-management", "reporting-framework", "tweebr"], "Full Stack Engineering": ["barclays-identification-verification", "master-table-management", "reporting-framework", "tweebr"] } as const;
 export const getCompany = (id: string) => companies.find((company) => company.id === id);
 export const getProjectsForCompany = (companyId: string) => careerProjects.filter((project) => project.companyId === companyId && project.public);
+export const getCareerDuration = (company: CareerCompany, asOf = new Date()): CareerDuration | undefined => {
+  if (!company.dates) return undefined;
+  const { start } = company.dates;
+  const end = company.dates.end ?? { year: asOf.getUTCFullYear(), month: asOf.getUTCMonth() + 1, day: asOf.getUTCDate() };
+  let years = end.year - start.year;
+  let months = end.month - start.month;
+  let days = end.day !== undefined && start.day !== undefined ? end.day - start.day : undefined;
+  if (days !== undefined && days < 0) {
+    days += new Date(Date.UTC(end.year, end.month - 1, 0)).getUTCDate();
+    months -= 1;
+  }
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+  return days === undefined ? { years, months } : { years, months, days };
+};
+export const formatCareerDuration = ({ years, months }: CareerDuration) => {
+  const parts = [];
+  if (years) parts.push(`${years} ${years === 1 ? "year" : "years"}`);
+  if (months || !parts.length) parts.push(`${months} ${months === 1 ? "month" : "months"}`);
+  return parts.join(" ");
+};
 const normalizeProjectKey = (value: string) => value.trim().toLocaleLowerCase("en").replace(/\band\b/g, "&").replace(/[^a-z0-9&]+/g, "");
 export const getCareerProject = (idOrAlias: string) => {
   const key = normalizeProjectKey(idOrAlias);
