@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { projects } from "../site-data";
 
-const homepageProjects = ["rentora", "edvora", "streamora", "loom"].map((slug) => projects.find((project) => project.slug === slug)!);
+const homepageProjects = ["rentora", "edvora", "loom"].map((slug) => projects.find((project) => project.slug === slug)!);
 
 export function SelectedWork() {
   return <section className="work section" id="work">
@@ -11,7 +11,7 @@ export function SelectedWork() {
       <h3>{project.name}</h3>
       <p>{project.proposition}</p>
       <span className="work-row-context">{project.context}</span>
-      <Link href={`/work/${project.slug}`} aria-label={`Explore ${project.name} case study`}>Explore <span aria-hidden="true">→</span></Link>
+      <span className="work-row-actions"><a href={project.productUrl} target="_blank" rel="noopener noreferrer">{project.productLabel} <span aria-hidden="true">↗</span></a><Link href={`/work/${project.slug}`} aria-label={`Read ${project.name} case study`}>Case study <span aria-hidden="true">→</span></Link></span>
     </article>)}</div>
   </section>;
 }

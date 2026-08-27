@@ -1,10 +1,11 @@
 import { contact, resumeFacts as facts } from "./resume-data";
+import { VocalinkBrand } from "../vocalink-brand";
 
 function RoleHeader({ company, title, period, location }: { company: string; title: string; period: string; location?: string }) {
   return <header className="resume-role-header"><div><h3>{company}</h3><p>{title}{location ? ` · ${location}` : ""}</p></div><time>{period}</time></header>;
 }
 
-function Project({ name, children }: { name: string; children: React.ReactNode }) {
+function Project({ name, children }: { name: React.ReactNode; children: React.ReactNode }) {
   return <section className="resume-project"><h4>{name}</h4>{children}</section>;
 }
 
@@ -14,29 +15,28 @@ export function ResumeDocument() {
       <header className="resume-identity">
         <div><p className="resume-kicker">Senior Full Stack Engineer</p><h1>Suchay Janbandhu</h1><p className="resume-positioning">Enterprise Systems · Product Engineering · Platform &amp; Production · GenAI</p></div>
         <address>
-          <span>{contact.location}</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={`tel:${contact.phoneHref}`}>{contact.phoneLabel}</a>
+          <span>{contact.location}</span><span>{contact.email}</span><a href={`tel:${contact.phoneHref}`}>{contact.phoneLabel}</a>
           <a href="https://suchay.dev">{contact.website}</a><a href="https://github.com/suchayj">{contact.github}</a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/">LinkedIn</a>
         </address>
       </header>
 
-      <section className="resume-section resume-summary"><h2>Profile</h2><p>Senior Full Stack Engineer with 10+ years of non-overlapping professional experience across enterprise banking systems, product engineering and production delivery. Builds Java and Spring services, modern web applications, event-driven integrations and operational software with explicit boundaries and dependable failure paths. Since March 2026, independently engineering GenAI products where deterministic control, validation and human decision boundaries matter.</p><p className="resume-availability">{contact.availability}</p></section>
+      <section className="resume-section resume-summary"><h2>Profile</h2><p>Senior Full Stack Engineer with 10+ years of non-overlapping professional experience across enterprise banking systems, product engineering and production delivery. Builds Java and Spring services, modern web applications, event-driven integrations and operational software with explicit boundaries and dependable failure paths. Since March 2026, independently engineering intelligent products where deterministic control, validation and human decision boundaries matter.</p></section>
 
       <section className="resume-section"><h2>Experience</h2>
         <article className="resume-role">
           <RoleHeader company="Independent Product Engineering & GenAI" title="Senior Full Stack / Product Engineer" period={facts.independent.period} />
           <Project name={facts.rentora.name}>
-            <ul><li>Engineering an AI-first operations system that converts natural-language requirements into structured material, inventory, sourcing, crew, logistics and readiness plans.</li><li>Designed a deterministic language engine with LLM fallback, preservation-first interpretation, semantic and verified validation, and explicit human decision boundaries.</li><li>Established evaluation, regression, SIT and model-comparison practices to keep interpretation behaviour inspectable as models and prompts evolve.</li></ul>
+            <ul><li>Engineering an intelligent operations system that translates messy rental and event-production language into structured material, inventory, sourcing, crew, logistics and readiness state.</li><li>Designed structured interpretation, domain models, deterministic reasoning, preservation-first handling and explicit validation boundaries.</li><li>Earlier model-backed interpretation work informed evaluation and regression practices without defining the current product architecture.</li></ul>
           </Project>
           <div className="resume-project-grid">
             <Project name={facts.edvora.name}><p>Multi-tenant school OS spanning admissions, academics, identity, operational workflows and deployment.</p></Project>
             <Project name={facts.loom.name}><p>Immutable deployment platform covering release activation, runtime health, rollback, readiness configuration and retention.</p></Project>
-            <Project name={facts.streamora.name}><p>Private media platform for uploads, storage, processing workers, metadata and signed access.</p></Project>
           </div>
         </article>
 
         <article className="resume-role resume-role-barclays">
           <RoleHeader company={facts.barclays.name} title="Software Engineering — Barclays" period={facts.barclays.period} />
-          <Project name={facts.vocalink.name}><ul><li>Worked with Kafka-based event processing and resilient Vocalink feedback delivery using Java, Spring Boot, bounded API retries, exponential backoff and a dedicated retry/recovery topic.</li><li>Worked on failure isolation and recovery workflows; scope was the integration, not ownership of the wider Mastercard platform.</li></ul></Project>
+          <Project name={<VocalinkBrand />}><ul><li>Worked with Kafka-based event processing and resilient Vocalink feedback delivery using Java, Spring Boot, bounded API retries, exponential backoff and a dedicated retry/recovery topic.</li><li>Worked on failure isolation and recovery workflows; scope was the integration, not ownership of the wider Mastercard platform.</li></ul></Project>
           <Project name={facts.bidv.name}><ul><li>Built backend and full-stack integrations for identity, authentication and verification across multi-channel login journeys.</li><li>Worked across enterprise APIs and secure banking-system boundaries, keeping trust, responses and failure handling explicit.</li></ul></Project>
           <Project name={facts.amazonConnect.name}><p>Contributed to voice recognition and suspicious-interaction workflows in an Amazon Connect-related system; exact AWS service terminology remains pending verification.</p></Project>
         </article>

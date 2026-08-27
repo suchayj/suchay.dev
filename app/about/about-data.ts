@@ -23,16 +23,15 @@ export const journey = [
     index: "03",
     period: "Now",
     title: "Product systems and AI",
-    body: "Current work centres on complete platforms such as Edvora, Rentora, Streamora and Loom, with increasing focus on AI-enabled workflows, operational intelligence and production-grade delivery.",
+    body: "Current work centres on complete platforms such as Edvora, Rentora and Loom, with increasing focus on intelligent workflows, operational systems and production-grade delivery.",
     detail: "The aim is practical intelligence: systems that understand context, improve decisions and preserve human control when actions matter.",
   },
 ] as const;
 
 export const systems = [
-  { index: "01", name: "Edvora", proposition: "One operating model for the work of a school.", description: "A comprehensive school operations platform spanning academic workflows, students, staff, attendance, timetables, examinations, fees, communication and operational readiness.", tags: ["Domain modelling", "Multi-tenant SaaS", "Workflows"] },
-  { index: "02", name: "Rentora", proposition: "Language becomes an executable operations plan.", description: "An AI-first rental and event-operations system that turns natural-language requests into material, inventory, crew, logistics and readiness plans.", tags: ["GenAI", "Planning engines", "Operations"] },
-  { index: "03", name: "Streamora", proposition: "Private media, from upload to controlled access.", description: "A private media platform covering uploads, secure storage, processing workers, metadata, playlists, signed access and production operations.", tags: ["Media systems", "Workers", "Secure storage"] },
-  { index: "04", name: "Loom", proposition: "A deliberate route from source to production.", description: "A deployment platform centred on immutable releases, environment governance, health verification and repeatable production delivery.", tags: ["Release engineering", "Health checks", "Infrastructure"] },
+  { index: "01", name: "Edvora", proposition: "One operating model for educational institutions.", description: "An education platform spanning academic workflows, students, staff, attendance, timetables, examinations, fees, communication and operational readiness.", tags: ["Domain modelling", "Multi-tenant SaaS", "Workflows"] },
+  { index: "02", name: "Rentora", proposition: "Operator language becomes structured operational state.", description: "An intelligent rental and event-production system built through structured interpretation, domain modelling, validation and deterministic reasoning.", tags: ["Intelligent operations", "Planning engines", "Domain modelling"] },
+  { index: "03", name: "Loom", proposition: "A deliberate route from source to production.", description: "Personal deployment infrastructure centred on immutable releases, environment governance, health verification and delivery automation.", tags: ["Deployment engineering", "Operational tooling", "Infrastructure"] },
 ] as const;
 
 export const capabilityNarratives = [

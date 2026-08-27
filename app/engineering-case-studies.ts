@@ -90,7 +90,7 @@ export type EngineeringCaseStudy = {
 
 const historicalArchitecture: ArchitectureSnapshot = {
   id: "bidv-vocalink-historical-flow",
-  title: "Historical BIDV to Mastercard Vocalink feedback flow",
+  title: "Historical BIDV to Vocalink feedback flow",
   context: "HISTORICAL_IMPLEMENTATION",
   confidence: "USER_RECALLED",
   nodes: [
@@ -163,7 +163,7 @@ const openQuestions = openQuestionTexts.map((question, index) => ({
 
 export const bidvVocalinkResilienceCaseStudy: EngineeringCaseStudy = {
   id: "barclays-vocalink-resilience",
-  internalTitle: "Resilient Event Delivery from BIDV to Mastercard Vocalink",
+  internalTitle: "Resilient Event Delivery from BIDV to Vocalink",
   potentialPublicTitle: "Designing Resilient Event Delivery in an Enterprise Banking Workflow",
   publication: "INTERNAL_DRAFT",
   futureRoute: "/engineering/barclays-vocalink-resilience",

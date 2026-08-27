@@ -6,23 +6,28 @@ import { HomeHero } from "./home/hero";
 import { SelectedWork } from "./home/selected-work";
 import { TechnologyMarquee } from "./home/technology-marquee";
 import { HomeFooter } from "./home/home-footer";
+import { ContactTrigger } from "./contact-modal";
 import "./home/home.css";
+import { PortfolioStructuredData } from "./structured-data";
 
 export const metadata: Metadata = {
   title: "Suchay Janbandhu — Senior Full Stack Engineer",
   description:
     "Senior Full Stack Engineer based in Pune, building enterprise platforms, modern web products, cloud-native systems and AI-enabled software.",
+  alternates: { canonical: "/" },
+  openGraph: { title: "Suchay Janbandhu — Senior Full Stack Engineer", description: "Senior Full Stack Engineer building dependable products, distributed systems and AI-enabled software.", url: "https://suchay.dev/", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Suchay Janbandhu — Senior Full Stack Engineer" }] },
+  twitter: { card: "summary_large_image", title: "Suchay Janbandhu — Senior Full Stack Engineer", description: "Senior Full Stack Engineer building dependable products, distributed systems and AI-enabled software.", images: ["/og.png"] },
 };
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
 export default function Home() {
   return (
-    <main id="main-content">
+    <main className="home-page public-page" id="main-content">
       <SiteHeader />
+      <PortfolioStructuredData />
 
       <HomeHero />
-      <TechnologyMarquee />
       <SelectedWork />
 
       <section className="capabilities section" id="capabilities">
@@ -48,10 +53,12 @@ export default function Home() {
         <Link className="home-text-link" href="/about">Read the story <span aria-hidden="true">→</span></Link>
       </section>
 
+      <TechnologyMarquee />
+
       <section className="contact section" id="contact">
         <p className="eyebrow light"><span /> Start a conversation</p>
         <h2>Building something difficult?</h2>
-        <a className="contact-email" href="mailto:suchayj@gmail.com">suchayj@gmail.com <Arrow /></a>
+        <ContactTrigger className="contact-email">suchayj@gmail.com <Arrow /></ContactTrigger>
       </section>
 
       <HomeFooter />

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PhotoFrame } from "./photo-frame";
 import { SiteHeader } from "../site-header";
 import { HomeFooter } from "../home/home-footer";
+import { ContactTrigger } from "../contact-modal";
 import "./about.css";
 
 export const metadata: Metadata = {
@@ -25,7 +26,6 @@ export default function AboutPage() {
           <p className="about-kicker"><span /> About Suchay</p>
           <h1>I enjoy turning ambiguous, operational problems into software that people can <em>actually depend on.</em></h1>
           <p className="about-intro">I’m a full-stack engineer based in Pune, working across enterprise platforms, product architecture, modern web applications, cloud-native delivery and AI-enabled workflows.</p>
-          <p className="about-availability"><i /> Available to join within 15 days</p>
         </div>
       </section>
 
@@ -46,8 +46,8 @@ export default function AboutPage() {
       <section className="about-closing about-shell" id="about-contact">
         <p className="about-kicker"><span /> Start a conversation</p>
         <h2>I’m interested in difficult systems, meaningful products and teams that care about how software <em>behaves in the real world.</em></h2>
-        <div className="closing-actions"><a className="closing-email" href="mailto:suchayj@gmail.com">suchayj@gmail.com <Arrow /></a><Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link></div>
-        <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Availability</small><span>Within 15 days</span></div><div><small>Phone</small><a href="tel:+918007778797">+91 80077 78797</a></div><div><small>Elsewhere</small><span><a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a></span></div></div>
+        <div className="closing-actions"><ContactTrigger className="closing-email">suchayj@gmail.com <Arrow /></ContactTrigger><Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link></div>
+        <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Phone</small><a href="tel:+918007778797">+91 80077 78797</a></div><div><small>Elsewhere</small><span><a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a><a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a></span></div></div>
       </section>
       <HomeFooter />
     </main>

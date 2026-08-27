@@ -50,24 +50,35 @@ test("renders the production portfolio", async () => {
   assert.match(html, /I build software that moves from complex ideas/);
   assert.match(html, /Edvora/);
   assert.match(html, /Rentora/);
-  assert.match(html, /Streamora/);
-  assert.match(html, /Available within 15 days/);
+  assert.doesNotMatch(html, /Streamora/);
+  assert.doesNotMatch(html, /Available within 15 days/);
+  assert.match(html, /href="https:\/\/rentora\.suchay\.dev"/);
+  assert.match(html, /href="https:\/\/edvoraschool\.com"/);
+  assert.match(html, /href="https:\/\/loom\.suchay\.dev"/);
+  assert.match(html, /href="https:\/\/rentora\.suchay\.dev" target="_blank" rel="noopener noreferrer"/);
+  assert.match(html, /href="\/work\/rentora"/);
   assert.match(html, /suchay-color-cutout-original\.png/);
   assert.doesNotMatch(html, /suchay-bw-original\.png/);
   assert.match(html, /Full-stack engineer building AI-native products/);
   assert.doesNotMatch(html, /Key engineering decision/);
   assert.doesNotMatch(html, /deterministic interpretation first/);
   assert.match(html, /Engineering technologies and domains/);
+  assert.match(html, /GitHub/);
+  assert.match(html, /GitLab/);
+  assert.match(html, /OpenShift/);
+  assert.match(html, /aria-label="CareerOS login"/);
   assert.match(html, />SUCHAY\.</);
   assert.match(html, /href="\/login"/);
   assert.doesNotMatch(html, /Portrait \/ Pune/);
-  assert.match(html, /mailto:suchayj@gmail\.com/);
-  assert.match(html, /href="\/work"/);
-  assert.match(html, /href="\/timeline"/);
+  assert.equal((html.match(/mailto:suchayj@gmail\.com/g) ?? []).length, 1);
+  assert.match(html, /Contact Suchay/);
+  assert.match(html, /Hello%20Suchay%20%E2%80%94%20reaching%20out%20from%20suchay\.dev/);
+  assert.match(html, /href="\/timeline"[^>]*>Work Timeline<\/a>/);
+  assert.doesNotMatch(html, /href="\/work"/);
   assert.match(html, /href="\/capabilities"/);
   assert.match(html, /href="\/contact"/);
   assert.match(html, /href="\/resume"/);
-  assert.doesNotMatch(html, /href="[^"]*\?/);
+  assert.doesNotMatch(html, /href="\/[^"]*\?/);
 });
 
 test("renders the biography and an optimized authentic image", async () => {
@@ -91,7 +102,6 @@ test("renders the biography and an optimized authentic image", async () => {
 
 test("serves every primary and case-study route", async () => {
   const paths = [
-    "/work",
     "/timeline",
     "/capabilities",
     "/contact",
@@ -99,15 +109,28 @@ test("serves every primary and case-study route", async () => {
     "/resume/print",
     "/work/edvora",
     "/work/rentora",
-    "/work/streamora",
     "/work/loom",
   ];
   for (const path of paths) {
     const response = await render(path);
     assert.equal(response.status, 200, path);
     const html = await response.text();
-    assert.doesNotMatch(html, /href="[^"]*\?/);
+    assert.doesNotMatch(html, /href="\/[^"]*\?/);
   }
+});
+
+test("redirects only the retired work index to Work Timeline", async () => {
+  const response = await fetch(`${baseUrl}/work`, { redirect: "manual" });
+  assert.equal(response.status, 308);
+  assert.equal(response.headers.get("location"), "/timeline");
+
+  for (const path of ["/work/edvora", "/work/rentora", "/work/loom"]) {
+    const caseStudy = await fetch(`${baseUrl}${path}`, { redirect: "manual" });
+    assert.equal(caseStudy.status, 200, path);
+    assert.equal(caseStudy.headers.get("location"), null, path);
+  }
+  const retiredPrivateProject = await fetch(`${baseUrl}/work/streamora`, { redirect: "manual" });
+  assert.equal(retiredPrivateProject.status, 404);
 });
 
 test("renders a semantic, canonical two-page resume and print surface", async () => {
@@ -117,7 +140,8 @@ test("renders a semantic, canonical two-page resume and print surface", async ()
     const html = await response.text();
     assert.match(html, /Senior Full Stack Engineer/);
     assert.match(html, /10\+ years/);
-    assert.match(html, /Mastercard Vocalink/);
+    assert.match(html, /Vocalink[\s\S]*by Mastercard/);
+    assert.doesNotMatch(html, /Mastercard Vocalink/);
     assert.match(html, /Barclays Identification &amp; Verification \(BIDV\)/);
     assert.match(html, /Amazon Connect — Voice Systems/);
     assert.match(html, /Priyadarshini Institute of Engineering and Technology/);
@@ -126,7 +150,7 @@ test("renders a semantic, canonical two-page resume and print surface", async ()
     assert.match(html, /dedicated retry\/recovery topic/);
     assert.doesNotMatch(html, /Dead Letter Queue|\bDL[QT]\b/i);
     assert.doesNotMatch(html, /<img/i);
-    assert.doesNotMatch(html, /href="[^"]*\?/);
+    assert.doesNotMatch(html, /href="\/[^"]*\?/);
   }
 });
 
@@ -134,6 +158,9 @@ test("renders the historical retry topic without presenting it as a DLT", async 
   const response = await render("/timeline");
   assert.equal(response.status, 200);
   const html = await response.text();
+  assert.match(html, /<title>Work Timeline — Suchay Janbandhu<\/title>/i);
+  assert.match(html, /Vocalink[\s\S]*by Mastercard/);
+  assert.doesNotMatch(html, /<strong>Mastercard Vocalink<\/strong>/);
   assert.match(html, /feedback-retry/);
   assert.match(html, /Resilience4j/);
   assert.doesNotMatch(html, /Dead Letter Queue|\bDL[QT]\b/i);
@@ -149,6 +176,34 @@ test("serves metadata routes from the Next.js runtime", async () => {
     const response = await fetch(`${baseUrl}${path}`);
     assert.equal(response.status, 200, path);
     assert.match(response.headers.get("content-type") ?? "", contentType, path);
-    assert.ok((await response.text()).length > 20, path);
+    const body = await response.text();
+    assert.ok(body.length > 20, path);
+    if (path === "/robots.txt") {
+      assert.match(body, /Disallow: \/career/);
+      assert.match(body, /Disallow: \/login/);
+      assert.match(body, /Disallow: \/api\//);
+    }
+    if (path === "/sitemap.xml") {
+      assert.doesNotMatch(body, /streamora|career|login/i);
+      assert.match(body, /work\/rentora/);
+      assert.match(body, /work\/edvora/);
+      assert.match(body, /work\/loom/);
+    }
   }
+});
+
+test("renders canonical social metadata and truthful structured data", async () => {
+  const home = await (await render("/")).text();
+  assert.match(home, /rel="canonical" href="https:\/\/suchay\.dev\/?"/);
+  assert.match(home, /property="og:title"/);
+  assert.match(home, /name="twitter:card" content="summary_large_image"/);
+  assert.match(home, /"@type":"Person"/);
+  assert.match(home, /"@type":"ProfilePage"/);
+  assert.match(home, /https:\/\/github\.com\/suchayj/);
+
+  const caseStudy = await (await render("/work/rentora")).text();
+  assert.match(caseStudy, /rel="canonical" href="https:\/\/suchay\.dev\/work\/rentora"/);
+  assert.match(caseStudy, /property="og:type" content="article"/);
+  assert.match(caseStudy, /"@type":"CreativeWork"/);
+  assert.match(caseStudy, /"name":"Rentora case study"/);
 });

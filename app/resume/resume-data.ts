@@ -21,7 +21,6 @@ export const resumeFacts = {
   rentora: requireProject("rentora"),
   edvora: requireProject("edvora"),
   loom: requireProject("loom"),
-  streamora: requireProject("streamora"),
   vocalink: requireProject("mastercard-vocalink"),
   bidv: requireProject("barclays-identification-verification"),
   amazonConnect: requireProject("amazon-connect-voice"),
@@ -54,5 +53,4 @@ export const contact = {
   website: "suchay.dev",
   github: "github.com/suchayj",
   linkedin: "linkedin.com/in/suchay-janbandhu-9a014779",
-  availability: "Available within 15 days",
 } as const;

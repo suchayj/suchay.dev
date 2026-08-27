@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ContactTrigger } from "../contact-modal";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -10,11 +11,10 @@ export function HomeHero() {
       <h1 id="home-hero-title">I build software that moves from complex ideas to <em>reliable production systems.</em></h1>
       <p className="hero-intro">Full-stack engineer building AI-native products, distributed systems and reliable software from product idea to production.</p>
       <div className="hero-actions">
-        <Link className="btn btn-primary" href="/work">View selected work <span aria-hidden="true">→</span></Link>
-        <a className="btn btn-secondary" href="mailto:suchayj@gmail.com">Contact me <Arrow /></a>
+        <Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link>
+        <ContactTrigger className="btn btn-secondary">Contact me <Arrow /></ContactTrigger>
       </div>
       <div className="hero-meta" aria-label="Profile links and availability">
-        <span className="availability"><i /> Available within 15 days</span>
         <a href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
         <a href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a>
         <Link href="/resume">Résumé <Arrow /></Link>
