@@ -11,12 +11,12 @@ import "./home/home.css";
 import { PortfolioStructuredData } from "./structured-data";
 
 export const metadata: Metadata = {
-  title: "Suchay Janbandhu — Senior Full Stack Engineer",
+  title: "Suchay Janbandhu — Full Stack, AI & Distributed Systems Engineer",
   description:
-    "Senior Full Stack Engineer based in Pune, building enterprise platforms, modern web products, cloud-native systems and AI-enabled software.",
+    "Pune-based Full Stack Engineer building Java and Spring Boot services, React and Next.js products, distributed systems and practical GenAI workflows.",
   alternates: { canonical: "/" },
-  openGraph: { title: "Suchay Janbandhu — Senior Full Stack Engineer", description: "Senior Full Stack Engineer building dependable products, distributed systems and AI-enabled software.", url: "https://suchay.dev/", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Suchay Janbandhu — Senior Full Stack Engineer" }] },
-  twitter: { card: "summary_large_image", title: "Suchay Janbandhu — Senior Full Stack Engineer", description: "Senior Full Stack Engineer building dependable products, distributed systems and AI-enabled software.", images: ["/og.png"] },
+  openGraph: { title: "Suchay Janbandhu — Full Stack, AI & Distributed Systems Engineer", description: "Pune-based Full Stack Engineer building dependable products, distributed systems and practical GenAI workflows.", url: "https://suchay.dev/", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Suchay Janbandhu — Full Stack, AI and Distributed Systems Engineer" }] },
+  twitter: { card: "summary_large_image", title: "Suchay Janbandhu — Full Stack, AI & Distributed Systems Engineer", description: "Pune-based Full Stack Engineer building dependable products, distributed systems and practical GenAI workflows.", images: ["/og.png"] },
 };
 
 const Arrow = () => <span aria-hidden="true">↗</span>;

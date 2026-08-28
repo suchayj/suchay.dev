@@ -46,7 +46,7 @@ test("renders the production portfolio", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /<title>Suchay Janbandhu — Senior Full Stack Engineer<\/title>/i);
+  assert.match(html, /<title>Suchay Janbandhu — Full Stack, AI &amp; Distributed Systems Engineer<\/title>/i);
   assert.match(html, /I build software that moves from complex ideas/);
   assert.match(html, /Edvora/);
   assert.match(html, /Rentora/);
@@ -62,7 +62,7 @@ test("renders the production portfolio", async () => {
   assert.match(html, /brands\/loom\/loom-logo(?:-dark)?\.png/);
   assert.match(html, /suchay-color-cutout-original\.png/);
   assert.doesNotMatch(html, /suchay-bw-original\.png/);
-  assert.match(html, /Full-stack engineer building AI-native products/);
+  assert.match(html, /Full Stack Engineer building AI and GenAI products/);
   assert.doesNotMatch(html, /Key engineering decision/);
   assert.doesNotMatch(html, /deterministic interpretation first/);
   assert.match(html, /Engineering technologies and domains/);
@@ -88,7 +88,7 @@ test("renders the biography and an optimized authentic image", async () => {
   const response = await render("/about");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /<title>About Suchay Janbandhu — Engineer, Product Builder<\/title>/i);
+  assert.match(html, /<title>About Suchay Janbandhu — Full Stack Engineer in Pune<\/title>/i);
   assert.match(html, /turning ambiguous, operational problems/);
   assert.match(html, /A working philosophy/);
   assert.match(html, /Beyond the code/);
@@ -161,7 +161,7 @@ test("renders the historical retry topic without presenting it as a DLT", async 
   const response = await render("/timeline");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /<title>Work Timeline — Suchay Janbandhu<\/title>/i);
+  assert.match(html, /<title>Engineering Work Timeline — Suchay Janbandhu<\/title>/i);
   assert.match(html, /Vocalink[\s\S]*by Mastercard/);
   assert.doesNotMatch(html, /<strong>Mastercard Vocalink<\/strong>/);
   assert.match(html, /feedback-retry/);
@@ -209,12 +209,15 @@ test("renders canonical social metadata and truthful structured data", async () 
   assert.match(home, /"@type":"Person"/);
   assert.match(home, /"@type":"ProfilePage"/);
   assert.match(home, /https:\/\/github\.com\/suchayj/);
+  assert.match(home, /"knowsAbout":\["Full Stack Engineering","Java","Spring Boot","React","Distributed Systems","Apache Kafka","AI Product Engineering","Generative AI","Agentic AI"\]/);
 
   const caseStudy = await (await render("/work/rentora")).text();
   assert.match(caseStudy, /rel="canonical" href="https:\/\/suchay\.dev\/work\/rentora"/);
   assert.match(caseStudy, /property="og:type" content="article"/);
   assert.match(caseStudy, /"@type":"CreativeWork"/);
   assert.match(caseStudy, /"name":"Rentora case study"/);
+  assert.match(caseStudy, /AI Product Engineering/);
+  assert.match(caseStudy, /Deterministic Reasoning/);
 });
 
 test("renders authentic product marks beside visible case-study names", async () => {

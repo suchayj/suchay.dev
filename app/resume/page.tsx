@@ -3,8 +3,8 @@ import { SiteHeader } from "../site-header";
 import { ResumeDocument } from "./resume-document";
 import "./resume.css";
 
-const title = "Résumé — Suchay Janbandhu";
-const description = "Résumé of Suchay Janbandhu, Senior Full Stack Engineer with 10+ years across enterprise systems, product engineering and GenAI.";
+const title = "Senior Full Stack Engineer Résumé — Suchay Janbandhu";
+const description = "Résumé of Pune-based Senior Full Stack Engineer Suchay Janbandhu: Java, Spring Boot, React, distributed systems, product engineering and GenAI.";
 export const metadata: Metadata = { title, description, alternates: { canonical: "/resume" }, openGraph: { title, description, url: "https://suchay.dev/resume", images: ["/og.png"] }, twitter: { card: "summary_large_image", title, description, images: ["/og.png"] } };
 
 export default function ResumePage() {

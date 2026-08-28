@@ -8,11 +8,11 @@ import { ProductName } from "../product-brand";
 import "./timeline.css";
 
 export const metadata: Metadata = {
-  title: "Work Timeline — Suchay Janbandhu",
-  description: "Suchay Janbandhu's engineering journey from software foundations to enterprise systems and AI-first product engineering.",
+  title: "Engineering Work Timeline — Suchay Janbandhu",
+  description: "Career evidence across Java, Spring Boot, Kafka, full-stack banking systems, production delivery and current AI product engineering.",
   alternates: { canonical: "/timeline" },
-  openGraph: { title: "Work Timeline — Suchay Janbandhu", description: "From software foundations to enterprise engineering and AI-first products.", url: "https://suchay.dev/timeline", images: ["/og.png"] },
-  twitter: { card: "summary_large_image", title: "Work Timeline — Suchay Janbandhu", description: "From software foundations to enterprise engineering and AI-first products.", images: ["/og.png"] },
+  openGraph: { title: "Engineering Work Timeline — Suchay Janbandhu", description: "Java, Spring Boot and Kafka experience across enterprise systems, production delivery and current AI product engineering.", url: "https://suchay.dev/timeline", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "Engineering Work Timeline — Suchay Janbandhu", description: "Java, Spring Boot and Kafka experience across enterprise systems, production delivery and current AI product engineering.", images: ["/og.png"] },
 };
 
 const currentCompany = getCompany("independent")!;

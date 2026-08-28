@@ -3,8 +3,8 @@ import { capabilityGroups } from "../site-data";
 import { SiteHeader } from "../site-header";
 import { HomeFooter } from "../home/home-footer";
 
-const title = "Engineering Capabilities — Suchay Janbandhu";
-const description = "Engineering capabilities across product architecture, full-stack systems, cloud delivery, distributed systems and AI workflows.";
+const title = "Full Stack & AI Engineering Capabilities — Suchay Janbandhu";
+const description = "Full Stack engineering across Java and Spring Boot services, React and Next.js products, Kafka and distributed systems, platform delivery and GenAI workflows.";
 export const metadata: Metadata = { title, description, alternates: { canonical: "/capabilities" }, openGraph: { title, description, url: "https://suchay.dev/capabilities", images: ["/og.png"] }, twitter: { card: "summary_large_image", title, description, images: ["/og.png"] } };
 
 export default function CapabilitiesPage() {

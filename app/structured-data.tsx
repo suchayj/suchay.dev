@@ -7,9 +7,9 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
 
 export function PortfolioStructuredData() {
   return <JsonLd data={{ "@context": "https://schema.org", "@graph": [
-    { "@type": "Person", "@id": personId, name: "Suchay Janbandhu", url: "https://suchay.dev/", jobTitle: "Senior Full Stack Engineer", address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" }, sameAs: ["https://github.com/suchayj", "https://www.linkedin.com/in/suchay-janbandhu-9a014779/"], knowsAbout: ["Full-stack engineering", "Distributed systems", "Product engineering", "Cloud-native systems", "AI-enabled software"] },
+    { "@type": "Person", "@id": personId, name: "Suchay Janbandhu", url: "https://suchay.dev/", jobTitle: "Senior Full Stack Engineer", address: { "@type": "PostalAddress", addressLocality: "Pune", addressCountry: "IN" }, sameAs: ["https://github.com/suchayj", "https://www.linkedin.com/in/suchay-janbandhu-9a014779/"], knowsAbout: ["Full Stack Engineering", "Java", "Spring Boot", "React", "Distributed Systems", "Apache Kafka", "AI Product Engineering", "Generative AI", "Agentic AI"] },
     { "@type": "WebSite", "@id": websiteId, url: "https://suchay.dev/", name: "Suchay Janbandhu", inLanguage: "en-IN", publisher: { "@id": personId } },
-    { "@type": "ProfilePage", "@id": "https://suchay.dev/#profile", url: "https://suchay.dev/", name: "Suchay Janbandhu — Senior Full Stack Engineer", mainEntity: { "@id": personId }, isPartOf: { "@id": websiteId } },
+    { "@type": "ProfilePage", "@id": "https://suchay.dev/#profile", url: "https://suchay.dev/", name: "Suchay Janbandhu — Full Stack, AI & Distributed Systems Engineer", mainEntity: { "@id": personId }, isPartOf: { "@id": websiteId } },
   ] }} />;
 }
 

@@ -7,8 +7,8 @@ import { ContactTrigger } from "../contact-modal";
 import "./about.css";
 
 export const metadata: Metadata = {
-  title: "About Suchay Janbandhu — Engineer, Product Builder",
-  description: "How Suchay Janbandhu approaches product engineering, enterprise systems, cloud delivery and AI-enabled workflows.",
+  title: "About Suchay Janbandhu — Full Stack Engineer in Pune",
+  description: "Suchay Janbandhu is a Pune-based Full Stack Engineer working across enterprise systems, product engineering, production delivery and practical AI workflows.",
   alternates: { canonical: "/about" },
   openGraph: { title: "About Suchay Janbandhu", description: "A visual engineering biography: from enterprise foundations to complete products and AI-enabled systems.", url: "https://suchay.dev/about", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "About Suchay Janbandhu", description: "A visual engineering biography of Suchay Janbandhu.", images: ["/og.png"] },
@@ -25,7 +25,7 @@ export default function AboutPage() {
         <div className="about-hero-copy">
           <p className="about-kicker"><span /> About Suchay</p>
           <h1>I enjoy turning ambiguous, operational problems into software that people can <em>actually depend on.</em></h1>
-          <p className="about-intro">I’m a full-stack engineer based in Pune, working across enterprise platforms, product architecture, modern web applications, cloud-native delivery and AI-enabled workflows.</p>
+          <p className="about-intro">I’m a Full Stack Engineer based in Pune, India, working across enterprise platforms, product architecture, modern web applications, cloud-native delivery and increasingly AI and agentic workflows.</p>
         </div>
       </section>
 

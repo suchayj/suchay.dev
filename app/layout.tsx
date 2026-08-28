@@ -4,8 +4,8 @@ import "./career-os.css";
 import { VisitorTracker } from "@/components/analytics/visitor-tracker";
 import { ContactProvider } from "./contact-modal";
 
-const title = "Suchay Janbandhu — Senior Full Stack Engineer";
-const description = "Senior Full Stack Engineer based in Pune, building enterprise platforms, modern web products, cloud-native systems and AI-enabled software.";
+const title = "Suchay Janbandhu — Full Stack, AI & Distributed Systems Engineer";
+const description = "Pune-based Full Stack Engineer building Java and Spring Boot services, React and Next.js products, distributed systems and practical GenAI workflows.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://suchay.dev"),
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Suchay Janbandhu", url: "https://suchay.dev" }],
   creator: "Suchay Janbandhu",
   publisher: "Suchay Janbandhu",
-  openGraph: { title, description, url: "https://suchay.dev", siteName: "Suchay Janbandhu", type: "website", locale: "en_IN", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Suchay Janbandhu — Senior Full Stack Engineer" }] },
+  openGraph: { title, description, url: "https://suchay.dev", siteName: "Suchay Janbandhu", type: "website", locale: "en_IN", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Suchay Janbandhu — Full Stack, AI and Distributed Systems Engineer" }] },
   twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
   manifest: "/manifest.webmanifest",

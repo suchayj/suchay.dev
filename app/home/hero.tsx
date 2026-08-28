@@ -9,7 +9,7 @@ export function HomeHero() {
     <div className="hero-copy">
       <p className="eyebrow"><span /> Suchay Janbandhu · Pune</p>
       <h1 id="home-hero-title">I build software that moves from complex ideas to <em>reliable production systems.</em></h1>
-      <p className="hero-intro">Full-stack engineer building AI-native products, distributed systems and reliable software from product idea to production.</p>
+      <p className="hero-intro">Full Stack Engineer building AI and GenAI products, distributed systems and reliable software from product idea to production.</p>
       <div className="hero-actions">
         <Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link>
         <ContactTrigger className="btn btn-secondary">Contact me <Arrow /></ContactTrigger>
