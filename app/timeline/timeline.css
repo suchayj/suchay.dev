@@ -52,3 +52,22 @@
   .current-systems>a.flagship{min-height:390px}.current-systems .flagship h3{margin-top:3rem;font-size:3.75rem}.current-systems>a{min-height:190px}
   .timeline-closing{padding-top:4.5rem;padding-bottom:4.5rem}
 }
+
+/* Enterprise project detail rhythm */
+.enterprise-record>summary{grid-template-columns:5rem minmax(0,1fr) auto;column-gap:clamp(2rem,3vw,2.75rem);padding:2.25rem clamp(.75rem,1.5vw,1.25rem)}
+.record-body{padding:clamp(1.5rem,1.8vw,1.75rem) 0 clamp(4rem,4.5vw,4.25rem) 7rem}
+.enterprise-record[open] .record-body{animation:record-detail-reveal .22s cubic-bezier(.22,.61,.36,1)}
+.record-sections section,.record-list{padding:clamp(1.5rem,1vw + 1rem,1.75rem)}
+.record-sections h3,.record-list h3{margin-bottom:1rem}
+.record-sections p,.record-list p{line-height:1.75}
+@keyframes record-detail-reveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:980px){.record-body{padding-left:0}}
+@media(max-width:680px){
+  .enterprise-record>summary{grid-template-columns:3.25rem minmax(0,1fr);column-gap:1rem;row-gap:1rem;padding:1.75rem .75rem}
+  .disclosure-action{grid-column:2;margin-top:.15rem}
+  .record-body{padding-top:1.25rem;padding-bottom:3rem}
+  .record-sections section,.record-list{padding:1.25rem}
+  .record-sections h3,.record-list h3{margin-bottom:.875rem}
+}
+@media(prefers-reduced-motion:reduce){.enterprise-record[open] .record-body{animation-duration:.01ms}}
