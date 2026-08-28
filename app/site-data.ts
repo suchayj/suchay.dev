@@ -9,7 +9,7 @@ export const projects = [
     decision: "Model the shared operational domain first, then let each workflow expose only the state its users need.",
     context: "Next.js · Multi-tenant SaaS · Workflow systems",
     tags: ["Product Architecture", "Multi-tenant SaaS", "Workflow Systems", "Full Stack"],
-    productUrl: "https://edvoraschool.com",
+    productUrl: "https://stage.edvoraschool.com",
     productLabel: "Visit Edvora",
   },
   {

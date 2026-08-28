@@ -53,7 +53,7 @@ test("renders the production portfolio", async () => {
   assert.doesNotMatch(html, /Streamora/);
   assert.doesNotMatch(html, /Available within 15 days/);
   assert.match(html, /href="https:\/\/rentora\.suchay\.dev"/);
-  assert.match(html, /href="https:\/\/edvoraschool\.com"/);
+  assert.match(html, /href="https:\/\/stage\.edvoraschool\.com"/);
   assert.match(html, /href="https:\/\/loom\.suchay\.dev"/);
   assert.match(html, /href="https:\/\/rentora\.suchay\.dev" target="_blank" rel="noopener noreferrer"/);
   assert.match(html, /href="\/work\/rentora"/);

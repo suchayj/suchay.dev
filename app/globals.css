@@ -189,7 +189,7 @@ footer>span:nth-child(2){text-align:center} footer div{display:flex;justify-cont
   .route-hero{padding:4.5rem 0 3rem}.route-hero h1,.case-hero h1,.contact-route-hero h1{font-size:clamp(2.7rem,13vw,4rem)}
   .route-list{padding-bottom:5rem}.route-project{grid-template-columns:2rem 1fr;padding:1.45rem 0;gap:1rem}.route-project h2{font-size:2.15rem}.route-project>strong{font-size:.58rem}
   .route-capabilities{grid-template-columns:1fr;margin-bottom:5rem}.route-capabilities .capability,.route-capabilities .capability:nth-child(even){padding:1.6rem 0;border-left:0}.route-capabilities .capability{grid-template-columns:2rem 1fr}
-  .case-hero{min-height:0;padding:4.5rem 0;gap:3rem}.case-body{padding:4.5rem 0;gap:2rem}.case-next{padding:1.25rem 0}
+  .case-hero{min-height:0;padding:4.5rem 0;gap:3rem}.case-hero>*{min-width:0}.case-system{min-width:0;padding:3rem .5rem}.case-system i{width:.5rem}.case-body{grid-template-columns:1fr;padding:4.5rem 0;gap:2rem}.case-next{padding:1.25rem 0}
   .contact-route-hero{min-height:0;padding:4.5rem 0 3rem}.contact-route-hero .contact-grid{margin-top:3.5rem}
   .home-footer{padding:3.5rem 0 1.5rem;grid-template-columns:1fr}.home-footer .footer-email{justify-self:start}.home-footer .footer-copyright{justify-self:start}.home-footer nav{flex-wrap:wrap}
 }

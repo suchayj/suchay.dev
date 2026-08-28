@@ -49,7 +49,15 @@
   .timeline-hero{min-height:0;padding-top:4rem;padding-bottom:4rem;gap:3rem}.timeline-hero h1{font-size:clamp(3rem,14vw,4rem)}
   .now-signal{min-height:190px}.timeline-chapter{padding-top:4rem;padding-bottom:4rem}.timeline-chapter::before{left:1rem}
   .chapter-heading,.enterprise-heading{margin-top:3rem;margin-bottom:2.5rem}.chapter-heading h2,.chapter-copy h2,.timeline-closing h2{font-size:clamp(2.75rem,12vw,3.65rem)}.enterprise-heading h2{font-size:3.5rem}
-  .current-systems>a.flagship{min-height:390px}.current-systems .flagship h3{margin-top:3rem;font-size:3.75rem}.current-systems>a{min-height:190px}
+  .current-systems>a{min-height:190px;grid-template-columns:2.2rem minmax(0,1fr)}
+  .current-systems>a>div:not(.flagship-detail),.current-systems>a>b,.flagship-detail{grid-column:2;min-width:0}
+  .current-systems>a>b{justify-self:start;align-self:start}
+  .current-systems>a.flagship{min-height:0;padding:1.5rem}.current-systems .flagship h3{margin-top:3rem;font-size:clamp(2.55rem,12vw,3.25rem)}
+  .current-systems>a.flagship>div:not(.flagship-detail){grid-row:1}
+  .current-systems>a.flagship>.flagship-detail{grid-row:2}
+  .current-systems>a.flagship>b{grid-row:3}
+  .flagship-detail{position:static;margin-top:1.5rem}
+  .flagship-flow span{min-width:0;margin-inline:.3rem}
   .timeline-closing{padding-top:4.5rem;padding-bottom:4.5rem}
 }
 
