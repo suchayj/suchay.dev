@@ -115,6 +115,7 @@ model PageVisit {
   sessionKey  String
 
   @@index([visitedAt])
+  @@index([visitedAt, id])
   @@index([path])
   @@index([visitorKey])
   @@index([sessionKey])
