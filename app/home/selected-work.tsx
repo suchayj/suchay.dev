@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { projects } from "../site-data";
 import { ProductName } from "../product-brand";
+import { TrackedExternalLink } from "@/components/analytics/tracked-external-link";
 
 const homepageProjects = ["rentora", "edvora", "loom"].map((slug) => projects.find((project) => project.slug === slug)!);
 
@@ -12,7 +13,7 @@ export function SelectedWork() {
       <ProductName as="h3" slug={project.slug} name={project.name} />
       <p>{project.proposition}</p>
       <span className="work-row-context">{project.context}</span>
-      <span className="work-row-actions"><a href={project.productUrl} target="_blank" rel="noopener noreferrer">{project.productLabel} <span aria-hidden="true">↗</span></a><Link href={`/work/${project.slug}`} aria-label={`Read ${project.name} case study`}>Case study <span aria-hidden="true">→</span></Link></span>
+      <span className="work-row-actions"><TrackedExternalLink event={`${project.slug.toUpperCase()}_OPENED` as "RENTORA_OPENED" | "EDVORA_OPENED" | "LOOM_OPENED"} href={project.productUrl} target="_blank" rel="noopener noreferrer">{project.productLabel} <span aria-hidden="true">↗</span></TrackedExternalLink><Link href={`/work/${project.slug}`} aria-label={`Read ${project.name} case study`}>Case study <span aria-hidden="true">→</span></Link></span>
     </article>)}</div>
   </section>;
 }

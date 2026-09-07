@@ -9,7 +9,6 @@ import {
   normalizeVisitorPage,
   resolveVisitorFilter,
   startOfIndiaDay,
-  visitorFilterQuery,
   VISITOR_ORDER_BY,
   VISITOR_PAGE_SIZE,
 } from "../lib/analytics/visitor-presentation.ts";
@@ -86,7 +85,6 @@ test("translates single dates and inclusive custom ranges into exclusive IST end
   const range = resolveVisitorFilter({ preset: "custom", start: "2026-12-31", end: "2027-01-02" });
   assert.equal(range.startAt?.toISOString(), "2026-12-30T18:30:00.000Z");
   assert.equal(range.endAt?.toISOString(), "2027-01-02T18:30:00.000Z");
-  assert.equal(visitorFilterQuery(range).toString(), "visitPreset=custom&visitStart=2026-12-31&visitEnd=2027-01-02");
 });
 
 test("calculates configurable calendar-month retention cutoffs safely", () => {

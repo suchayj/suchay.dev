@@ -42,6 +42,17 @@ enum CompanyCategory {
   CONSULTING
 }
 
+enum VisitorEventType {
+  RESUME_VIEWED
+  CONTACT_OPENED
+  EMAIL_CONTINUE_CLICKED
+  RENTORA_OPENED
+  EDVORA_OPENED
+  LOOM_OPENED
+  GITHUB_OPENED
+  LINKEDIN_OPENED
+}
+
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
@@ -107,10 +118,16 @@ model PageVisit {
   utmSource   String?
   utmMedium   String?
   utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
   country     String?
   region      String?
   city        String?
   userAgent   String?
+  viewportWidth  Int?
+  viewportHeight Int?
+  browserLanguage String?
+  browserTimezone String?
   visitorKey  String
   sessionKey  String
 
@@ -119,4 +136,17 @@ model PageVisit {
   @@index([path])
   @@index([visitorKey])
   @@index([sessionKey])
+}
+
+model VisitorEvent {
+  id         String           @id @default(cuid())
+  visitorKey String
+  sessionKey String
+  type       VisitorEventType
+  path       String
+  occurredAt DateTime         @default(now())
+
+  @@index([occurredAt])
+  @@index([sessionKey, occurredAt])
+  @@index([visitorKey, occurredAt])
 }

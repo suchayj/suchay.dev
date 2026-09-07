@@ -125,14 +125,6 @@ export function getVisitorRetentionCutoff(now = new Date(), months = getVisitorR
   return new Date(Date.UTC(targetYear, targetMonth, Math.min(indiaTime.getUTCDate(), lastDay), indiaTime.getUTCHours(), indiaTime.getUTCMinutes(), indiaTime.getUTCSeconds(), indiaTime.getUTCMilliseconds()) - INDIA_OFFSET_MS);
 }
 
-export function visitorFilterQuery(filter: VisitorFilter) {
-  const query = new URLSearchParams();
-  if (filter.preset !== "all") query.set("visitPreset", filter.preset);
-  if (filter.start) query.set("visitStart", filter.start);
-  if (filter.end) query.set("visitEnd", filter.end);
-  return query;
-}
-
 export function todayDateInput(now = new Date()) {
   return toDateInput(startOfIndiaDay(now));
 }

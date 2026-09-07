@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { trackVisitorEvent } from "@/components/analytics/track-event";
 
 const emailSubject = "Hello Suchay — reaching out from suchay.dev";
 const emailBody = `Hi Suchay,
@@ -55,7 +56,7 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
         <p id="contact-dialog-description">A ready-to-edit message will open in your default email application.</p>
         <div className="contact-dialog-actions">
           <button className="btn btn-secondary" type="button" onClick={closeContact}>Cancel</button>
-          <a className="btn btn-primary" ref={continueRef} href={emailHref} onClick={() => setOpen(false)}>Continue to email <span aria-hidden="true">↗</span></a>
+          <a className="btn btn-primary" ref={continueRef} href={emailHref} onClick={() => { trackVisitorEvent("EMAIL_CONTINUE_CLICKED"); setOpen(false); }}>Continue to email <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </dialog>
@@ -66,5 +67,5 @@ export function ContactTrigger({ className, children }: { className?: string; ch
   const context = useContext(ContactContext);
   if (!context) throw new Error("ContactTrigger must be used inside ContactProvider");
 
-  return <button className={`contact-trigger${className ? ` ${className}` : ""}`} type="button" onClick={(event) => context.openContact(event.currentTarget)}>{children}</button>;
+  return <button className={`contact-trigger${className ? ` ${className}` : ""}`} type="button" onClick={(event) => { trackVisitorEvent("CONTACT_OPENED"); context.openContact(event.currentTarget); }}>{children}</button>;
 }

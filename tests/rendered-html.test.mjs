@@ -55,7 +55,7 @@ test("renders the production portfolio", async () => {
   assert.match(html, /href="https:\/\/rentora\.suchay\.dev"/);
   assert.match(html, /href="https:\/\/stage\.edvoraschool\.com"/);
   assert.match(html, /href="https:\/\/loom\.suchay\.dev"/);
-  assert.match(html, /href="https:\/\/rentora\.suchay\.dev" target="_blank" rel="noopener noreferrer"/);
+  assert.match(html, /<a(?=[^>]*href="https:\/\/rentora\.suchay\.dev")(?=[^>]*target="_blank")(?=[^>]*rel="noopener noreferrer")[^>]*>/);
   assert.match(html, /href="\/work\/rentora"/);
   assert.match(html, /brands\/rentora\/rentora-mark\.png/);
   assert.match(html, /brands\/edvora\/edvora-mark-(?:white|blue)\.svg/);
@@ -136,12 +136,10 @@ test("redirects only the retired work index to Work Timeline", async () => {
   assert.equal(retiredPrivateProject.status, 404);
 });
 
-test("keeps visitor history and its filter URLs behind CareerOS authentication", async () => {
-  for (const path of ["/career", "/career?visitPreset=today", "/career?visitPreset=custom&visitStart=2026-09-01&visitEnd=2026-09-07&visitsPage=2"]) {
-    const response = await fetch(`${baseUrl}${path}`, { redirect: "manual" });
-    assert.equal(response.status, 307, path);
-    assert.equal(response.headers.get("location"), "/login", path);
-  }
+test("keeps visitor intelligence behind CareerOS authentication", async () => {
+  const response = await fetch(`${baseUrl}/career`, { redirect: "manual" });
+  assert.equal(response.status, 307);
+  assert.equal(response.headers.get("location"), "/login");
 });
 
 test("renders a semantic, canonical two-page resume and print surface", async () => {
