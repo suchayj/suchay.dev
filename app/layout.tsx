@@ -18,7 +18,14 @@ export const metadata: Metadata = {
   publisher: "Suchay Janbandhu",
   openGraph: { title, description, url: "https://suchay.dev", siteName: "Suchay Janbandhu", type: "website", locale: "en_IN", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Suchay Janbandhu — Full Stack, AI and Distributed Systems Engineer" }] },
   twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/brand/suchay-mark.svg", type: "image/svg+xml", sizes: "any" },
+      { url: "/brand/suchay-mark-32.png", type: "image/png", sizes: "32x32" },
+    ],
+    shortcut: "/favicon-v3.ico",
+    apple: [{ url: "/brand/suchay-mark-180.png", type: "image/png", sizes: "180x180" }],
+  },
   manifest: "/manifest.webmanifest",
 };
 

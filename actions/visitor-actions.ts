@@ -11,6 +11,7 @@ export async function loadVisitorIntelligence(input: { page?: number; filters?: 
   await requireUser();
   const filters = input.filters ?? {};
   const safeFilters: SessionFilters = {
+    ownership: ["all", "external", "own"].includes(filters.ownership ?? "") ? filters.ownership : "external",
     preset: typeof filters.preset === "string" ? filters.preset.slice(0, 30) : "all",
     start: typeof filters.start === "string" ? filters.start.slice(0, 10) : undefined,
     end: typeof filters.end === "string" ? filters.end.slice(0, 10) : undefined,

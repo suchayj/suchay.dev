@@ -1,3 +1,7 @@
+import { registerOwnerDevice } from "@/services/analytics/register-owner-device";
+import { randomUUID } from "node:crypto";
+import { OWNER_VISITOR_COOKIE, validVisitorKey } from "@/lib/analytics/owner-device";
+import { headers } from "next/headers";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
@@ -21,7 +25,14 @@ export async function authenticate(email: string, password: string) {
 export async function startSession(userId: string) {
   const token = createSessionToken();
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-  await prisma.session.create({ data: { userId, tokenHash: hashSessionToken(token), expiresAt } });
+  const cookieStore = await cookies();
+  const visitorKey = validVisitorKey(cookieStore.get(OWNER_VISITOR_COOKIE)?.value) ?? randomUUID();
+  const userAgent = (await headers()).get("user-agent")?.slice(0, 500) ?? null;
+  await prisma.$transaction(async (tx) => {
+    await tx.session.create({ data: { userId, tokenHash: hashSessionToken(token), expiresAt } });
+    await registerOwnerDevice(tx, userId, visitorKey, userAgent);
+  });
+  cookieStore.set(OWNER_VISITOR_COOKIE, visitorKey, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 365 });
   await setSessionCookie(token, expiresAt);
 }
 

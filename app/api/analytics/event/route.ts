@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/services/auth-service";
 import { isVisitorEventName } from "@/lib/analytics/visitor-events";
 import { recordVisitorEvent } from "@/services/analytics/record-event";
 
@@ -9,7 +8,6 @@ const SESSION_COOKIE = "suchay_visit_session";
 
 export async function POST(request: Request) {
   try {
-    if (await getCurrentUser()) return new NextResponse(null, { status: 204 });
     const body = await request.json() as Record<string, unknown>;
     if (!isVisitorEventName(body.type) || typeof body.path !== "string") return new NextResponse(null, { status: 400 });
     const cookieStore = await cookies();

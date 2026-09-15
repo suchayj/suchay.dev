@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { getVisitorRetentionCutoff, resolveVisitorFilter, type VisitorFilterInput } from "@/lib/analytics/visitor-presentation";
 import { anonymousSessionId, anonymousVisitorLabel, classifySource, observedDuration, parseUserAgent, readablePath, type DeviceKind, type SourceKind } from "@/lib/analytics/session-presentation";
 
-export type SessionFilters = VisitorFilterInput & { visitor?: "all" | "new" | "returning"; device?: "all" | DeviceKind; source?: "all" | SourceKind };
+export type SessionFilters = VisitorFilterInput & { ownership?: "all" | "external" | "own"; visitor?: "all" | "new" | "returning"; device?: "all" | DeviceKind; source?: "all" | SourceKind };
 export type SessionRequest = { page?: number; filters?: SessionFilters; selectedSessionKey?: string };
 
 type SessionRow = { sessionKey: string; visitorKey: string; startAt: Date; endAt: Date; pageCount: bigint };
@@ -26,6 +26,8 @@ function baseSql(filters: SessionFilters, now: Date) {
 
 function sessionFilterSql(filters: SessionFilters) {
   const conditions: Prisma.Sql[] = [];
+  if (filters.ownership === "own") conditions.push(Prisma.sql`EXISTS (SELECT 1 FROM "OwnerDevice" d WHERE d."visitorKey" = s."visitorKey")`);
+  if (!filters.ownership || filters.ownership === "external") conditions.push(Prisma.sql`NOT EXISTS (SELECT 1 FROM "OwnerDevice" d WHERE d."visitorKey" = s."visitorKey")`);
   if (filters.visitor === "new") conditions.push(Prisma.sql`NOT EXISTS (SELECT 1 FROM "PageVisit" prior WHERE prior."visitorKey" = s."visitorKey" AND prior."visitedAt" < s."startAt")`);
   if (filters.visitor === "returning") conditions.push(Prisma.sql`EXISTS (SELECT 1 FROM "PageVisit" prior WHERE prior."visitorKey" = s."visitorKey" AND prior."visitedAt" < s."startAt")`);
   if (filters.device && filters.device !== "all") {
@@ -84,7 +86,8 @@ export async function getSessionIntelligence(request: SessionRequest = {}) {
     visitorKeys.length ? prisma.pageVisit.findMany({ where: { visitorKey: { in: visitorKeys } }, orderBy: [{ visitedAt: "asc" }, { id: "asc" }] }) : [],
   ]);
 
-  const sessions = rows.map((row) => buildSession(row, pageVisits.filter((visit) => visit.sessionKey === row.sessionKey), events.filter((event) => event.sessionKey === row.sessionKey), visitorVisits.filter((visit) => visit.visitorKey === row.visitorKey)));
+  const devices = visitorKeys.length ? await prisma.ownerDevice.findMany({ where: { visitorKey: { in: visitorKeys } }, select: { visitorKey: true, name: true } }) : [];
+  const sessions = rows.map((row) => ({ ...buildSession(row, pageVisits.filter((visit) => visit.sessionKey === row.sessionKey), events.filter((event) => event.sessionKey === row.sessionKey), visitorVisits.filter((visit) => visit.visitorKey === row.visitorKey)), ownerDeviceName: devices.find((device) => device.visitorKey === row.visitorKey)?.name ?? null }));
   const metrics = {
     anonymousVisitors: Number(stats?.visitors ?? 0),
     sessions: totalSessions,

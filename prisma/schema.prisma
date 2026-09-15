@@ -60,6 +60,7 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   sessions     Session[]
+  devices      OwnerDevice[]
 }
 
 model Session {
@@ -149,4 +150,27 @@ model VisitorEvent {
   @@index([occurredAt])
   @@index([sessionKey, occurredAt])
   @@index([visitorKey, occurredAt])
+}
+
+model OwnerDevice {
+  id           String   @id @default(cuid())
+  visitorKey   String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  userAgent    String?
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime @default(now())
+  logins       OwnerLogin[]
+
+  @@index([userId])
+}
+
+model OwnerLogin {
+  id         String      @id @default(cuid())
+  deviceId   String
+  device     OwnerDevice @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  occurredAt DateTime    @default(now())
+
+  @@index([deviceId, occurredAt])
 }
