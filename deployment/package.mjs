@@ -1,7 +1,6 @@
-import { cp, mkdir, readFile, writeFile, readdir, lstat } from 'node:fs/promises';
+import { access, cp, mkdir, readFile, writeFile, readdir, lstat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
 import path from 'node:path';
 const commit = process.argv[2];
 if (!/^[0-9a-f]{40}$/.test(commit || '')) throw new Error('Full source commit required');
@@ -18,11 +17,11 @@ await cp('deployment/start.cjs', `${root}/start.cjs`);
 // for `migrate deploy` instead of copying every production package again.
 const copied = new Set();
 async function includePackage(name, from = path.resolve('package.json')) {
-  const resolve = createRequire(from);
-  let directory = path.dirname(resolve.resolve(name));
-  while (directory !== path.dirname(directory)) {
-    const metadata = await readFile(path.join(directory, 'package.json'), 'utf8').then(JSON.parse).catch(() => null);
-    if (metadata?.name === name) {
+  let search = path.dirname(from);
+  while (search !== path.dirname(search)) {
+    const directory = path.join(search, 'node_modules', name);
+    if (await access(path.join(directory, 'package.json')).then(() => true).catch(() => false)) {
+      const metadata = JSON.parse(await readFile(path.join(directory, 'package.json'), 'utf8'));
       if (copied.has(name)) return;
       copied.add(name);
       await cp(directory, `${root}/node_modules/${name}`, { recursive: true, dereference: true, force: true });
@@ -30,7 +29,7 @@ async function includePackage(name, from = path.resolve('package.json')) {
         await includePackage(dependency, path.join(directory, 'package.json'));
       return;
     }
-    directory = path.dirname(directory);
+    search = path.dirname(search);
   }
   throw new Error(`Cannot resolve runtime package ${name}`);
 }
