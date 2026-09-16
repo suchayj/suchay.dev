@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, writeFile, readdir, lstat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 const commit = process.argv[2];
 if (!/^[0-9a-f]{40}$/.test(commit || '')) throw new Error('Full source commit required');
@@ -11,8 +12,29 @@ await cp('.next/standalone', root, { recursive: true, dereference: true });
 await cp('.next/static', `${root}/.next/static`, { recursive: true });
 await cp('public', `${root}/public`, { recursive: true });
 await cp('prisma', `${root}/prisma`, { recursive: true, dereference: true });
-await cp('node_modules', `${root}/node_modules`, { recursive: true, dereference: true });
 await cp('deployment/start.cjs', `${root}/start.cjs`);
+
+// Next traces application dependencies. Add only Prisma CLI's dependency tree
+// for `migrate deploy` instead of copying every production package again.
+const copied = new Set();
+async function includePackage(name, from = path.resolve('package.json')) {
+  const resolve = createRequire(from);
+  let directory = path.dirname(resolve.resolve(name));
+  while (directory !== path.dirname(directory)) {
+    const metadata = await readFile(path.join(directory, 'package.json'), 'utf8').then(JSON.parse).catch(() => null);
+    if (metadata?.name === name) {
+      if (copied.has(name)) return;
+      copied.add(name);
+      await cp(directory, `${root}/node_modules/${name}`, { recursive: true, dereference: true, force: true });
+      for (const dependency of Object.keys(metadata.dependencies ?? {}))
+        await includePackage(dependency, path.join(directory, 'package.json'));
+      return;
+    }
+    directory = path.dirname(directory);
+  }
+  throw new Error(`Cannot resolve runtime package ${name}`);
+}
+await includePackage('prisma');
 await writeFile(`${root}/package.json`, JSON.stringify({ private: true, type: 'module', scripts: { start: 'node start.cjs', 'db:migrate': 'node node_modules/prisma/build/index.js migrate deploy --schema prisma/schema.prisma' } }, null, 2));
 const files = {};
 async function walk(relative = '') {
