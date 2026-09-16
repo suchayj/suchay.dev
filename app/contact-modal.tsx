@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { trackVisitorEvent } from "@/components/analytics/track-event";
 
@@ -54,6 +55,7 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
         <p className="eyebrow"><span /> Contact Suchay</p>
         <h2 id="contact-dialog-title">Open your email app?</h2>
         <p id="contact-dialog-description">A ready-to-edit message will open in your default email application.</p>
+        <p><Link href="/contact#voice" onClick={closeContact}>Or talk to my AI assistant ↗</Link></p>
         <div className="contact-dialog-actions">
           <button className="btn btn-secondary" type="button" onClick={closeContact}>Cancel</button>
           <a className="btn btn-primary" ref={continueRef} href={emailHref} onClick={() => { trackVisitorEvent("EMAIL_CONTINUE_CLICKED"); setOpen(false); }}>Continue to email <span aria-hidden="true">↗</span></a>

@@ -174,3 +174,54 @@ model OwnerLogin {
 
   @@index([deviceId, occurredAt])
 }
+
+// Contact details are self-reported, never treated as verified identity.
+model VoiceEnquiry {
+  id             String   @id @default(cuid())
+  name           String
+  email          String
+  phone          String
+  reason         String
+  message        String
+  consentVersion String
+  costTrackingVersion Int?
+  voiceModel     String?
+  usageEvents    VoiceUsage[]
+  accessHash     String   @unique
+  callerHash     String
+  state          String   @default("SAVED")
+  followUp       String   @default("NEW")
+  callId         String?  @unique
+  transcript     String   @default("")
+  summary        String?
+  summaryKind    String?
+  inputTokens    Int      @default(0)
+  outputTokens   Int      @default(0)
+  startedAt      DateTime?
+  endedAt        DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([callerHash, createdAt])
+  @@index([email, createdAt])
+  @@index([state, startedAt])
+}
+
+model VoiceUsage {
+  id          String @id @default(cuid())
+  enquiryId   String
+  enquiry     VoiceEnquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  eventKey    String
+  kind        String
+  model       String
+  usage       Json
+  lineItems   Json
+  costUsd     Decimal? @db.Decimal(18, 9)
+  issue       String?
+  rateVersion String
+  createdAt   DateTime @default(now())
+
+  @@unique([enquiryId, eventKey])
+  @@index([enquiryId, createdAt])
+}

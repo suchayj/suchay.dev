@@ -16,7 +16,7 @@ export function ResumeDocument() {
       <header className="resume-identity">
         <div><p className="resume-kicker">Senior Full Stack Engineer</p><h1>Suchay Janbandhu</h1><p className="resume-positioning">Enterprise Systems · Product Engineering · Platform &amp; Production · GenAI</p></div>
         <address>
-          <span>{contact.location}</span><span>{contact.email}</span><a href={`tel:${contact.phoneHref}`}>{contact.phoneLabel}</a>
+          <span>{contact.location}</span><span>{contact.email}</span>
           <a href="https://suchay.dev">{contact.website}</a><TrackedExternalLink href="https://github.com/suchayj" event="GITHUB_OPENED">{contact.github}</TrackedExternalLink><TrackedExternalLink href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" event="LINKEDIN_OPENED">LinkedIn</TrackedExternalLink>
         </address>
       </header>

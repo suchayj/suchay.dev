@@ -16,7 +16,9 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:validate": "prisma validate",
-    "analytics:retention:dry-run": "tsx scripts/visitor-retention-dry-run.ts"
+    "analytics:retention:dry-run": "tsx scripts/visitor-retention-dry-run.ts",
+    "release:build": "node deployment/build.mjs",
+    "release": "node deployment/release.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -32,11 +34,13 @@
     "react-dom": "19.2.6",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
+    "ws": "^8.21.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
     "@next/eslint-plugin-next": "16.2.6",
+    "@types/ws": "^8.18.1",
     "eslint": "9.39.4",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",

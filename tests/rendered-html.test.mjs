@@ -238,3 +238,31 @@ test("renders authentic product marks beside visible case-study names", async ()
     assert.match(html, new RegExp(`<h1[^>]*>[\\s\\S]*${slug}`, "i"));
   }
 });
+
+
+test("public contact and resume surfaces hide the owner's mobile and expose the enquiry form", async () => {
+  for (const path of ["/", "/about", "/contact", "/resume", "/resume/print", "/privacy"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.doesNotMatch(html, /80077[\s-]*78797|8007778797|href="tel:/);
+    if (path === "/contact") {
+      for (const field of ["name", "email", "phone", "reason", "message", "consent"]) {
+        assert.match(html, new RegExp(`<(?:input|select|textarea)(?=[^>]*name="${field}")(?=[^>]*required)[^>]*>`));
+      }
+      assert.match(html, /Talk to my/);
+      assert.match(html, /AI assistant/);
+      assert.match(html, /not a live call with Suchay/);
+    }
+  }
+});
+
+test("private enquiries redirect anonymous readers and voice rejects cross-origin requests", async () => {
+  const response = await fetch(`${baseUrl}/career/enquiries`, { redirect: "manual" });
+  assert.equal(response.status, 307);
+  assert.equal(response.headers.get("location"), "/login");
+  for (const path of ["/api/voice/enquiries", "/api/voice/enquiries/example/session", "/api/voice/enquiries/example/end"]) {
+    const rejected = await fetch(`${baseUrl}${path}`, { method: "POST", headers: { origin: "https://unrelated.example", "Content-Type": "application/json" }, body: "{}" });
+    assert.equal(rejected.status, 403);
+  }
+});

@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   allowedDevOrigins: ["127.0.0.1"],
   webpack(config, { dev }) {
     // Immutable releases never reuse a previous build cache. Avoid spending

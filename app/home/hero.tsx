@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ContactTrigger } from "../contact-modal";
 import { TrackedExternalLink } from "@/components/analytics/tracked-external-link";
 
 const Arrow = () => <span aria-hidden="true">↗</span>;
@@ -13,7 +12,7 @@ export function HomeHero() {
       <p className="hero-intro">Full Stack Engineer building AI and GenAI products, distributed systems and reliable software from product idea to production.</p>
       <div className="hero-actions">
         <Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link>
-        <ContactTrigger className="btn btn-secondary">Contact me <Arrow /></ContactTrigger>
+        <Link className="btn btn-secondary" href="/contact#voice">Talk to my AI assistant <Arrow /></Link>
       </div>
       <div className="hero-meta" aria-label="Profile links and availability">
         <TrackedExternalLink event="GITHUB_OPENED" href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></TrackedExternalLink>
