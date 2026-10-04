@@ -45,6 +45,9 @@ test("implementation answers use published scenarios and preserve unknown specif
   assert.match(instructions, /concrete operational problem/);
   assert.match(instructions, /Account Verification consumer/);
   assert.match(instructions, /exponential backoff/);
-  assert.match(instructions, /Exact retry counts, intervals, schedules, delivery guarantees and measured outcomes are unknown/);
-  assert.doesNotMatch(instructions, /feedback-raw|feedbackCount|Monday|Wednesday|Friday|next-attempt timestamp/);
+  assert.match(instructions, /three immediate retries/);
+  assert.match(instructions, /next day at 22:00 UTC/);
+  assert.match(instructions, /feedback-status-raw/);
+  assert.match(instructions, /cap on scheduled recovery cycles/);
+  assert.doesNotMatch(instructions, /feedbackCount|Monday|Wednesday|Friday|next-attempt timestamp/);
 });

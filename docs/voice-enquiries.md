@@ -24,7 +24,7 @@ Configure server-side environment variables (never NEXT_PUBLIC_):
 - `VOICE_DAILY_CALL_LIMIT=20` (maximum allowed configuration 100)
 - `TRUST_VOICE_PROXY=true` only after confirming Nginx overwrites X-Real-IP with the real client address; otherwise leave false.
 
-The assistant receives the submitted topic and message as untrusted context, alongside the public portfolio knowledge. Email and phone are not included in the model instructions.
+The assistant receives the submitted topic and message as untrusted context, alongside the public portfolio knowledge. Implementation answers use concrete project scenarios and documented component flows. The Vocalink knowledge includes Suchay’s 5 October clarification: three immediate retries, next-day recovery at 22:00 UTC through feedback-raw, and feedback IDs published to feedback-status-raw. The scheduled recovery-cycle cap remains unspecified. Email and phone are not included in the model instructions.
 
 No key is committed. Restart after changing environment values. The inbox displays whether voice is configured.
 Check the project’s provider spending settings too: the app limits session admission and duration, not a guaranteed rupee amount.
@@ -49,6 +49,8 @@ The daily admission cap cannot be bypassed by clearing cookies, but per-caller l
 `npm run build`, `npm run typecheck`, `npm run lint`, `node --test tests/*.test.mjs`.
 Database integration tests: `node --env-file=.env --import tsx --test tests/voice-enquiries.integration.ts` against the local development database after migration. They create and remove only test enquiries.
 Mocked provider lifecycle tests (no paid calls): `node --env-file=.env --experimental-test-module-mocks --import tsx --test tests/voice-runtime.integration.ts`.
+
+The October audit exercised real Realtime WebRTC audio output, synthetic spoken input/transcription, server transcript persistence, AI summaries and usage events locally, alongside model answer evaluations and browser form checks. Production activation is left to the owner through Loom.
 
 A real voice smoke test requires the API key: verify microphone permission, audible replies, mute/end, saved provider transcript and summary, timeout and owner-only inbox access. No live OpenAI request is made by the offline tests.
 

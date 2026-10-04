@@ -18,10 +18,15 @@ export function SiteHeader({ current, dark = false }: { current?: string; dark?:
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!window.location.hash) return;
-    const target = document.getElementById(window.location.hash.slice(1));
-    window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
-    target?.scrollIntoView({ behavior: "instant" });
+    function cleanFragment() {
+      if (!window.location.hash) return;
+      const target = document.getElementById(window.location.hash.slice(1));
+      window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
+      target?.scrollIntoView({ behavior: "instant" });
+    }
+    cleanFragment();
+    window.addEventListener("hashchange", cleanFragment);
+    return () => window.removeEventListener("hashchange", cleanFragment);
   }, []);
 
   function closeNavigation(restoreFocus = true) {
