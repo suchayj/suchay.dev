@@ -4,7 +4,7 @@ import { getVisitorRetentionCutoff, resolveVisitorFilter, type VisitorFilterInpu
 import { anonymousSessionId, anonymousVisitorLabel, classifySource, observedDuration, parseUserAgent, readablePath, type DeviceKind, type SourceKind } from "@/lib/analytics/session-presentation";
 
 export type SessionFilters = VisitorFilterInput & { ownership?: "all" | "external" | "own"; visitor?: "all" | "new" | "returning"; device?: "all" | DeviceKind; source?: "all" | SourceKind };
-export type SessionRequest = { page?: number; filters?: SessionFilters; selectedSessionKey?: string };
+export type SessionRequest = { page?: number; filters?: SessionFilters; selectedSessionKey?: string; exportAll?: boolean };
 
 type SessionRow = { sessionKey: string; visitorKey: string; startAt: Date; endAt: Date; pageCount: bigint };
 type StatsRow = { sessions: bigint; visitors: bigint; pageViews: bigint; newVisitors: bigint; returningVisitors: bigint; resumeViews: bigint; contactOpens: bigint; productOpens: bigint };
@@ -74,10 +74,11 @@ export async function getSessionIntelligence(request: SessionRequest = {}) {
     FROM filtered`);
   const stats = statsRows[0];
   const totalSessions = Number(stats?.sessions ?? 0);
-  const totalPages = Math.max(1, Math.ceil(totalSessions / 25));
+  const pageSize = request.exportAll ? Math.max(1, totalSessions) : 25;
+  const totalPages = Math.max(1, Math.ceil(totalSessions / pageSize));
   const page = Math.min(Math.max(1, request.page ?? 1), totalPages);
-  const offset = (page - 1) * 25;
-  const rows = await prisma.$queryRaw<SessionRow[]>(Prisma.sql`${cte} ${sessionWhere}) SELECT "sessionKey", "visitorKey", "startAt", "endAt", "pageCount" FROM filtered ORDER BY "startAt" DESC, "sessionKey" DESC LIMIT 25 OFFSET ${offset}`);
+  const offset = (page - 1) * pageSize;
+  const rows = await prisma.$queryRaw<SessionRow[]>(Prisma.sql`${cte} ${sessionWhere}) SELECT "sessionKey", "visitorKey", "startAt", "endAt", "pageCount" FROM filtered ORDER BY "startAt" DESC, "sessionKey" DESC LIMIT ${pageSize} OFFSET ${offset}`);
   const sessionKeys = rows.map((row) => row.sessionKey);
   const visitorKeys = [...new Set(rows.map((row) => row.visitorKey))];
   const [pageVisits, events, visitorVisits] = await Promise.all([
@@ -98,7 +99,7 @@ export async function getSessionIntelligence(request: SessionRequest = {}) {
     contactOpens: Number(stats?.contactOpens ?? 0),
     productOpens: Number(stats?.productOpens ?? 0),
   };
-  return { sessions, metrics, pagination: { page, totalPages, totalSessions, pageSize: 25 }, filter: date, retentionCutoff };
+  return { sessions, metrics, pagination: { page, totalPages, totalSessions, pageSize }, filter: date, retentionCutoff };
 }
 
 function buildSession(row: SessionRow, visits: PageVisit[], events: VisitorEvent[], history: PageVisit[]) {
