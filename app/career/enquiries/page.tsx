@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/services/auth-service";
 import { PageHeading } from "@/components/career/page-heading";
+import { EnquiryAudio } from "@/components/career/enquiry-audio";
 import { EnquiryControls } from "@/components/career/enquiry-controls";
 import { voiceEnabled } from "@/lib/voice/validation";
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Pr
   const where = selectedEnquiry ? { id: selectedEnquiry } : status ? { followUp: status } : {};
   const [enquiries, count] = await Promise.all([prisma.voiceEnquiry.findMany({ where, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: (page - 1) * 20, take: 20 }), prisma.voiceEnquiry.count({ where })]);
   return <><PageHeading eyebrow="Enquiries" title="Conversations worth following up." description="Contact details, messages and AI voice conversations from your portfolio. Contact details are self-reported and unverified." />
-    <p className="enquiry-config">{voiceEnabled() ? "AI voice is enabled." : "AI voice is off. Written enquiries are available. Set OPENAI_API_KEY and VOICE_ENABLED=true in Loom to enable voice."}</p>
+    <p className="enquiry-config">{voiceEnabled() ? "AI voice is enabled." : "AI voice is off. Written enquiries are available. Check the voice and recording storage configuration in Loom."}</p>
     {selectedEnquiry && <p><Link href="/career/enquiries">← All enquiries</Link></p>}
     <form className="enquiry-filter"><label>Show<select name="status" defaultValue={status}><option value="">All enquiries</option><option value="NEW">New</option><option value="CONTACTED">Contacted</option><option value="CLOSED">Closed</option></select></label><button className="btn btn-secondary">Filter</button><span>{count} enquiries · times in IST</span></form>
     <div className="enquiry-list">{enquiries.map(enquiry => {
@@ -27,6 +28,7 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Pr
         <div className="enquiry-contact"><a href={`mailto:${enquiry.email}`}>{enquiry.email}</a>{enquiry.phone && <a href={`tel:${enquiry.phone}`}>{enquiry.phone}</a>}<span>Contact details unverified</span></div>
         <p className="enquiry-message">{enquiry.message}</p><p className="enquiry-meta">{stale ? "Connection interrupted / status not confirmed" : states[enquiry.state] ?? enquiry.state}{duration !== null ? ` · ${Math.floor(duration / 60)}m ${duration % 60}s` : ""} · {enquiry.inputTokens + enquiry.outputTokens} voice tokens</p>
         {enquiry.summary && <section><h3>{enquiry.summaryKind === "AI" ? "AI summary · review for accuracy" : "Conversation note"}</h3><p className="enquiry-message">{enquiry.summary}</p></section>}
+        <EnquiryAudio id={enquiry.id} state={enquiry.audioState} consent={enquiry.audioConsent} />
         {enquiry.transcript && <details><summary>Read conversation transcript</summary><p className="enquiry-transcript">{enquiry.transcript}</p></details>}
         <p><Link href="/career/costs">View call costs →</Link></p><EnquiryControls id={enquiry.id} status={enquiry.followUp} />
       </article>;

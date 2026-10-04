@@ -37,12 +37,15 @@ test("separates historical evidence, limitations and retrospective redesigns", (
   }
 });
 
-test("records historical retry semantics without inventing deferred state", () => {
+test("records the clarified immediate and daily retry mechanisms without inventing eligibility guarantees", () => {
   const feedbackCount = caseStudy.evidence.find((item) => item.id === "feedback-count");
-  assert.match(feedbackCount?.statement ?? "", /immediate API\/Resilience4j/);
-  assert.match(feedbackCount?.statement ?? "", /not the deferred/);
+  assert.match(feedbackCount?.statement ?? "", /feedbackCallCount/);
+  assert.match(feedbackCount?.statement ?? "", /once per failed daily recovery cycle/);
   assert.ok(caseStudy.evidence.some((item) => item.id === "retry-topic" && item.statement.includes("feedback-retry")));
-  assert.ok(caseStudy.evidence.some((item) => item.id === "recovery-schedule" && item.statement.includes("Monday, Wednesday and Friday")));
+  assert.ok(caseStudy.evidence.some((item) => item.id === "recovery-schedule" && item.statement.includes("22:00 UTC")));
+  assert.equal(caseStudy.limitation.confidence, "PENDING_DETAIL");
+  assert.ok(caseStudy.evidence.some(item => item.id === "immediate-retries" && /10, 20 and 40 seconds/.test(item.statement)));
+  assert.ok(caseStudy.evidence.some(item => item.id === "feedback-status" && /feedback-status-raw/.test(item.statement)));
   assert.match(caseStudy.limitation.principle, /Consumer scheduling is not the same as message scheduling/);
 });
 
@@ -58,7 +61,7 @@ test("enforces resume and interview claim boundaries", () => {
   assert.equal(getEngineeringClaimPolicy("Kafka retry experience")?.allowed, true);
   assert.equal(getEngineeringClaimPolicy("Resilience4j experience")?.allowed, true);
   assert.equal(getEngineeringClaimPolicy("DLT implementation")?.allowed, false);
-  assert.equal(getEngineeringClaimPolicy("Solved the Monday/Wednesday/Friday retry flaw")?.allowed, false);
+  assert.equal(getEngineeringClaimPolicy("Solved the recovery-eligibility flaw")?.allowed, false);
   assert.equal(getEngineeringClaimPolicy("Implemented exactly-once processing")?.allowed, false);
-  assert.equal(getEngineeringClaimPolicy("Discuss the retry flaw in an interview")?.allowed, true);
+  assert.equal(getEngineeringClaimPolicy("Discuss recovery eligibility risks in an interview")?.allowed, true);
 });

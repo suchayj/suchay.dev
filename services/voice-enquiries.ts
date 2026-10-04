@@ -6,7 +6,7 @@ import { hash, VoiceError } from "@/lib/voice/http";
 export async function createEnquiry(body: unknown, callerKey: string) {
   const parsed = enquirySchema.safeParse(body);
   if (!parsed.success) throw new VoiceError("Please check your name, email, topic, message and consent. If you include a phone number, use its country code.");
-  const { name, email, phone, reason, message } = parsed.data;
+  const { name, email, phone, reason, message, audioConsent } = parsed.data;
   const token = randomBytes(32).toString("base64url");
   const callerHash = hash(callerKey);
   const enquiry = await prisma.$transaction(async tx => {
@@ -18,9 +18,9 @@ export async function createEnquiry(body: unknown, callerKey: string) {
       tx.voiceEnquiry.count({ where: { createdAt: { gte: since } } }),
     ]);
     if (personal >= 3 || total >= 100) throw new VoiceError("The enquiry limit has been reached. Please email Suchay instead.", 429);
-    return tx.voiceEnquiry.create({ data: { name, email, phone, reason, message, consentVersion: CONSENT_VERSION, callerHash, accessHash: hash(token) }, select: { id: true } });
+    return tx.voiceEnquiry.create({ data: { name, email, phone, reason, message, audioConsent, consentVersion: CONSENT_VERSION, callerHash, accessHash: hash(token) }, select: { id: true } });
   });
-  return { id: enquiry.id, token, voiceAvailable: voiceEnabled(), maxSeconds: voiceLimits().seconds };
+  return { id: enquiry.id, token, voiceAvailable: voiceEnabled() && audioConsent, maxSeconds: voiceLimits().seconds };
 }
 
 export async function authorizeEnquiry(id: string, request: Request) {
@@ -37,6 +37,8 @@ export async function reserveVoice(id: string) {
     await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(16120901)`;
     const count = await tx.voiceEnquiry.count({ where: { startedAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } } });
     if (count >= voiceLimits().daily) throw new VoiceError("Today’s voice limit has been reached. Your enquiry is saved.", 429);
+    const recordingConsent = await tx.voiceEnquiry.findUnique({ where: { id }, select: { audioConsent: true } });
+    if (!recordingConsent?.audioConsent) throw new VoiceError("Please use the updated contact form and agree to voice recording before starting voice.", 403);
     const changed = await tx.voiceEnquiry.updateMany({ where: { id, state: "SAVED", startedAt: null }, data: { state: "CONNECTING", startedAt: new Date() } });
     if (!changed.count) throw new VoiceError("This enquiry already has a voice session. Your details are saved.", 409);
   });

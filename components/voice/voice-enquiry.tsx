@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { normalisePhoneInput, validOptionalPhone } from "@/lib/voice/phone";
 import { Mic, MicOff, PhoneOff, ArrowUpRight, LoaderCircle } from "lucide-react";
 
+import { ConversationRecorder } from "@/lib/voice/browser-recording";
 import { CountryCodeSelect } from "./country-code-select";
 
 type Saved = { id: string; token: string; voiceAvailable: boolean; maxSeconds: number };
@@ -17,6 +18,7 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
   const [muted, setMuted] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [caption, setCaption] = useState("");
+  const recording = useRef<ConversationRecorder | null>(null);
   const media = useRef<MediaStream | null>(null);
   const peer = useRef<RTCPeerConnection | null>(null);
   const audio = useRef<HTMLAudioElement>(null);
@@ -37,20 +39,26 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
   async function finish(message = "Thank you. Your enquiry is saved for Suchay to review.", outcome = "COMPLETED") {
     if (ended.current) return;
     ended.current = true;
+    const recorded = recording.current?.stop();
     release();
     setStage("ended");
-    setNotice(message);
+    setNotice(recorded ? "Your enquiry is saved. Saving the conversation audio…" : message);
     const current = session.current;
+    let summaryDelayed = false;
     if (current) {
       try {
         const response = await fetch(`/api/voice/enquiries/${current.id}/end`, { method: "POST", headers: { Authorization: `Bearer ${current.token}`, "Content-Type": "application/json" }, body: JSON.stringify({ outcome }), keepalive: true });
-        if (!response.ok) setNotice("Your contact details and message are saved. The conversation summary may be delayed.");
-      } catch { setNotice("Your contact details and message are saved. The conversation summary may be delayed."); }
+        if (!response.ok) summaryDelayed = true;
+      } catch { summaryDelayed = true; }
     }
+    const result = recorded ? await recorded : undefined;
+    setNotice([result && (!result.saved || result.partial) ? "Your enquiry is saved. The audio recording may be incomplete; Suchay can review the saved transcript." : message, summaryDelayed ? "The conversation summary may be delayed." : ""].filter(Boolean).join(" "));
   }
   useEffect(() => {
     const close = () => {
+      if (ended.current) return;
       ended.current = true;
+      void recording.current?.stop(true);
       abort.current?.abort();
       if (clock.current) clearInterval(clock.current);
       if (timeout.current) clearTimeout(timeout.current);
@@ -77,7 +85,7 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
     setPhoneError("");
     const textOnly = (event.nativeEvent as SubmitEvent).submitter?.getAttribute("value") === "message";
     try {
-      const response = await fetch("/api/voice/enquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: form.get("name"), email: form.get("email"), phone, reason: form.get("reason"), message: form.get("message"), website: form.get("website"), consent: form.get("consent") === "on" }) });
+      const response = await fetch("/api/voice/enquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: form.get("name"), email: form.get("email"), phone, reason: form.get("reason"), message: form.get("message"), website: form.get("website"), consent: form.get("consent") === "on", audioConsent: !textOnly && available }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Couldn’t save your enquiry. Please try again.");
       setSaved(result); session.current = result;
@@ -95,20 +103,25 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
       if (ended.current) { stream.getTracks().forEach(track => track.stop()); return; }
       media.current = stream;
+      recording.current = new ConversationRecorder(saved, stream);
       const pc = new RTCPeerConnection(); peer.current = pc;
       pc.ontrack = event => {
-        if (audio.current) { audio.current.srcObject = event.streams[0]; void audio.current.play().catch(() => setNotice("Tap Play audio below to hear the assistant.")); }
+        const remote = event.streams[0] ?? new MediaStream([event.track]);
+        recording.current?.addStream(remote);
+        if (audio.current) { audio.current.srcObject = remote; void audio.current.play().catch(() => setNotice("Tap Play audio below to hear the assistant.")); }
       };
       stream.getTracks().forEach(track => pc.addTrack(track, stream));
       const channel = pc.createDataChannel("oai-events");
-      channel.onopen = () => {
+      channel.onopen = async () => {
         if (ended.current) return;
+        try { await recording.current?.start(); } catch { void finish("Voice recording couldn’t start. Your written enquiry is saved.", "INTERRUPTED"); return; }
+        if (ended.current) { void recording.current?.stop(true); return; }
         if (timeout.current) clearTimeout(timeout.current);
         setStage("active");
         const started = Date.now();
         clock.current = setInterval(() => setSeconds(Math.floor((Date.now() - started) / 1000)), 1000);
         timeout.current = setTimeout(() => { void finish("Your conversation time is up. Your enquiry and conversation have been saved.", "LIMIT_REACHED"); }, saved.maxSeconds * 1000);
-        channel.send(JSON.stringify({ type: "response.create", response: { instructions: "Greet the visitor as Suchay’s AI assistant, say their enquiry has been saved, and address the question or topic in their submitted enquiry. Ask at most one useful follow-up, without asking them to repeat their message or contact details. Do not claim to be Suchay." } }));
+        channel.send(JSON.stringify({ type: "response.create", response: { instructions: "Briefly greet the visitor as Suchay’s AI assistant, then address the question or topic in their submitted enquiry. Ask at most one useful follow-up, without asking them to repeat their message or contact details. Do not claim to be Suchay." } }));
       };
       channel.onmessage = event => {
         try {
@@ -149,16 +162,16 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
           <label className="voice-wide">What brings you here?<select name="reason" required defaultValue=""><option value="" disabled>Choose a topic</option><option>Hiring</option><option>Project enquiry</option><option>Collaboration</option><option>Other</option></select></label>
           <label className="voice-wide">What would you like to discuss?<textarea name="message" required minLength={10} maxLength={1500} rows={3} placeholder="Tell me about the role, project, or question you have in mind." /></label>
           <label className="voice-honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-          <label className="voice-consent voice-wide"><input name="consent" type="checkbox" required /><span>Suchay may use these details to respond to my enquiry. <a href="/privacy">Privacy details</a></span></label>
+          <label className="voice-consent voice-wide"><input name="consent" type="checkbox" required /><span>Suchay may use these details to respond to my enquiry. If I start voice, I agree to audio recording and a saved transcript and AI summary for Suchay’s private review. <a href="/privacy">Privacy details</a></span></label>
         </fieldset>
-        <p className="voice-small voice-privacy-note">Voice is optional: you speak with an AI assistant, not a live call with Suchay. If you start it, OpenAI processes the audio; a transcript and summary are saved privately for Suchay. No audio recording is stored by this site.</p>
+        <p className="voice-small voice-privacy-note">Voice is optional: you speak with an AI assistant, not a live call with Suchay. If you start it, OpenAI processes the audio. Both sides of the conversation are recorded and stored privately for Suchay, alongside the transcript and summary. You can send your enquiry without starting voice.</p>
         {!available && <p className="voice-small">You can send a written enquiry now. Voice conversations are temporarily unavailable.</p>}
         <div className="voice-actions"><button className="btn btn-primary" disabled={stage === "saving"} value={available ? "voice" : "message"}>{stage === "saving" ? "Saving your enquiry…" : available ? "Save & continue to voice" : "Send enquiry"}<ArrowUpRight size={16} aria-hidden="true" /></button>{available && <button className="btn btn-secondary" disabled={stage === "saving"} value="message">Send without voice</button>}</div>
       </form> : <div className="voice-session" aria-live="polite">
         <p className="eyebrow">{stage === "ended" ? "Enquiry saved" : "Your conversation"}</p><Mic size={38} strokeWidth={1.3} aria-hidden="true" /><h3>{stage === "ready" ? "Ready when you are." : stage === "connecting" ? "Connecting…" : stage === "active" ? "You’re speaking with AI." : stage === "ended" ? "Your enquiry is saved." : "Thank you for reaching out."}</h3>
         {stage === "connecting" && <><LoaderCircle className="voice-spinner" size={20} aria-hidden="true" /><p>Connecting your microphone and assistant…</p></>}
-        {stage === "ready" && <><p>Your microphone will be requested next. You can speak for up to {Math.ceil((saved?.maxSeconds ?? 180) / 60)} minutes.</p><button className="btn btn-primary" onClick={start}>Start voice conversation <Mic size={16} aria-hidden="true" /></button></>}
-        {stage === "active" && <><p className="voice-timer">{Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, "0")} / {Math.ceil((saved?.maxSeconds ?? 180) / 60)} min</p><p className="voice-caption">{caption || "Say hello, or ask a question about Suchay’s work."}</p><button className="btn btn-secondary" aria-pressed={muted} onClick={() => { const next = !muted; media.current?.getAudioTracks().forEach(track => { track.enabled = !next; }); setMuted(next); }}>{muted ? <Mic size={16} /> : <MicOff size={16} />}{muted ? "Unmute" : "Mute"}</button></>}
+        {stage === "ready" && <><p>Your microphone will be requested next. This conversation will be recorded for Suchay’s private review. You can speak for up to {Math.ceil((saved?.maxSeconds ?? 180) / 60)} minutes.</p><button className="btn btn-primary" onClick={start}>Start voice conversation <Mic size={16} aria-hidden="true" /></button></>}
+        {stage === "active" && <><p className="voice-recording-label"><span aria-hidden="true" /> Audio recording on · private to Suchay</p><p className="voice-timer">{Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, "0")} / {Math.ceil((saved?.maxSeconds ?? 180) / 60)} min</p><p className="voice-caption">{caption || "Say hello, or ask a question about Suchay’s work."}</p><button className="btn btn-secondary" aria-pressed={muted} onClick={() => { const next = !muted; media.current?.getAudioTracks().forEach(track => { track.enabled = !next; }); setMuted(next); }}>{muted ? <Mic size={16} /> : <MicOff size={16} />}{muted ? "Unmute" : "Mute"}</button></>}
         {(stage === "active" || stage === "connecting") && <button className="btn btn-primary" onClick={() => void finish()}><PhoneOff size={16} aria-hidden="true" />End conversation</button>}
       </div>}
       {/* Assistant speech is displayed as text immediately above the audio controls. */}

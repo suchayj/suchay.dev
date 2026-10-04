@@ -2,6 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/services/auth-service";
+import { deleteRecordedEnquiry } from "@/services/voice-recordings";
 import { endVoice } from "@/services/voice-runtime";
 
 export async function updateEnquiry(_: { message: string }, form: FormData) {
@@ -21,7 +22,7 @@ export async function deleteEnquiry(_: { message: string }, form: FormData) {
   if (!id || form.get("confirm") !== "on") return { message: "Confirm deletion first." };
   try {
     await endVoice(id, "INTERRUPTED");
-    await prisma.voiceEnquiry.delete({ where: { id } });
+    await deleteRecordedEnquiry(id);
     revalidatePath("/career/enquiries");
     return { message: "Enquiry deleted." };
   } catch { return { message: "Couldn’t delete. Please try again." }; }

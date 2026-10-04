@@ -7,24 +7,25 @@ Visitors submit name, email, reason, context and consent; international phone is
 Their details are self-reported, not verified. No OTP, telecom provider, transfer or phone dialling is involved.
 Written enquiries work even when voice is disabled. An enquiry is committed before microphone permission is requested.
 CareerOS → Enquiries is protected by the existing owner session and supports status updates, pagination, transcripts, summaries and explicit deletion.
-No audio recordings are stored by this application. See /privacy for the visitor disclosure.
+With explicit recording consent, microphone and assistant audio are mixed in the browser and uploaded incrementally to private DigitalOcean Spaces objects under projects/suchay.dev/conversations/<enquiry-id>/. Owner-only playback issues a 60-second signed URL; the object itself stays private. Existing conversations cannot gain recordings retrospectively. Interrupted recordings are marked partial. Deleting an enquiry removes its recording and temporary parts before deleting the database row. See /privacy for the visitor disclosure.
 
 ## Enable through Loom
 
 Deploy the new commit through Loom: install dependencies, `npx prisma generate`, `npx prisma migrate deploy`, build/restart according to the deployment profile.
-The additive migration is `20260916120000_voice_enquiries`; it does not change existing records.
+Additive migrations include `20260916120000_voice_enquiries` and `20261005010000_voice_recordings`; existing enquiries have recording consent off.
 Configure server-side environment variables (never NEXT_PUBLIC_):
 
 - `APP_ORIGIN=https://suchay.dev` (exact origin; use http://localhost:3010 during local development)
 - `OPENAI_API_KEY`: a project API key with access to the selected voice and summary models
-- `VOICE_ENABLED=true` (defaults off)
+- `VOICE_ENABLED=true` (defaults off; requires recording storage configured)
+- `DO_SPACES_KEY`, `DO_SPACES_SECRET`, `DO_SPACES_REGION`, `DO_SPACES_BUCKET`, `DO_SPACES_ENDPOINT`: server-only existing Spaces credentials and regional endpoint; all recordings use private ACLs.
 - `OPENAI_REALTIME_MODEL=gpt-realtime-2.1` (tested production choice; the code falls back to mini if unset)
 - `OPENAI_SUMMARY_MODEL=gpt-5.4-mini`
 - `VOICE_MAX_SECONDS=180` (maximum allowed configuration 300)
 - `VOICE_DAILY_CALL_LIMIT=20` (maximum allowed configuration 100)
 - `TRUST_VOICE_PROXY=true` only after confirming Nginx overwrites X-Real-IP with the real client address; otherwise leave false.
 
-The assistant receives the submitted topic and message as untrusted context, alongside the public portfolio knowledge. Implementation answers use concrete project scenarios and documented component flows. The Vocalink knowledge includes Suchay’s 5 October clarification: three immediate retries, next-day recovery at 22:00 UTC through feedback-raw, and feedback IDs published to feedback-status-raw. The scheduled recovery-cycle cap remains unspecified. Email and phone are not included in the model instructions.
+The assistant receives the submitted topic and message as untrusted context, alongside the public portfolio knowledge. Implementation answers use concrete project scenarios and documented component flows. The Vocalink knowledge includes Suchay’s 5 October clarification: three immediate retries at 10/20/40-second waits, next-day recovery at 22:00 UTC through feedback-raw, and feedback IDs published to feedback-status-raw. Payload feedbackCallCount increases per failed daily recovery cycle; recovery stops after three failed daily cycles. The initial counter value and handling after cutoff are unspecified. Email and phone are not included in the model instructions.
 
 No key is committed. Restart after changing environment values. The inbox displays whether voice is configured.
 Check the project’s provider spending settings too: the app limits session admission and duration, not a guaranteed rupee amount.
@@ -48,9 +49,11 @@ The daily admission cap cannot be bypassed by clearing cookies, but per-caller l
 
 `npm run build`, `npm run typecheck`, `npm run lint`, `node --test tests/*.test.mjs`.
 Database integration tests: `node --env-file=.env --import tsx --test tests/voice-enquiries.integration.ts` against the local development database after migration. They create and remove only test enquiries.
+Recording integration tests (mocked Spaces, real local database): `node --env-file=.env --experimental-test-module-mocks --import tsx --test tests/voice-recordings.integration.ts`.
+
 Mocked provider lifecycle tests (no paid calls): `node --env-file=.env --experimental-test-module-mocks --import tsx --test tests/voice-runtime.integration.ts`.
 
-The October audit exercised real Realtime WebRTC audio output, synthetic spoken input/transcription, server transcript persistence, AI summaries and usage events locally, alongside model answer evaluations and browser form checks. Production activation is left to the owner through Loom.
+The October audit exercised real Realtime WebRTC audio output, synthetic spoken input/transcription, server transcript persistence, AI summaries and usage events locally, alongside model answer evaluations and browser form checks. Production activation uses the normal Loom release workflow.
 
 A real voice smoke test requires the API key: verify microphone permission, audible replies, mute/end, saved provider transcript and summary, timeout and owner-only inbox access. No live OpenAI request is made by the offline tests.
 

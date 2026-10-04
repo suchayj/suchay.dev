@@ -310,3 +310,9 @@ footer>span:nth-child(2){text-align:center} footer div{display:flex;justify-cont
 @keyframes voice-spin { to { transform: rotate(360deg); } }
 @media (max-width:440px) { .voice-phone-row { grid-template-columns: 108px minmax(0,1fr); gap: 0; } }
 @media (prefers-reduced-motion:reduce) { .voice-panel *, .voice-country-menu { animation: none !important; transition: none !important; } }
+.voice-recording-label { display:flex; align-items:center; gap:.55rem; font-size:.8rem; color:var(--muted); }
+.voice-recording-label>span { width:7px; height:7px; border-radius:50%; background:#ba4141; }
+.enquiry-audio { padding:1rem; margin:1.25rem 0; border:1px solid var(--line); border-radius:10px; background:color-mix(in srgb,var(--violet) 4%,transparent); }
+.enquiry-audio h3 { margin:0 0 .4rem; font-size:1rem; }
+.enquiry-audio p { color:var(--muted); font-size:.8rem; }
+.enquiry-audio audio { width:min(100%,36rem); display:block; margin-top:.75rem; }

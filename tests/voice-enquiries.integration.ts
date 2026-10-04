@@ -7,7 +7,7 @@ import { prisma } from "../lib/db";
 import { checkOrigin, readJson } from "../lib/voice/http";
 const caller = `voice-test-${randomUUID()}`;
 const email = `${caller}@example.com`;
-const input = { name: "Voice Test", email, phone: "+919876543210", reason: "Hiring", message: "An engineering opportunity to discuss.", consent: true, website: "" };
+const input = { name: "Voice Test", email, phone: "+919876543210", reason: "Hiring", message: "An engineering opportunity to discuss.", consent: true, audioConsent: true, website: "" };
 after(async () => { await prisma.voiceEnquiry.deleteMany({ where: { email: { startsWith: caller } } }); await prisma.$disconnect(); });
 
 test("requires email and consent, accepts optional phone, and normalises international formatting", () => {
@@ -42,6 +42,7 @@ test("durably captures mandatory details, scopes access and serialises admission
   assert.equal(attempts.filter(value => value.status === "rejected").length, 2);
   process.env.VOICE_ENABLED = "true";
   process.env.OPENAI_API_KEY = "test-only-not-a-real-key";
+  for (const key of ["DO_SPACES_KEY", "DO_SPACES_SECRET", "DO_SPACES_REGION", "DO_SPACES_BUCKET", "DO_SPACES_ENDPOINT"]) process.env[key] = "test-only";
   const reserved = await Promise.allSettled([reserveVoice(saved.id), reserveVoice(saved.id)]);
   assert.equal(reserved.filter(value => value.status === "fulfilled").length, 1);
   assert.equal(reserved.filter(value => value.status === "rejected").length, 1);

@@ -48,6 +48,8 @@ test("implementation answers use published scenarios and preserve unknown specif
   assert.match(instructions, /three immediate retries/);
   assert.match(instructions, /next day at 22:00 UTC/);
   assert.match(instructions, /feedback-status-raw/);
-  assert.match(instructions, /cap on scheduled recovery cycles/);
-  assert.doesNotMatch(instructions, /feedbackCount|Monday|Wednesday|Friday|next-attempt timestamp/);
+  assert.match(instructions, /10, 20 and 40 seconds/);
+  assert.match(instructions, /feedbackCallCount increases once per failed daily recovery cycle/);
+  assert.match(instructions, /Daily recovery stops after three failed cycles/);
+  assert.doesNotMatch(instructions, /feedbackCount belonged|Monday|Wednesday|Friday|next-attempt timestamp/);
 });

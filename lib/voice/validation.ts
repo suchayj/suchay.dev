@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { recordingStorageConfigured } from "./audio-storage";
 import { validOptionalPhone } from "./phone";
 
-export const CONSENT_VERSION = "voice-enquiry-v2";
+export const CONSENT_VERSION = "voice-enquiry-v3";
 export const enquirySchema = z.object({
   name: z.string().trim().min(2).max(100),
   email: z.string().trim().toLowerCase().max(254).pipe(z.email()),
@@ -10,6 +11,7 @@ export const enquirySchema = z.object({
   reason: z.enum(["Hiring", "Project enquiry", "Collaboration", "Other"]),
   message: z.string().trim().min(10).max(1500),
   consent: z.literal(true),
+  audioConsent: z.boolean().default(false),
   website: z.string().max(0).optional(),
 });
 
@@ -24,5 +26,5 @@ export function voiceLimits() {
   };
 }
 export function voiceEnabled() {
-  return process.env.VOICE_ENABLED === "true" && Boolean(process.env.OPENAI_API_KEY);
+  return process.env.VOICE_ENABLED === "true" && Boolean(process.env.OPENAI_API_KEY) && recordingStorageConfigured();
 }

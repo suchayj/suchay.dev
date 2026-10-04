@@ -1,3 +1,4 @@
+import { recoverRecordingLater } from "@/services/voice-recordings";
 import { recordVoiceUsage } from "@/services/voice-costs";
 import WebSocket from "ws";
 import { prisma } from "@/lib/db";
@@ -100,7 +101,8 @@ async function monitor(id: string, callId: string, configuredModel: string) {
       try { await hangup(callId); } catch { console.error("Voice hangup failed", id); state = "INTERRUPTED"; }
       ws.close();
       await queue;
-      await prisma.voiceEnquiry.update({ where: { id }, data: { state, endedAt: new Date() } });
+      const finishedEnquiry = await prisma.voiceEnquiry.update({ where: { id }, data: { state, endedAt: new Date() } });
+      if (finishedEnquiry.audioConsent) recoverRecordingLater(id);
       calls.delete(id);
       await summarise(id);
     })();
@@ -153,6 +155,7 @@ export async function endVoice(id: string, state = "COMPLETED") {
   const enquiry = await prisma.voiceEnquiry.findUnique({ where: { id } });
   if (!enquiry || !["CONNECTING", "ACTIVE"].includes(enquiry.state)) return;
   if (enquiry.callId) await hangup(enquiry.callId);
+  if (enquiry.audioConsent) recoverRecordingLater(id);
   await prisma.voiceEnquiry.updateMany({ where: { id, state: { in: ["CONNECTING", "ACTIVE"] } }, data: { state, endedAt: new Date() } });
   await summarise(id);
 }

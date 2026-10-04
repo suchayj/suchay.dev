@@ -21,6 +21,8 @@
     "release": "node deployment/release.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1146.0",
+    "@aws-sdk/s3-request-presigner": "^3.1146.0",
     "@ip-location-db/dbip-city-mmdb": "2.3.2026060513",
     "@prisma/client": "^6.19.3",
     "@tailwindcss/postcss": "4.2.1",

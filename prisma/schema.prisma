@@ -184,6 +184,12 @@ model VoiceEnquiry {
   reason         String
   message        String
   consentVersion String
+  audioConsent   Boolean @default(false)
+  audioState     String @default("NONE")
+  audioKey       String?
+  audioMime      String?
+  audioBytes     Int @default(0)
+  audioParts     VoiceRecordingPart[]
   costTrackingVersion Int?
   voiceModel     String?
   usageEvents    VoiceUsage[]
@@ -224,4 +230,18 @@ model VoiceUsage {
 
   @@unique([enquiryId, eventKey])
   @@index([enquiryId, createdAt])
+}
+
+model VoiceRecordingPart {
+  id        String @id @default(cuid())
+  enquiryId String
+  enquiry   VoiceEnquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  index     Int
+  key       String @unique
+  digest    String
+  bytes     Int
+  mime      String
+  createdAt DateTime @default(now())
+
+  @@unique([enquiryId, index])
 }
