@@ -38,3 +38,13 @@ test("voice covers published product decisions, links and contact boundaries", (
   const instructions = voiceInstructions();
   for (const value of ["rentora.suchay.dev", "stage.edvoraschool.com", "loom.suchay.dev", "Preservation-first interpretation", "suchay.dev/contact", "not a call to Suchay", "wildlife"]) assert.ok(instructions.includes(value), value);
 });
+
+
+test("implementation answers use published scenarios and preserve unknown specifics", () => {
+  const instructions = voiceInstructions();
+  assert.match(instructions, /concrete operational problem/);
+  assert.match(instructions, /Account Verification consumer/);
+  assert.match(instructions, /exponential backoff/);
+  assert.match(instructions, /Exact retry counts, intervals, schedules, delivery guarantees and measured outcomes are unknown/);
+  assert.doesNotMatch(instructions, /feedback-raw|feedbackCount|Monday|Wednesday|Friday|next-attempt timestamp/);
+});
