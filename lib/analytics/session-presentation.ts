@@ -4,7 +4,7 @@ export type DeviceKind = "Desktop" | "Mobile" | "Tablet" | "Unknown";
 export type SourceKind = "Direct" | "Google" | "LinkedIn" | "UTM/campaign" | "Other referral";
 
 export function anonymousVisitorLabel(visitorKey: string) {
-  return `Anonymous #${createHash("sha256").update(visitorKey).digest("hex").slice(0, 4).toUpperCase()}`;
+  return `Visitor #${createHash("sha256").update(visitorKey).digest("hex").slice(0, 4).toUpperCase()}`;
 }
 
 export function anonymousSessionId(sessionKey: string) {

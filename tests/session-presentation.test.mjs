@@ -6,7 +6,7 @@ import { isVisitorEventName } from "../lib/analytics/visitor-events.ts";
 test("derives a short stable anonymous label without exposing the visitor key", () => {
   const key = "visitor-cookie-value-that-must-not-be-rendered";
   const label = anonymousVisitorLabel(key);
-  assert.match(label, /^Anonymous #[A-F0-9]{4}$/);
+  assert.match(label, /^Visitor #[A-F0-9]{4}$/);
   assert.equal(anonymousVisitorLabel(key), label);
   assert.doesNotMatch(label, /visitor-cookie/);
 });

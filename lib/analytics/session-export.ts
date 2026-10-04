@@ -38,7 +38,7 @@ export function createVisitorExport(data: VisitorData, filters: SessionFilters, 
   return { filename, contentType: "application/json;charset=utf-8", content: JSON.stringify({
     exportedAt: now.toISOString(), timeZone: "Asia/Kolkata", filterLabel: data.filter.label,
     filters, retentionCutoff: data.retentionCutoff, metrics: data.metrics,
-    notes: "Locations are approximate. Duration is observed time between recorded page views, not total time on site. Session and visitor identifiers are anonymous; raw cookies and IP addresses are excluded.",
+    notes: "Locations are public-IP network estimates, not GPS positions; neighbourhood accuracy is not guaranteed. Duration is observed time between recorded page views, not total time on site. Session and visitor identifiers are anonymous; raw cookies and IP addresses are excluded.",
     sessions: data.sessions,
   }, null, 2) };
 }
@@ -69,6 +69,6 @@ export function formatSessionDetails(session: VisitorSession) {
     `First seen: ${formatCareerDateTime(session.visitor.firstSeen)}`, `Last seen: ${formatCareerDateTime(session.visitor.lastSeen)}`,
     `Recorded sessions: ${session.visitor.sessions}`, `Recorded page views: ${session.visitor.pageViews}`);
   for (const previous of session.visitor.previousSessions) lines.push(`Previous: ${formatCareerDateTime(previous.startAt)} · ${previous.journey.join(" → ")} · ${previous.pageCount} page views`);
-  lines.push("", "Locations are approximate. Activity measures only time between recorded page views.");
+  lines.push("", "Locations are public-IP network estimates, not GPS positions; neighbourhood accuracy is not guaranteed. Activity measures only time between recorded page views.");
   return lines.join("\n");
 }

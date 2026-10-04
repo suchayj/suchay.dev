@@ -5,7 +5,7 @@ const { sessionsToCsv, createVisitorExport, formatSessionDetails } = await tsImp
 
 function fixture(overrides = {}) {
   return {
-    sessionId: "anonymous-session", visitorLabel: "Anonymous #A49E", ownerDeviceName: null,
+    sessionId: "anonymous-session", visitorLabel: "Visitor #A49E", ownerDeviceName: null,
     returning: false, startAt: new Date("2026-10-04T03:30:00Z"), endAt: new Date("2026-10-04T03:30:07Z"),
     pageCount: 2, duration: "7s observed activity",
     journey: [{ path: "/", label: "Home", visitedAt: new Date("2026-10-04T03:30:00Z"), secondsToNext: 7 },
@@ -68,7 +68,7 @@ test("export filename uses the IST calendar date", () => {
 
 test("clipboard details include the complete session, actions and explicit missing data", () => {
   const text = formatSessionDetails(fixture());
-  for (const value of ["Anonymous #A49E", "SESSION", "DEVICE & LOCATION", "JOURNEY", "ATTRIBUTION", "ENGAGEMENT", "VISITOR HISTORY", "Rentora opened", "Home (/)", "Work Timeline (/timeline)", "Hinjawadi, Maharashtra, India (approximate)", "Browser time zone: Asia/Kolkata", "Referrer: Not recorded"]) assert.ok(text.includes(value), value);
+  for (const value of ["Visitor #A49E", "SESSION", "DEVICE & LOCATION", "JOURNEY", "ATTRIBUTION", "ENGAGEMENT", "VISITOR HISTORY", "Rentora opened", "Home (/)", "Work Timeline (/timeline)", "Hinjawadi, Maharashtra, India (approximate)", "Browser time zone: Asia/Kolkata", "Referrer: Not recorded"]) assert.ok(text.includes(value), value);
   const missing = formatSessionDetails(fixture({ location: null, context: null, engagement: [] }));
   assert.match(missing, /Location: Unavailable/);
   assert.match(missing, /No additional actions recorded/);
