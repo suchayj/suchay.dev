@@ -2,7 +2,7 @@ import Link from "next/link";
 import { logoutAction } from "@/actions/auth-actions";
 import { ThemeToggle } from "@/app/theme-toggle";
 
-const links = [["Dashboard", "/career"], ["Companies", "/career/companies"], ["Jobs", "/career/jobs"], ["Enquiries", "/career/enquiries"], ["Call costs", "/career/costs"], ["Profile", "/career/profile"]] as const;
+const links = [["Dashboard", "/career"], ["Companies", "/career/companies"], ["Jobs", "/career/jobs"], ["Visitors", "/visitors"], ["Enquiries", "/career/enquiries"], ["Call costs", "/career/costs"], ["Profile", "/career/profile"]] as const;
 
 export function CareerShell({ children }: { children: React.ReactNode }) {
   return <div className="career-app">

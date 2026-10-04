@@ -11,7 +11,7 @@ export async function renameOwnerDevice(_: { message: string }, form: FormData) 
   try {
     const result = await prisma.ownerDevice.updateMany({ where: { id, userId: user.id }, data: { name } });
     if (!result.count) return { message: "Device not found." };
-    revalidatePath("/career");
+    revalidatePath("/visitors");
     return { message: "Device name saved." };
   } catch { return { message: "Could not save the name. Please try again." }; }
 }

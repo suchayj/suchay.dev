@@ -136,10 +136,12 @@ test("redirects only the retired work index to Work Timeline", async () => {
   assert.equal(retiredPrivateProject.status, 404);
 });
 
-test("keeps visitor intelligence behind CareerOS authentication", async () => {
-  const response = await fetch(`${baseUrl}/career`, { redirect: "manual" });
-  assert.equal(response.status, 307);
-  assert.equal(response.headers.get("location"), "/login");
+test("keeps the career dashboard and dedicated Visitors page behind authentication", async () => {
+  for (const path of ["/career", "/visitors"]) {
+    const response = await fetch(`${baseUrl}${path}`, { redirect: "manual" });
+    assert.equal(response.status, 307, path);
+    assert.equal(response.headers.get("location"), "/login", path);
+  }
 });
 
 test("renders a semantic, canonical two-page resume and print surface", async () => {

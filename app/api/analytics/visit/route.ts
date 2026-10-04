@@ -4,6 +4,9 @@ import { NextResponse } from "next/server";
 import { recordPageVisit } from "@/services/analytics/record-visit";
 import { recordVisitorEvent } from "@/services/analytics/record-event";
 
+import { resolveVisitorLocation } from "@/lib/analytics/visitor-location";
+import { isTrackablePublicPath } from "@/lib/analytics/public-paths";
+
 const VISITOR_COOKIE = "suchay_visitor";
 const SESSION_COOKIE = "suchay_visit_session";
 
@@ -11,11 +14,12 @@ export async function POST(request: Request) {
   try {
     const body = await request.json() as Record<string, unknown>;
     if (typeof body.path !== "string") return new NextResponse(null, { status: 400 });
+    if (!isTrackablePublicPath(body.path)) return new NextResponse(null, { status: 204 });
     const cookieStore = await cookies();
     const visitorKey = cookieStore.get(VISITOR_COOKIE)?.value ?? randomUUID();
     const sessionKey = cookieStore.get(SESSION_COOKIE)?.value ?? randomUUID();
     const requestHeaders = await headers();
-    const trustProxy = process.env.TRUST_ANALYTICS_PROXY === "true";
+    const location = await resolveVisitorLocation(requestHeaders);
     await recordPageVisit({
       path: body.path,
       referrer: typeof body.referrer === "string" ? body.referrer : null,
@@ -24,9 +28,7 @@ export async function POST(request: Request) {
       utmCampaign: typeof body.utmCampaign === "string" ? body.utmCampaign : null,
       utmContent: typeof body.utmContent === "string" ? body.utmContent : null,
       utmTerm: typeof body.utmTerm === "string" ? body.utmTerm : null,
-      country: trustProxy ? requestHeaders.get("x-geo-country") : null,
-      region: trustProxy ? requestHeaders.get("x-geo-region") : null,
-      city: trustProxy ? requestHeaders.get("x-geo-city") : null,
+      ...location,
       userAgent: requestHeaders.get("user-agent"), visitorKey, sessionKey,
       viewportWidth: typeof body.viewportWidth === "number" ? body.viewportWidth : null,
       viewportHeight: typeof body.viewportHeight === "number" ? body.viewportHeight : null,
