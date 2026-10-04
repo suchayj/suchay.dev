@@ -12,7 +12,7 @@ export function HomeHero() {
       <p className="hero-intro">Full Stack Engineer building AI and GenAI products, distributed systems and reliable software from product idea to production.</p>
       <div className="hero-actions">
         <Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link>
-        <Link className="btn btn-secondary" href="/contact#voice">Talk to my AI assistant <Arrow /></Link>
+        <Link className="btn btn-secondary" href="/contact">Talk to my AI assistant <Arrow /></Link>
       </div>
       <div className="hero-meta" aria-label="Profile links and availability">
         <TrackedExternalLink event="GITHUB_OPENED" href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></TrackedExternalLink>

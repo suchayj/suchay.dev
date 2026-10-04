@@ -249,9 +249,12 @@ test("public contact and resume surfaces hide the owner's mobile and expose the 
     const html = await response.text();
     assert.doesNotMatch(html, /80077[\s-]*78797|8007778797|href="tel:/);
     if (path === "/contact") {
-      for (const field of ["name", "email", "phone", "reason", "message", "consent"]) {
+      for (const field of ["name", "email", "reason", "message", "consent"]) {
         assert.match(html, new RegExp(`<(?:input|select|textarea)(?=[^>]*name="${field}")(?=[^>]*required)[^>]*>`));
       }
+      assert.match(html, /<input(?=[^>]*name="phone")[^>]*>/);
+      assert.doesNotMatch(html, /<input(?=[^>]*name="phone")(?=[^>]*required)[^>]*>/);
+      assert.match(html, /Country calling code: India/);
       assert.match(html, /Talk to my/);
       assert.match(html, /AI assistant/);
       assert.match(html, /not a live call with Suchay/);

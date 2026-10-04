@@ -17,6 +17,13 @@ export function SiteHeader({ current, dark = false }: { current?: string; dark?:
   const triggerRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const target = document.getElementById(window.location.hash.slice(1));
+    window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
+    target?.scrollIntoView({ behavior: "instant" });
+  }, []);
+
   function closeNavigation(restoreFocus = true) {
     setOpen(false);
     if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
@@ -59,7 +66,7 @@ export function SiteHeader({ current, dark = false }: { current?: string; dark?:
 
   return (
     <header className={dark ? "about-nav" : "site-header"}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
+      <button className="skip-link" type="button" onClick={() => { const main = document.getElementById("main-content"); if (main) { main.tabIndex = -1; main.focus(); main.scrollIntoView({ behavior: "instant" }); } }}>Skip to content</button>
       <Link className={dark ? "about-wordmark" : "wordmark"} href="/" aria-label="Suchay Janbandhu, home">Suchay<span>.</span></Link>
       <nav className="desktop-navigation" aria-label="Main navigation">
         {links.map(([label, href]) => <Link key={href} href={href} aria-current={current === href ? "page" : undefined}>{label}</Link>)}

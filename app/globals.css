@@ -275,3 +275,38 @@ footer>span:nth-child(2){text-align:center} footer div{display:flex;justify-cont
 
 .voice-phone-field{display:grid;gap:.45rem}.voice-phone-field>label{font-size:.8rem;font-weight:600}.voice-phone-row{display:grid;grid-template-columns:minmax(140px,.8fr) minmax(0,1.4fr);gap:.65rem}.voice-phone-field small{font-size:.75rem;color:var(--muted);font-weight:400}.voice-panel .voice-fields{gap:1.35rem}.voice-panel input::placeholder,.voice-panel textarea::placeholder{color:var(--muted);opacity:.75}
 @media(max-width:440px){.voice-phone-row{grid-template-columns:130px minmax(0,1fr);gap:.4rem}.voice-fields .voice-phone-row select{padding:.8rem .4rem}}
+
+/* Contact form: calm focus feedback and an accessible country picker. */
+.voice-panel { border-radius: 16px; background: color-mix(in srgb, var(--paper) 97%, var(--violet)); box-shadow: 0 12px 40px rgb(0 0 0 / .035); }
+.voice-panel .voice-fields :is(input:not([type=checkbox]), select, textarea) { border-radius: 8px; transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+.voice-panel .voice-fields :is(input:not([type=checkbox]), select, textarea):focus-visible { outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px color-mix(in srgb, var(--violet) 14%, transparent); }
+.voice-phone-field>label { display: flex; align-items: baseline; gap: .4rem; }
+.voice-optional { font-weight: 400; color: var(--muted); font-size: .75rem; }
+.voice-phone-row { position: relative; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); transition: border-color .2s ease, box-shadow .2s ease; }
+.voice-phone-row:hover { border-color: color-mix(in srgb, var(--ink) 35%, var(--line)); }
+.voice-phone-row:focus-within { border-color: var(--violet); box-shadow: 0 0 0 4px color-mix(in srgb, var(--violet) 12%, transparent), 0 5px 16px color-mix(in srgb, var(--violet) 8%, transparent); }
+.voice-panel .voice-phone-row input { border: 0; border-radius: 0 10px 10px 0; background: transparent; padding: .95rem 1rem; }
+.voice-panel .voice-phone-row input:focus-visible { box-shadow: none; }
+.voice-country { position: relative; min-width: 0; }
+.voice-country-trigger { display: flex; gap: .5rem; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 48px; padding: .75rem .6rem; background: transparent; color: var(--ink); border: 0; border-right: 1px solid var(--line); border-radius: 10px 0 0 10px; font: inherit; font-size: .85rem; cursor: pointer; transition: background .18s ease; }
+.voice-country-trigger:hover, .voice-country-trigger[aria-expanded=true] { background: color-mix(in srgb, var(--violet) 7%, transparent); }
+.voice-country-trigger:focus-visible { outline: 2px solid var(--violet); outline-offset: -4px; }
+.voice-country-trigger svg { transition: transform .18s ease; }
+.voice-country-trigger[aria-expanded=true] svg { transform: rotate(180deg); }
+.voice-country-menu { position: absolute; top: calc(100% + .5rem); left: 0; z-index: 20; width: min(290px, 75vw); padding: .4rem; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / .16); animation: voice-menu-enter .16s ease-out; }
+.voice-country-menu button { display: grid; grid-template-columns: 24px 1fr auto 16px; gap: .6rem; align-items: center; width: 100%; padding: .75rem .65rem; border: 0; border-radius: 7px; background: transparent; color: var(--ink); text-align: left; font: inherit; font-size: .82rem; cursor: pointer; }
+.voice-country-menu button small { color: var(--muted); }
+.voice-country-menu button[aria-selected=true] { color: var(--violet); background: color-mix(in srgb, var(--violet) 7%, transparent); }
+.voice-country-menu button:hover, .voice-country-menu button:focus-visible { outline: none; background: color-mix(in srgb, var(--violet) 12%, transparent); }
+.voice-phone-row.has-error { border-color: #ba4141; }
+.voice-phone-field .voice-field-error { color: #ba4141; }
+.voice-privacy-note { padding: .9rem 1rem; border-radius: 8px; background: color-mix(in srgb, var(--violet) 5%, transparent); line-height: 1.65; }
+.voice-panel .voice-actions { margin-top: 1.25rem; }
+.voice-panel .voice-actions .btn { transition: transform .18s ease, box-shadow .18s ease; }
+.voice-panel .voice-actions .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgb(0 0 0 / .08); }
+.voice-panel fieldset:disabled, .voice-panel button:disabled { opacity: .65; cursor: wait; }
+.voice-spinner { animation: voice-spin 1s linear infinite; }
+@keyframes voice-menu-enter { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes voice-spin { to { transform: rotate(360deg); } }
+@media (max-width:440px) { .voice-phone-row { grid-template-columns: 108px minmax(0,1fr); gap: 0; } }
+@media (prefers-reduced-motion:reduce) { .voice-panel *, .voice-country-menu { animation: none !important; transition: none !important; } }

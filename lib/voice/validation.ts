@@ -1,12 +1,12 @@
 import { z } from "zod";
+import { validOptionalPhone } from "./phone";
 
-export const CONSENT_VERSION = "voice-enquiry-v1";
+export const CONSENT_VERSION = "voice-enquiry-v2";
 export const enquirySchema = z.object({
   name: z.string().trim().min(2).max(100),
-  email: z.email().trim().toLowerCase().max(254),
-  phone: z.string().trim().transform(value => value.replace(/[\s().-]/g, ""))
-    .refine(value => /^\+[1-9]\d{7,14}$/.test(value), "Include your country code, for example +91.")
-    .refine(value => !value.startsWith("+91") || /^\+91[6-9]\d{9}$/.test(value), "Enter a valid 10-digit Indian mobile number."),
+  email: z.string().trim().toLowerCase().max(254).pipe(z.email()),
+  phone: z.string().trim().max(30).default("").transform(value => value.replace(/[\s().-]/g, ""))
+    .refine(validOptionalPhone, "Enter a valid mobile number including its country code, or leave it blank."),
   reason: z.enum(["Hiring", "Project enquiry", "Collaboration", "Other"]),
   message: z.string().trim().min(10).max(1500),
   consent: z.literal(true),

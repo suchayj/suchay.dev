@@ -1,13 +1,16 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { normalisePhoneInput } from "@/lib/voice/phone";
-import { Mic, MicOff, PhoneOff, ArrowUpRight } from "lucide-react";
+import { normalisePhoneInput, validOptionalPhone } from "@/lib/voice/phone";
+import { Mic, MicOff, PhoneOff, ArrowUpRight, LoaderCircle } from "lucide-react";
+
+import { CountryCodeSelect } from "./country-code-select";
 
 type Saved = { id: string; token: string; voiceAvailable: boolean; maxSeconds: number };
 type Stage = "form" | "saving" | "ready" | "connecting" | "active" | "ended";
 
 export function VoiceEnquiry({ available }: { available: boolean }) {
   const [countryCode, setCountryCode] = useState("+91");
+  const [phoneError, setPhoneError] = useState("");
   const [stage, setStage] = useState<Stage>("form");
   const [saved, setSaved] = useState<Saved>();
   const [notice, setNotice] = useState("");
@@ -65,19 +68,21 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
     setStage("saving"); setNotice("");
     const form = new FormData(event.currentTarget);
     const phone = normalisePhoneInput(String(form.get("phone") ?? ""), countryCode);
-    if (!/^\+[1-9]\d{7,14}$/.test(phone) || (phone.startsWith("+91") && !/^\+91[6-9]\d{9}$/.test(phone))) {
+    if (!validOptionalPhone(phone)) {
       setStage("form");
-      setNotice(phone.startsWith("+91") ? "Please enter a valid 10-digit Indian mobile number." : "Please check your mobile number and selected country.");
+      document.getElementById("voice-phone")?.focus();
+      setPhoneError(phone.startsWith("+91") ? "Please enter a valid 10-digit Indian mobile number." : "Please check your mobile number and selected country.");
       return;
     }
+    setPhoneError("");
     const textOnly = (event.nativeEvent as SubmitEvent).submitter?.getAttribute("value") === "message";
     try {
       const response = await fetch("/api/voice/enquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: form.get("name"), email: form.get("email"), phone, reason: form.get("reason"), message: form.get("message"), website: form.get("website"), consent: form.get("consent") === "on" }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Couldn’t save your enquiry. Please try again.");
       setSaved(result); session.current = result;
-      if (textOnly || !result.voiceAvailable) { setStage("ended"); setNotice("Your enquiry is saved for Suchay to review. Thank you for reaching out."); }
-      else { setStage("ready"); setNotice("Your contact details and message are saved. You can now start a voice conversation."); }
+      if (textOnly || !result.voiceAvailable) { ended.current = true; setStage("ended"); setNotice("Your enquiry is saved for Suchay to review. Thank you for reaching out."); }
+      else { setStage("ready"); setNotice("Your enquiry is saved. Start voice when you’re ready, or leave it here for Suchay to review."); }
     } catch (error) { setStage("form"); setNotice(error instanceof Error ? error.message : "Please try again."); }
   }
 
@@ -103,7 +108,7 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
         const started = Date.now();
         clock.current = setInterval(() => setSeconds(Math.floor((Date.now() - started) / 1000)), 1000);
         timeout.current = setTimeout(() => { void finish("Your conversation time is up. Your enquiry and conversation have been saved.", "LIMIT_REACHED"); }, saved.maxSeconds * 1000);
-        channel.send(JSON.stringify({ type: "response.create", response: { instructions: "Greet the visitor as Suchay’s AI assistant, say their enquiry has been saved, and ask what they would like to discuss. Do not claim to be Suchay." } }));
+        channel.send(JSON.stringify({ type: "response.create", response: { instructions: "Greet the visitor as Suchay’s AI assistant, say their enquiry has been saved, and address the question or topic in their submitted enquiry. Ask at most one useful follow-up, without asking them to repeat their message or contact details. Do not claim to be Suchay." } }));
       };
       channel.onmessage = event => {
         try {
@@ -133,20 +138,25 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
     <div className="voice-intro"><p className="eyebrow"><span /> A conversation starts here</p><h2 id="voice-heading">Talk to my<br /><em>AI assistant.</em></h2><p>Ask about my work, discuss an opportunity, or leave a project enquiry. I’ll review your details and the conversation in person.</p><div className="voice-facts"><span>Browser voice · no phone call</span><span>Your enquiry reaches my private inbox</span></div><p className="voice-small">Prefer email? <a href="mailto:suchayjanbandhu@gmail.com">Write to Suchay <ArrowUpRight size={14} aria-hidden="true" /></a></p></div>
     <div className="voice-panel">
       {(stage === "form" || stage === "saving") ? <form onSubmit={save}>
-        <p className="eyebrow">Before we talk</p><h3>A quick introduction.</h3><p>Leave your details so Suchay can follow up after your conversation.</p>
+        <p className="eyebrow">Before we talk</p><h3>Let’s start with your enquiry.</h3><p>Share a little context and an email for my reply. Your phone number is optional.</p>
         <fieldset disabled={stage === "saving"} className="voice-fields">
-          <label>Your name<input name="name" autoComplete="name" placeholder="What should we call you?" required minLength={2} maxLength={100} /></label>
+          <label>Your name<input name="name" autoComplete="name" placeholder="Your name" required minLength={2} maxLength={100} /></label>
           <label>Email address<input name="email" type="email" autoComplete="email" placeholder="you@company.com" required maxLength={254} /></label>
-          <div className="voice-phone-field voice-wide"><label htmlFor="voice-phone">Mobile number</label><div className="voice-phone-row"><select aria-label="Country calling code" value={countryCode} onChange={event => setCountryCode(event.target.value)}><option value="+91">India (+91)</option><option value="+1">US / Canada (+1)</option><option value="+44">UK (+44)</option><option value="+971">UAE (+971)</option><option value="+65">Singapore (+65)</option><option value="+61">Australia (+61)</option><option value="">Another country</option></select><input id="voice-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel-national" placeholder={countryCode === "+91" ? "98765 43210" : countryCode ? "Mobile number" : "+country code and number"} required minLength={6} maxLength={30} aria-describedby="voice-phone-hint" /></div><small id="voice-phone-hint">{countryCode === "+91" ? "Just your 10-digit mobile number. We’ll add +91." : countryCode ? "Country code is already selected. You can also paste a full international number." : "Enter the full number, including + and your country code."}</small></div>
+          <div className="voice-phone-field voice-wide"><label htmlFor="voice-phone">Mobile number <span className="voice-optional">Optional</span></label><div className={`voice-phone-row${phoneError ? " has-error" : ""}`}><CountryCodeSelect value={countryCode} onChange={value => { setCountryCode(value); setPhoneError(""); }} /><input id="voice-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel-national" placeholder={countryCode === "+91" ? "98765 43210" : countryCode ? "Mobile number" : "+country code and number"} maxLength={30} aria-invalid={Boolean(phoneError)} aria-describedby={phoneError ? "voice-phone-error" : "voice-phone-hint"} onChange={() => setPhoneError("")} onBlur={event => {
+            const number = normalisePhoneInput(event.target.value, countryCode);
+            setPhoneError(validOptionalPhone(number) ? "" : countryCode === "+91" ? "Enter a valid 10-digit Indian mobile number, or leave it blank." : "Check the number and country code, or leave it blank.");
+          }} /></div>{phoneError ? <small id="voice-phone-error" className="voice-field-error" role="alert">{phoneError}</small> : <small id="voice-phone-hint">{countryCode === "+91" ? "10 digits; we’ll add +91. " : countryCode ? "Country code is already selected. " : "Include + and your country code. "}Only share a number if you’d like a phone follow-up.</small>}</div>
           <label className="voice-wide">What brings you here?<select name="reason" required defaultValue=""><option value="" disabled>Choose a topic</option><option>Hiring</option><option>Project enquiry</option><option>Collaboration</option><option>Other</option></select></label>
           <label className="voice-wide">What would you like to discuss?<textarea name="message" required minLength={10} maxLength={1500} rows={3} placeholder="Tell me about the role, project, or question you have in mind." /></label>
           <label className="voice-honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-          <label className="voice-consent voice-wide"><input name="consent" type="checkbox" required /><span>I agree to share my contact details and message with Suchay for follow-up. If I start voice, OpenAI processes the audio, and a transcript and AI summary are saved in Suchay’s private inbox. This is an AI assistant, not a live call with Suchay. <a href="/privacy">Privacy details</a></span></label>
+          <label className="voice-consent voice-wide"><input name="consent" type="checkbox" required /><span>Suchay may use these details to respond to my enquiry. <a href="/privacy">Privacy details</a></span></label>
         </fieldset>
-        {!available && <p className="voice-small">Voice is currently unavailable. You can still send your enquiry below.</p>}
-        <div className="voice-actions"><button className="btn btn-primary" disabled={stage === "saving"} value={available ? "voice" : "message"}>{stage === "saving" ? "Saving…" : available ? "Continue to voice" : "Send enquiry"}<ArrowUpRight size={16} aria-hidden="true" /></button>{available && <button className="btn btn-secondary" disabled={stage === "saving"} value="message">Send a message instead</button>}</div>
-      </form> : <div className="voice-session">
-        <p className="eyebrow">{stage === "ended" ? "Enquiry saved" : "Your conversation"}</p><Mic size={38} strokeWidth={1.3} aria-hidden="true" /><h3>{stage === "ready" ? "Ready when you are." : stage === "connecting" ? "Connecting…" : stage === "active" ? "You’re speaking with AI." : "Thank you for reaching out."}</h3>
+        <p className="voice-small voice-privacy-note">Voice is optional: you speak with an AI assistant, not a live call with Suchay. If you start it, OpenAI processes the audio; a transcript and summary are saved privately for Suchay. No audio recording is stored by this site.</p>
+        {!available && <p className="voice-small">You can send a written enquiry now. Voice conversations are temporarily unavailable.</p>}
+        <div className="voice-actions"><button className="btn btn-primary" disabled={stage === "saving"} value={available ? "voice" : "message"}>{stage === "saving" ? "Saving your enquiry…" : available ? "Save & continue to voice" : "Send enquiry"}<ArrowUpRight size={16} aria-hidden="true" /></button>{available && <button className="btn btn-secondary" disabled={stage === "saving"} value="message">Send without voice</button>}</div>
+      </form> : <div className="voice-session" aria-live="polite">
+        <p className="eyebrow">{stage === "ended" ? "Enquiry saved" : "Your conversation"}</p><Mic size={38} strokeWidth={1.3} aria-hidden="true" /><h3>{stage === "ready" ? "Ready when you are." : stage === "connecting" ? "Connecting…" : stage === "active" ? "You’re speaking with AI." : stage === "ended" ? "Your enquiry is saved." : "Thank you for reaching out."}</h3>
+        {stage === "connecting" && <><LoaderCircle className="voice-spinner" size={20} aria-hidden="true" /><p>Connecting your microphone and assistant…</p></>}
         {stage === "ready" && <><p>Your microphone will be requested next. You can speak for up to {Math.ceil((saved?.maxSeconds ?? 180) / 60)} minutes.</p><button className="btn btn-primary" onClick={start}>Start voice conversation <Mic size={16} aria-hidden="true" /></button></>}
         {stage === "active" && <><p className="voice-timer">{Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, "0")} / {Math.ceil((saved?.maxSeconds ?? 180) / 60)} min</p><p className="voice-caption">{caption || "Say hello, or ask a question about Suchay’s work."}</p><button className="btn btn-secondary" aria-pressed={muted} onClick={() => { const next = !muted; media.current?.getAudioTracks().forEach(track => { track.enabled = !next; }); setMuted(next); }}>{muted ? <Mic size={16} /> : <MicOff size={16} />}{muted ? "Unmute" : "Mute"}</button></>}
         {(stage === "active" || stage === "connecting") && <button className="btn btn-primary" onClick={() => void finish()}><PhoneOff size={16} aria-hidden="true" />End conversation</button>}
@@ -154,7 +164,7 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
       {/* Assistant speech is displayed as text immediately above the audio controls. */}
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio ref={audio} autoPlay controls={stage === "active"} aria-label="Assistant audio" />
-      {notice && <p className="voice-notice" role="status">{notice}</p>}
+      {notice && <p className="voice-notice" role="status" aria-live="polite">{notice}</p>}
     </div>
   </section>;
 }

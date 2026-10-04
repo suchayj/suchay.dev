@@ -45,7 +45,10 @@ test("uses server configuration, saves provider transcripts once, summarises, an
   const config = JSON.parse(String(body.get("session")));
   assert.equal(config.type, "realtime");
   assert.match(config.instructions, /AI assistant/);
-  assert.equal(config.max_output_tokens, 250);
+  assert.equal(config.max_output_tokens, 2000);
+  assert.match(config.instructions, /Discuss a product engineering project/);
+  assert.doesNotMatch(config.instructions, new RegExp(row.email));
+  assert.ok(!config.instructions.includes(row.phone));
   const socket = sockets.at(-1)!;
   const emit = (event: object) => socket.emit("message", Buffer.from(JSON.stringify(event)));
   emit({ type: "conversation.item.input_audio_transcription.completed", event_id: "u1", transcript: "I have a project.", usage: { input_tokens: 10, input_token_details: { audio_tokens: 10, text_tokens: 0 }, output_tokens: 5 } });

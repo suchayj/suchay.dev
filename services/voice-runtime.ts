@@ -55,11 +55,12 @@ async function summarise(id: string) {
 export async function connectVoice(id: string, sdp: string, safetyId: string) {
   const model = process.env.OPENAI_REALTIME_MODEL || "gpt-realtime-2.1-mini";
   await prisma.voiceEnquiry.update({ where: { id }, data: { costTrackingVersion: 1, voiceModel: model } });
+  const enquiry = await prisma.voiceEnquiry.findUniqueOrThrow({ where: { id }, select: { reason: true, message: true } });
   const form = new FormData();
   form.set("sdp", sdp);
   form.set("session", JSON.stringify({
     type: "realtime", model,
-    instructions: voiceInstructions(), output_modalities: ["audio"], max_output_tokens: 250,
+    instructions: voiceInstructions(enquiry), output_modalities: ["audio"], max_output_tokens: 2000,
     audio: { input: { transcription: { model: "gpt-4o-mini-transcribe" }, turn_detection: { type: "server_vad", create_response: true, interrupt_response: true } }, output: { voice: "marin" } },
   }));
   let callId: string | undefined;

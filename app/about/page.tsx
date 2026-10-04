@@ -1,3 +1,4 @@
+import { AssistantLink } from "@/components/voice/assistant-link";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PhotoFrame } from "./photo-frame";
@@ -48,7 +49,7 @@ export default function AboutPage() {
         <p className="about-kicker"><span /> Start a conversation</p>
         <h2>I’m interested in difficult systems, meaningful products and teams that care about how software <em>behaves in the real world.</em></h2>
         <div className="closing-actions"><ContactTrigger className="closing-email">suchayjanbandhu@gmail.com <Arrow /></ContactTrigger><Link className="btn btn-primary" href="/timeline">View selected work <span aria-hidden="true">→</span></Link></div>
-        <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Let’s talk</small><a href="/contact#voice">Talk to my AI assistant ↗</a></div><div><small>Elsewhere</small><span><TrackedExternalLink event="GITHUB_OPENED" href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></TrackedExternalLink><TrackedExternalLink event="LINKEDIN_OPENED" href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></TrackedExternalLink></span></div></div>
+        <div className="closing-meta"><div><small>Location</small><span>Pune, India</span></div><div><small>Let’s talk</small><AssistantLink>Talk to my AI assistant ↗</AssistantLink></div><div><small>Elsewhere</small><span><TrackedExternalLink event="GITHUB_OPENED" href="https://github.com/suchayj" target="_blank" rel="noreferrer">GitHub <Arrow /></TrackedExternalLink><TrackedExternalLink event="LINKEDIN_OPENED" href="https://www.linkedin.com/in/suchay-janbandhu-9a014779/" target="_blank" rel="noreferrer">LinkedIn <Arrow /></TrackedExternalLink></span></div></div>
       </section>
       <HomeFooter />
     </main>

@@ -3,7 +3,7 @@
 ## Behaviour
 
 Public phone links/numbers are removed from About, Contact and both resume surfaces.
-Visitors submit mandatory name, email, international phone, reason, context and consent.
+Visitors submit name, email, reason, context and consent; international phone is optional.
 Their details are self-reported, not verified. No OTP, telecom provider, transfer or phone dialling is involved.
 Written enquiries work even when voice is disabled. An enquiry is committed before microphone permission is requested.
 CareerOS → Enquiries is protected by the existing owner session and supports status updates, pagination, transcripts, summaries and explicit deletion.
@@ -18,11 +18,13 @@ Configure server-side environment variables (never NEXT_PUBLIC_):
 - `APP_ORIGIN=https://suchay.dev` (exact origin; use http://localhost:3010 during local development)
 - `OPENAI_API_KEY`: a project API key with access to the selected voice and summary models
 - `VOICE_ENABLED=true` (defaults off)
-- `OPENAI_REALTIME_MODEL=gpt-realtime-2.1-mini`
+- `OPENAI_REALTIME_MODEL=gpt-realtime-2.1` (tested production choice; the code falls back to mini if unset)
 - `OPENAI_SUMMARY_MODEL=gpt-5.4-mini`
 - `VOICE_MAX_SECONDS=180` (maximum allowed configuration 300)
 - `VOICE_DAILY_CALL_LIMIT=20` (maximum allowed configuration 100)
 - `TRUST_VOICE_PROXY=true` only after confirming Nginx overwrites X-Real-IP with the real client address; otherwise leave false.
+
+The assistant receives the submitted topic and message as untrusted context, alongside the public portfolio knowledge. Email and phone are not included in the model instructions.
 
 No key is committed. Restart after changing environment values. The inbox displays whether voice is configured.
 Check the project’s provider spending settings too: the app limits session admission and duration, not a guaranteed rupee amount.

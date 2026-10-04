@@ -5,7 +5,7 @@ import { hash, VoiceError } from "@/lib/voice/http";
 
 export async function createEnquiry(body: unknown, callerKey: string) {
   const parsed = enquirySchema.safeParse(body);
-  if (!parsed.success) throw new VoiceError("Please enter your name, email, phone with country code, reason and message, and agree to the privacy notice.");
+  if (!parsed.success) throw new VoiceError("Please check your name, email, topic, message and consent. If you include a phone number, use its country code.");
   const { name, email, phone, reason, message } = parsed.data;
   const token = randomBytes(32).toString("base64url");
   const callerHash = hash(callerKey);
@@ -14,7 +14,7 @@ export async function createEnquiry(body: unknown, callerKey: string) {
     await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(16120901)`;
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const [personal, total] = await Promise.all([
-      tx.voiceEnquiry.count({ where: { createdAt: { gte: since }, OR: [{ callerHash }, { email }, { phone }] } }),
+      tx.voiceEnquiry.count({ where: { createdAt: { gte: since }, OR: [{ callerHash }, { email }, ...(phone ? [{ phone }] : [])] } }),
       tx.voiceEnquiry.count({ where: { createdAt: { gte: since } } }),
     ]);
     if (personal >= 3 || total >= 100) throw new VoiceError("The enquiry limit has been reached. Please email Suchay instead.", 429);
