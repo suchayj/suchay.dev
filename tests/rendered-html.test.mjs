@@ -62,7 +62,7 @@ test("renders the production portfolio", async () => {
   assert.match(html, /brands\/loom\/loom-logo(?:-dark)?\.png/);
   assert.match(html, /suchay-color-cutout-original\.png/);
   assert.doesNotMatch(html, /suchay-bw-original\.png/);
-  assert.match(html, /Full Stack Engineer building AI and GenAI products/);
+  assert.match(html, /Full Stack Engineer with 10\+ years of experience/);
   assert.doesNotMatch(html, /Key engineering decision/);
   assert.doesNotMatch(html, /deterministic interpretation first/);
   assert.match(html, /Engineering technologies and domains/);
