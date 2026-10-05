@@ -42,14 +42,14 @@ test("voice covers published product decisions, links and contact boundaries", (
 
 test("implementation answers use published scenarios and preserve unknown specifics", () => {
   const instructions = voiceInstructions();
-  assert.match(instructions, /concrete operational problem/);
-  assert.match(instructions, /Account Verification consumer/);
+  assert.match(instructions, /everyday problem/);
+  assert.match(instructions, /consumed by Account Verification/);
   assert.match(instructions, /exponential backoff/);
   assert.match(instructions, /three immediate retries/);
   assert.match(instructions, /next day at 22:00 UTC/);
   assert.match(instructions, /feedback-status-raw/);
   assert.match(instructions, /10, 20 and 40 seconds/);
-  assert.match(instructions, /feedbackCallCount increases once per failed daily recovery cycle/);
+  assert.match(instructions, /feedbackCallCount is in the payload and increases once per failed daily recovery cycle/);
   assert.match(instructions, /Daily recovery stops after three failed cycles/);
   assert.doesNotMatch(instructions, /feedbackCount belonged|Monday|Wednesday|Friday|next-attempt timestamp/);
 });

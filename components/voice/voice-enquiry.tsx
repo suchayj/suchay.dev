@@ -121,7 +121,7 @@ export function VoiceEnquiry({ available }: { available: boolean }) {
         const started = Date.now();
         clock.current = setInterval(() => setSeconds(Math.floor((Date.now() - started) / 1000)), 1000);
         timeout.current = setTimeout(() => { void finish("Your conversation time is up. Your enquiry and conversation have been saved.", "LIMIT_REACHED"); }, saved.maxSeconds * 1000);
-        channel.send(JSON.stringify({ type: "response.create", response: { instructions: "Briefly greet the visitor as Suchay’s AI assistant, then address the question or topic in their submitted enquiry. Ask at most one useful follow-up, without asking them to repeat their message or contact details. Do not claim to be Suchay." } }));
+        channel.send(JSON.stringify({ type: "response.create", response: { instructions: "In one continuous spoken message, briefly identify yourself as Suchay’s AI assistant and answer their submitted question in everyday language. Start with what the work helps someone do, not a list of technologies or internal steps. Give technical detail only when their question explicitly asks for it. Keep a general introduction to 2–4 short sentences. Ask at most one useful follow-up, without asking them to repeat their message or contact details. Do not claim to be Suchay." } }));
       };
       channel.onmessage = event => {
         try {
