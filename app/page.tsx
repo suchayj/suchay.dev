@@ -49,7 +49,7 @@ export default function Home() {
       <section className="about section" id="about">
         <p className="eyebrow"><span /> About</p>
         <h2>Engineering with the whole lifecycle <em>in view.</em></h2>
-        <p>Suchay is a full-stack engineer in Pune, turning ambiguous operational problems into clear, dependable software.</p>
+        <p>I build across the whole product: understanding the operation, choosing the architecture, creating the interface and services, and delivering it. Outside work, fitness, wildlife, travel and music keep my perspective wider than a screen.</p>
         <Link className="home-text-link" href="/about">Read the story <span aria-hidden="true">→</span></Link>
       </section>
 

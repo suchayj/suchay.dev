@@ -40,6 +40,15 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="statement about-shell" aria-labelledby="ownership-title">
+        <div><p className="about-kicker"><span /> Product ownership</p><h2 id="ownership-title">From the first problem to a working product.</h2></div>
+        <div className="statement-body">
+          <p>I lead Rentora and Edvora as independent products. My responsibility connects the problem, design, implementation and delivery, rather than ending at an individual feature.</p>
+          <p>Rentora brings rough rental requests into reviewable plans for equipment, people and logistics. Edvora connects academic and administrative work in a multi-tenant education platform.</p>
+          <p><Link href="/work/rentora">Explore Rentora →</Link> · <Link href="/work/edvora">Explore Edvora →</Link></p>
+        </div>
+      </section>
+
       <section className="beyond about-shell">
         <PhotoFrame src="/images/about/beach-goggle.jpg" alt="Suchay smiling beside the water in sunglasses" label="Beyond the code" sizes="(max-width: 760px) 100vw, 48vw" objectPosition="50% 28%" />
         <div><p className="about-kicker"><span /> Beyond the code</p><h2>Perspective comes from <em>looking beyond the screen.</em></h2><p>Good engineering is only one part of a good life. Outside software, I value fitness, wildlife, travel, music and the perspective that comes from exploring interests beyond a screen.</p><ul><li>Product thinking</li><li>Continuous learning</li><li>Fitness & discipline</li><li>Wildlife & exploration</li><li>Music & creative interests</li></ul></div>

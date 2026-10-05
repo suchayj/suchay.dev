@@ -51,6 +51,7 @@
 .about-intro{max-width:680px;margin-top:1.5rem;font-size:1rem;line-height:1.7}
 .statement{padding-top:6rem;padding-bottom:6rem;grid-template-columns:1.05fr .75fr;gap:7vw}
 .statement blockquote{font-size:clamp(2.2rem,3.4vw,3.8rem)}
+.statement h2{margin:0;font-size:clamp(2.3rem,3.4vw,3.8rem);line-height:1.08;letter-spacing:-.045em}
 .beyond{padding-top:6rem;padding-bottom:6rem;grid-template-columns:.8fr 1fr;gap:7vw}.beyond .about-photo{min-height:480px;max-height:590px}.beyond h2,.about-closing h2{font-size:clamp(2.8rem,4vw,4.5rem)}
 .beyond>div>p:not(.about-kicker){margin:1.5rem 0;font-size:.96rem}.beyond ul{padding-top:.85rem}
 .about-closing{padding-top:6rem;padding-bottom:4rem}.about-closing h2{max-width:980px}.closing-actions{margin-top:3rem}.closing-meta{margin-top:4rem}
@@ -61,7 +62,7 @@
 
 @media(max-width:760px){
   .about-shell{width:calc(100% - 2rem)}.about-hero{padding-top:4.5rem;padding-bottom:4rem}.about-hero h1{font-size:clamp(2.85rem,13vw,3.9rem)}
-  .statement{padding-top:4.5rem;padding-bottom:4.5rem;gap:2.5rem}.statement blockquote{font-size:2.35rem}
+  .statement{padding-top:4.5rem;padding-bottom:4.5rem;grid-template-columns:1fr;gap:2.5rem}.statement blockquote{font-size:2.35rem}
   .beyond{padding-top:4.5rem;padding-bottom:4.5rem;gap:2.5rem}.beyond .about-photo{min-height:380px;height:52svh}.beyond h2,.about-closing h2{font-size:2.8rem}
   .about-closing{padding-top:4.5rem;padding-bottom:3rem}.closing-actions{margin-top:2.5rem}.closing-meta{margin-top:3rem}
 }

@@ -22,5 +22,44 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const index = projects.findIndex(item => item.slug === slug);
   const project = projects[index];
   if (!project) notFound();
-  return <main className="route-page case-study" id="main-content"><SiteHeader current="/timeline" /><CaseStudyStructuredData project={project} /><section className="case-hero"><div><p className="eyebrow"><span /> Case study · 0{index + 1}</p><ProductName as="h1" slug={project.slug} name={project.name} /><p className="case-proposition">{project.proposition}</p></div><div className="case-system" role="img" aria-label={`${project.name} system overview`}><span>Problem</span><i /><span>Model</span><i /><span>Workflow</span><i /><span>Production</span></div></section><section className="case-body"><div><p className="case-label">Overview</p><h2>A concise view while the full case study is being prepared.</h2></div><div><p>{project.description}</p><p>This page establishes a permanent, shareable home for the work without inventing outcomes, screenshots or metrics. Architecture decisions, delivery context and verified product detail will be added here as they are ready.</p><ul>{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></div></section><nav className="case-next" aria-label="Case study navigation"><Link href="/timeline">← Work Timeline</Link><Link href={`/work/${projects[(index + 1) % projects.length].slug}`}>Next: {projects[(index + 1) % projects.length].name} →</Link></nav><HomeFooter /></main>;
+  return (
+    <main className="route-page case-study" id="main-content">
+      <SiteHeader current="/timeline" />
+      <CaseStudyStructuredData project={project} />
+      <section className="case-hero">
+        <div>
+          <p className="eyebrow"><span /> Case study · 0{index + 1}</p>
+          <ProductName as="h1" slug={project.slug} name={project.name} />
+          <p className="case-proposition">{project.proposition}</p>
+          <p className="case-label">Independent product · End-to-end engineering</p>
+        </div>
+        <div className="case-system" role="img" aria-label={`${project.name}: from understanding the problem to production delivery`}>
+          <span>Problem</span><i /><span>Design</span><i /><span>Build</span><i /><span>Delivery</span>
+        </div>
+      </section>
+      <section className="case-body">
+        <div><p className="case-label">The problem</p><h2>Start with the work people need to do.</h2></div>
+        <div><p>{project.problem}</p><p>{project.simpleExplanation}</p></div>
+      </section>
+      <section className="case-body">
+        <div><p className="case-label">What I built</p><h2>{project.built}</h2></div>
+        <div><p>{project.description}</p><ul>{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></div>
+      </section>
+      <section className="case-body">
+        <div><p className="case-label">An engineering decision</p><h2>Make the important behaviour explicit.</h2></div>
+        <div><p>{project.decision}</p></div>
+      </section>
+      <section className="case-body">
+        <div><p className="case-label">My responsibility</p><h2>Own the product beyond an individual feature.</h2></div>
+        <div>
+          <p>I lead this independent product from understanding the problem and shaping the design through implementation, delivery and iteration.</p>
+          <p>{project.delivery}</p>
+          <Link className="btn btn-primary" href="/contact">Discuss this project <span aria-hidden="true">→</span></Link>
+          <p><a href={project.productUrl} target="_blank" rel="noopener noreferrer">{project.productLabel} <span aria-hidden="true">↗</span></a></p>
+        </div>
+      </section>
+      <nav className="case-next" aria-label="Case study navigation"><Link href="/timeline">← Work Timeline</Link><Link href={`/work/${projects[(index + 1) % projects.length].slug}`}>Next: {projects[(index + 1) % projects.length].name} →</Link></nav>
+      <HomeFooter />
+    </main>
+  );
 }
