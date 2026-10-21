@@ -18,6 +18,7 @@
     "db:validate": "prisma validate",
     "analytics:retention:dry-run": "tsx scripts/visitor-retention-dry-run.ts",
     "release:build": "node deployment/build.mjs",
+    "test:release-retention": "node --test deployment/local-retention.test.mjs",
     "release": "node deployment/release.mjs"
   },
   "dependencies": {
